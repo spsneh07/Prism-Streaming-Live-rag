@@ -1,0 +1,20 @@
+services:
+  app:
+    build: .
+    image: streaming-live-rag
+    ports: ["8000:8000"]
+    env_file: [.env.example]
+
+  # docker compose --profile eval run --rm tests
+  tests:
+    image: streaming-live-rag
+    profiles: ["eval"]
+    working_dir: /app/backend
+    command: ["python", "-m", "pytest", "-q"]
+
+  # docker compose --profile eval run --rm benchmark
+  benchmark:
+    image: streaming-live-rag
+    profiles: ["eval"]
+    command: ["python", "scripts/benchmark.py"]
+    volumes: ["./results:/app/results"]

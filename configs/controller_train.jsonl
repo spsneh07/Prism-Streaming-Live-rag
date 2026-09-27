@@ -1,0 +1,132 @@
+{"kind": "intent", "text": "What is the per diem for international travel?", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "How do I book a venue in Bengaluru?", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "Which caterers are approved in Pune?", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "How many sick days do we get?", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "What happens if I lose my laptop?", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "Who approves expense claims above fifty thousand rupees?", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "Tell me about remote work eligibility.", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "I want to organise a customer event and need to know the approval rules.", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "How is foreign currency converted for expenses?", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "What are the rules for visitors to the office?", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "Can I use my corporate card for cash withdrawals?", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "Explain the data classification levels.", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "What rooms are available in the Pune office?", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "What is the catering budget per attendee?", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "I'd like to know how early I should book an international flight.", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "Is there a home office allowance?", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "What is the parental leave policy?", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "How long do I have to submit an expense claim?", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "Find me a venue for eighty people.", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "What does the workshop planning guide say about approvals?", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "When do I need a medical certificate?", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "How often are laptops replaced?", "prev": null, "label": "new_request"}
+{"kind": "intent", "text": "What is the parental leave policy?", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "new_request"}
+{"kind": "intent", "text": "How do I report a security incident?", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "new_request"}
+{"kind": "intent", "text": "Which Bengaluru venue can host a product launch?", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "new_request"}
+{"kind": "intent", "text": "How often are laptops replaced?", "prev": "I need a venue in Pune for a customer workshop.", "label": "new_request"}
+{"kind": "intent", "text": "What's the policy on working from another country?", "prev": "I need a venue in Pune for a customer workshop.", "label": "new_request"}
+{"kind": "intent", "text": "The trip was to Singapore.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "refinement"}
+{"kind": "intent", "text": "Actually it was a domestic trip.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "refinement"}
+{"kind": "intent", "text": "It was booked after I got back.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "refinement"}
+{"kind": "intent", "text": "Oh and I lost one of the receipts.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "refinement"}
+{"kind": "intent", "text": "The flights were in business class.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "refinement"}
+{"kind": "intent", "text": "Also the trip was longer than two weeks.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "refinement"}
+{"kind": "intent", "text": "I paid in euros.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "refinement"}
+{"kind": "intent", "text": "Actually we will have about 50 people.", "prev": "I need a venue in Pune for a customer workshop.", "label": "refinement"}
+{"kind": "intent", "text": "It needs to have a projector.", "prev": "I need a venue in Pune for a customer workshop.", "label": "refinement"}
+{"kind": "intent", "text": "We also want to serve hot lunch.", "prev": "I need a venue in Pune for a customer workshop.", "label": "refinement"}
+{"kind": "intent", "text": "The event is next week.", "prev": "I need a venue in Pune for a customer workshop.", "label": "refinement"}
+{"kind": "intent", "text": "And it should be wheelchair accessible.", "prev": "I need a venue in Pune for a customer workshop.", "label": "refinement"}
+{"kind": "intent", "text": "Make that Bengaluru instead.", "prev": "I need a venue in Pune for a customer workshop.", "label": "refinement"}
+{"kind": "intent", "text": "I'm still on probation.", "prev": "How much annual leave do employees get?", "label": "refinement"}
+{"kind": "intent", "text": "What if I didn't use all of it last year?", "prev": "How much annual leave do employees get?", "label": "refinement"}
+{"kind": "intent", "text": "We would cancel ten days before.", "prev": "What is the venue cancellation policy?", "label": "refinement"}
+{"kind": "intent", "text": "The venue closed because of a flood.", "prev": "What is the venue cancellation policy?", "label": "refinement"}
+{"kind": "intent", "text": "Make it shorter.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "presentation"}
+{"kind": "intent", "text": "Can you put that in bullet points?", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "presentation"}
+{"kind": "intent", "text": "Repeat your last answer.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "presentation"}
+{"kind": "intent", "text": "Summarize your previous answer in one sentence.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "presentation"}
+{"kind": "intent", "text": "Rephrase that more simply.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "presentation"}
+{"kind": "intent", "text": "Give me that as three bullets.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "presentation"}
+{"kind": "intent", "text": "Make it shorter.", "prev": "I need a venue in Pune for a customer workshop.", "label": "presentation"}
+{"kind": "intent", "text": "Can you put that in bullet points?", "prev": "I need a venue in Pune for a customer workshop.", "label": "presentation"}
+{"kind": "intent", "text": "Repeat your last answer.", "prev": "I need a venue in Pune for a customer workshop.", "label": "presentation"}
+{"kind": "intent", "text": "Summarize your previous answer in one sentence.", "prev": "I need a venue in Pune for a customer workshop.", "label": "presentation"}
+{"kind": "intent", "text": "Rephrase that more simply.", "prev": "I need a venue in Pune for a customer workshop.", "label": "presentation"}
+{"kind": "intent", "text": "Give me that as three bullets.", "prev": "I need a venue in Pune for a customer workshop.", "label": "presentation"}
+{"kind": "intent", "text": "Make it shorter.", "prev": "How much annual leave do employees get?", "label": "presentation"}
+{"kind": "intent", "text": "Can you put that in bullet points?", "prev": "How much annual leave do employees get?", "label": "presentation"}
+{"kind": "intent", "text": "Repeat your last answer.", "prev": "How much annual leave do employees get?", "label": "presentation"}
+{"kind": "intent", "text": "Summarize your previous answer in one sentence.", "prev": "How much annual leave do employees get?", "label": "presentation"}
+{"kind": "intent", "text": "Rephrase that more simply.", "prev": "How much annual leave do employees get?", "label": "presentation"}
+{"kind": "intent", "text": "Give me that as three bullets.", "prev": "How much annual leave do employees get?", "label": "presentation"}
+{"kind": "intent", "text": "Make it shorter.", "prev": "What is the venue cancellation policy?", "label": "presentation"}
+{"kind": "intent", "text": "Can you put that in bullet points?", "prev": "What is the venue cancellation policy?", "label": "presentation"}
+{"kind": "intent", "text": "Repeat your last answer.", "prev": "What is the venue cancellation policy?", "label": "presentation"}
+{"kind": "intent", "text": "Summarize your previous answer in one sentence.", "prev": "What is the venue cancellation policy?", "label": "presentation"}
+{"kind": "intent", "text": "Rephrase that more simply.", "prev": "What is the venue cancellation policy?", "label": "presentation"}
+{"kind": "intent", "text": "Give me that as three bullets.", "prev": "What is the venue cancellation policy?", "label": "presentation"}
+{"kind": "intent", "text": "Please repeat your last answer in two bullet points.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "presentation"}
+{"kind": "intent", "text": "Shorten that please.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "presentation"}
+{"kind": "intent", "text": "Say that again but briefer.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "presentation"}
+{"kind": "intent", "text": "Thanks, that's helpful.", "prev": null, "label": "chitchat"}
+{"kind": "intent", "text": "Hello there.", "prev": null, "label": "chitchat"}
+{"kind": "intent", "text": "Okay great.", "prev": null, "label": "chitchat"}
+{"kind": "intent", "text": "Thank you so much.", "prev": null, "label": "chitchat"}
+{"kind": "intent", "text": "Hi, how are you?", "prev": null, "label": "chitchat"}
+{"kind": "intent", "text": "Cool, got it.", "prev": null, "label": "chitchat"}
+{"kind": "intent", "text": "Good morning.", "prev": null, "label": "chitchat"}
+{"kind": "intent", "text": "Thanks!", "prev": "I need a venue in Pune for a customer workshop.", "label": "chitchat"}
+{"kind": "intent", "text": "Perfect, thank you.", "prev": "I need a venue in Pune for a customer workshop.", "label": "chitchat"}
+{"kind": "intent", "text": "Alright.", "prev": "I need a venue in Pune for a customer workshop.", "label": "chitchat"}
+{"kind": "intent", "text": "Shorter please.", "prev": null, "label": "presentation"}
+{"kind": "intent", "text": "Say that again.", "prev": null, "label": "presentation"}
+{"kind": "intent", "text": "Could you summarise what you just said?", "prev": null, "label": "presentation"}
+{"kind": "intent", "text": "Say it in simpler language.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "presentation"}
+{"kind": "intent", "text": "Make that easier to follow.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "presentation"}
+{"kind": "intent", "text": "Break that into steps.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "presentation"}
+{"kind": "intent", "text": "Give me the short version.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "presentation"}
+{"kind": "intent", "text": "Just the headline please.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "presentation"}
+{"kind": "intent", "text": "Expand on that a little.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "presentation"}
+{"kind": "intent", "text": "Say that without the jargon.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "presentation"}
+{"kind": "intent", "text": "Say it in simpler language.", "prev": "I need a venue in Pune for a customer workshop.", "label": "presentation"}
+{"kind": "intent", "text": "Make that easier to follow.", "prev": "I need a venue in Pune for a customer workshop.", "label": "presentation"}
+{"kind": "intent", "text": "Break that into steps.", "prev": "I need a venue in Pune for a customer workshop.", "label": "presentation"}
+{"kind": "intent", "text": "Give me the short version.", "prev": "I need a venue in Pune for a customer workshop.", "label": "presentation"}
+{"kind": "intent", "text": "Just the headline please.", "prev": "I need a venue in Pune for a customer workshop.", "label": "presentation"}
+{"kind": "intent", "text": "Expand on that a little.", "prev": "I need a venue in Pune for a customer workshop.", "label": "presentation"}
+{"kind": "intent", "text": "Say that without the jargon.", "prev": "I need a venue in Pune for a customer workshop.", "label": "presentation"}
+{"kind": "intent", "text": "Say it in simpler language.", "prev": "How does the expense claim process work?", "label": "presentation"}
+{"kind": "intent", "text": "Make that easier to follow.", "prev": "How does the expense claim process work?", "label": "presentation"}
+{"kind": "intent", "text": "Break that into steps.", "prev": "How does the expense claim process work?", "label": "presentation"}
+{"kind": "intent", "text": "Give me the short version.", "prev": "How does the expense claim process work?", "label": "presentation"}
+{"kind": "intent", "text": "Just the headline please.", "prev": "How does the expense claim process work?", "label": "presentation"}
+{"kind": "intent", "text": "Expand on that a little.", "prev": "How does the expense claim process work?", "label": "presentation"}
+{"kind": "intent", "text": "Say that without the jargon.", "prev": "How does the expense claim process work?", "label": "presentation"}
+{"kind": "intent", "text": "The amount is about two lakh.", "prev": "How does the expense claim process work?", "label": "refinement"}
+{"kind": "intent", "text": "We're talking three nights.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "refinement"}
+{"kind": "intent", "text": "It happened last Tuesday.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "refinement"}
+{"kind": "intent", "text": "My manager already approved it.", "prev": "How does the expense claim process work?", "label": "refinement"}
+{"kind": "intent", "text": "The venue would be the one in Baner.", "prev": "I need a venue in Pune for a customer workshop.", "label": "refinement"}
+{"kind": "intent", "text": "Only internal staff will attend.", "prev": "I need a venue in Pune for a customer workshop.", "label": "refinement"}
+{"kind": "intent", "text": "And it's for a partner, not a customer.", "prev": "I need a venue in Pune for a customer workshop.", "label": "refinement"}
+{"kind": "intent", "text": "The hotel was booked separately.", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "refinement"}
+{"kind": "intent", "text": "I'm on my second year here.", "prev": "How many sick days do we get?", "label": "refinement"}
+{"kind": "intent", "text": "Separately, who approves remote work?", "prev": "Summarize the travel reimbursement rule for an employee trip.", "label": "new_request"}
+{"kind": "intent", "text": "Another thing, what's the catering lead time?", "prev": "How does the expense claim process work?", "label": "new_request"}
+{"kind": "intent", "text": "Switching topics, how do visitors get an NDA?", "prev": "I need a venue in Pune for a customer workshop.", "label": "new_request"}
+{"kind": "readiness", "chunks": ["I want to", "check the international", "per diem rate for", "my trip next month."], "labels": [0, 0, 1, 1]}
+{"kind": "readiness", "chunks": ["Could you tell me", "how many days of", "sick leave we get", "each year?"], "labels": [0, 0, 1, 1]}
+{"kind": "readiness", "chunks": ["So I'm organising", "an event in", "Bengaluru for about", "a hundred people."], "labels": [0, 0, 1, 1]}
+{"kind": "readiness", "chunks": ["What's the", "approval process for", "expense claims", "above fifty thousand?"], "labels": [0, 0, 1, 1]}
+{"kind": "readiness", "chunks": ["Hi, I was wondering", "about the", "laptop replacement cycle."], "labels": [0, 0, 1]}
+{"kind": "readiness", "chunks": ["I need", "to know the", "rules for", "customer visitors and", "NDAs."], "labels": [0, 0, 0, 1, 1]}
+{"kind": "readiness", "chunks": ["Can I", "work from", "another country", "for a month?"], "labels": [0, 0, 1, 1]}
+{"kind": "readiness", "chunks": ["Tell me the", "home office", "allowance amount."], "labels": [0, 1, 1]}
+{"kind": "readiness", "chunks": ["We're planning", "a design sprint", "in Hinjewadi and", "need snacks."], "labels": [0, 1, 1, 1]}
+{"kind": "readiness", "chunks": ["Which approved", "caterers can serve", "vegan meals in Pune?"], "labels": [0, 1, 1]}
+{"kind": "readiness", "chunks": ["How do", "I reconcile", "corporate card transactions?"], "labels": [0, 0, 1]}
+{"kind": "readiness", "chunks": ["Um", "so", "what is the policy on", "lost receipts?"], "labels": [0, 0, 0, 1]}
+{"kind": "readiness", "chunks": ["I have a question about", "parental leave for", "secondary caregivers."], "labels": [0, 1, 1]}
+{"kind": "readiness", "chunks": ["If a security", "incident happens, how", "fast must I report it?"], "labels": [0, 1, 1]}
+{"kind": "readiness", "chunks": ["Is there a", "limit on cash", "withdrawals abroad?"], "labels": [0, 1, 1]}

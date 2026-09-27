@@ -1,0 +1,72 @@
+{
+  "baseline": {
+    "mean_retrieval_lead_s": null,
+    "ttft_s_mean": 0.0151,
+    "ttft_s_p50": 0.0132,
+    "ttft_s_p95": 0.0271,
+    "turn_latency_s_mean": 0.0151,
+    "turn_latency_s_p95": 0.0256,
+    "search_ms_per_turn": 12.1249,
+    "rerank_ms_per_turn": 0.0
+  },
+  "proposed": {
+    "mean_retrieval_lead_s": 3.9717,
+    "ttft_s_mean": 0.1852,
+    "ttft_s_p50": 0.1516,
+    "ttft_s_p95": 0.4325,
+    "turn_latency_s_mean": 0.1855,
+    "turn_latency_s_p95": 0.4001,
+    "search_ms_per_turn": 54.1321,
+    "rerank_ms_per_turn": 283.4928
+  },
+  "ablation_dense_only": {
+    "mean_retrieval_lead_s": 0.7363,
+    "ttft_s_mean": 0.0184,
+    "ttft_s_p50": 0.0073,
+    "ttft_s_p95": 0.0842,
+    "turn_latency_s_mean": 0.0197,
+    "turn_latency_s_p95": 0.0838,
+    "search_ms_per_turn": 59.6182,
+    "rerank_ms_per_turn": 0.0
+  },
+  "ablation_hybrid_no_rerank": {
+    "mean_retrieval_lead_s": 0.7394,
+    "ttft_s_mean": 0.0184,
+    "ttft_s_p50": 0.0073,
+    "ttft_s_p95": 0.0764,
+    "turn_latency_s_mean": 0.0197,
+    "turn_latency_s_p95": 0.0729,
+    "search_ms_per_turn": 58.1149,
+    "rerank_ms_per_turn": 0.0002
+  },
+  "ablation_no_decomposition": {
+    "mean_retrieval_lead_s": 0.7727,
+    "ttft_s_mean": 0.165,
+    "ttft_s_p50": 0.1571,
+    "ttft_s_p95": 0.3132,
+    "turn_latency_s_mean": 0.1677,
+    "turn_latency_s_p95": 0.322,
+    "search_ms_per_turn": 2.6956,
+    "rerank_ms_per_turn": 314.8748
+  },
+  "ablation_rule_controller": {
+    "mean_retrieval_lead_s": 0.6325,
+    "ttft_s_mean": 0.2186,
+    "ttft_s_p50": 0.1851,
+    "ttft_s_p95": 0.4029,
+    "turn_latency_s_mean": 0.2206,
+    "turn_latency_s_p95": 0.3866,
+    "search_ms_per_turn": 46.9195,
+    "rerank_ms_per_turn": 264.3334
+  },
+  "ablation_no_early_retrieval": {
+    "mean_retrieval_lead_s": null,
+    "ttft_s_mean": 0.4113,
+    "ttft_s_p50": 0.3924,
+    "ttft_s_p95": 0.6492,
+    "turn_latency_s_mean": 0.4064,
+    "turn_latency_s_p95": 0.6425,
+    "search_ms_per_turn": 45.2975,
+    "rerank_ms_per_turn": 239.411
+  }
+}

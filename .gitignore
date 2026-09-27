@@ -1,0 +1,21 @@
+# Python / tooling
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+.claude/
+
+# Secrets
+.env
+
+# Derived artefacts (rebuilt by scripts/build_index.py, scripts/download_models.py, benchmark runs)
+data/processed/
+data/models/
+results/telemetry/
+
+# Official reference material received from the organisers. The Theme 4 guide carries a
+# personal Samsung watermark; keep these out of the public repository.
+/Theme 4 Guide_RAG.pdf
+/Samsung PRISM_Y2026_GenAI_Hackathon_3rd_Edition.V2(2).pdf
+/LangAI3.0_AI_Disclosure.docx
+/CollegeName_TeamName_Submission.pptx

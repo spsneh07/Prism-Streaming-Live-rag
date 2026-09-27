@@ -1,0 +1,38 @@
+{"query": "Which cabin class is allowed on short flights?", "gold": ["DOC_01:S2"]}
+{"query": "hotel reimbursement limit by city", "gold": ["DOC_01:S2"]}
+{"query": "Who gives pre-approval for overseas travel?", "gold": ["DOC_01:S3"]}
+{"query": "Is travel insurance reimbursed for trips abroad?", "gold": ["DOC_01:S3"]}
+{"query": "minimum advance booking for international flights", "gold": ["DOC_01:S4"]}
+{"query": "expenses for family members who travel with me", "gold": ["DOC_01:S5"]}
+{"query": "How do I request a venue from the Events desk?", "gold": ["DOC_03:S1", "DOC_04:S1"]}
+{"query": "Koregaon Park Hall theatre style capacity", "gold": ["DOC_03:S2"]}
+{"query": "Which Pune room has a touchscreen display?", "gold": ["DOC_03:S4"]}
+{"query": "lead time for a Pune event with more than 50 attendees", "gold": ["DOC_03:S5"]}
+{"query": "Indiranagar Studio capacity and equipment", "gold": ["DOC_04:S2"]}
+{"query": "venue for a 150 person product launch", "gold": ["DOC_04:S3"]}
+{"query": "refund when cancelling between 7 and 14 days before", "gold": ["DOC_05:S2"]}
+{"query": "rescheduling an event without penalty", "gold": ["DOC_05:S3"]}
+{"query": "full deposit back after a natural disaster", "gold": ["DOC_05:S4"]}
+{"query": "how to submit a venue cancellation request", "gold": ["DOC_05:S5"]}
+{"query": "names of approved caterers in Pune", "gold": ["DOC_06:S1", "DOC_07:S1"]}
+{"query": "Jain meal request deadline", "gold": ["DOC_06:S3"]}
+{"query": "catering order deadline for large groups", "gold": ["DOC_06:S4"]}
+{"query": "bringing food from outside to an external venue", "gold": ["DOC_07:S2"]}
+{"query": "steps to plan a customer workshop", "gold": ["DOC_08:S1"]}
+{"query": "who approves a workshop budget above five lakh", "gold": ["DOC_08:S2"]}
+{"query": "deleting attendee personal data after the event", "gold": ["DOC_08:S3"]}
+{"query": "cost summary deadline after a workshop", "gold": ["DOC_08:S4"]}
+{"query": "what an expense claim must reference", "gold": ["DOC_09:S1"]}
+{"query": "claims above fifty thousand rupees approval", "gold": ["DOC_09:S2"]}
+{"query": "when approved claims are paid", "gold": ["DOC_09:S4"]}
+{"query": "who qualifies for a corporate card", "gold": ["DOC_10:S1"]}
+{"query": "card suspension for unreconciled transactions", "gold": ["DOC_10:S3"]}
+{"query": "medical certificate for sick leave", "gold": ["DOC_11:S2"]}
+{"query": "primary caregiver leave weeks", "gold": ["DOC_11:S3"]}
+{"query": "laptop hardware failure early replacement", "gold": ["DOC_12:S2"]}
+{"query": "remote wipe of a lost device", "gold": ["DOC_12:S3"]}
+{"query": "how many remote days per week", "gold": ["DOC_13:S1"]}
+{"query": "classification of customer personal data", "gold": ["DOC_14:S1"]}
+{"query": "encryption when sharing confidential data externally", "gold": ["DOC_14:S2"]}
+{"query": "largest internal meeting room in the Pune office", "gold": ["DOC_15:S2"]}
+{"query": "non-disclosure agreement for visitors", "gold": ["DOC_16:S2"]}

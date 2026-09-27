@@ -1,0 +1,651 @@
+{
+  "corpus_sha256": "c3147598a7c4f189475ea53c1e6ac79fc32cdd1582619590fc62c20a4ba9773a",
+  "gate": {
+    "type": "logreg",
+    "features": [
+      "logit",
+      "coverage",
+      "cos"
+    ],
+    "coef": [
+      1.7164,
+      0.3864,
+      1.1263
+    ],
+    "intercept": -0.2739,
+    "mean": [
+      -0.5751,
+      0.6177,
+      0.5291
+    ],
+    "scale": [
+      6.6678,
+      0.3266,
+      0.1691
+    ],
+    "threshold": 0.5
+  },
+  "summary": {
+    "n": 56,
+    "loo_balanced_accuracy": 0.875,
+    "loo_tpr": 0.857,
+    "loo_tnr": 0.893,
+    "train_balanced_accuracy": 0.893
+  },
+  "scores": [
+    {
+      "query": "How many paid sick days are there?",
+      "answerable": true,
+      "logit": 4.968,
+      "coverage": 1.0,
+      "cos": 0.731,
+      "missing": [],
+      "focus": "many paid sick days are there"
+    },
+    {
+      "query": "What's the per diem when travelling internationally?",
+      "answerable": true,
+      "logit": 8.121,
+      "coverage": 1.0,
+      "cos": 0.625,
+      "missing": [],
+      "focus": "per diem when travelling internationally"
+    },
+    {
+      "query": "Who approves a big customer workshop budget?",
+      "answerable": true,
+      "logit": 6.547,
+      "coverage": 1.0,
+      "cos": 0.755,
+      "missing": [],
+      "focus": "approves a big customer workshop budget"
+    },
+    {
+      "query": "What's the refund if we cancel more than two weeks ahead?",
+      "answerable": true,
+      "logit": 2.088,
+      "coverage": 0.351,
+      "cos": 0.678,
+      "missing": [
+        "two",
+        "weeks",
+        "ahead"
+      ],
+      "focus": "refund if we cancel more than two weeks ahead"
+    },
+    {
+      "query": "Which Bengaluru venue suits a product launch?",
+      "answerable": true,
+      "logit": 5.577,
+      "coverage": 0.756,
+      "cos": 0.633,
+      "missing": [
+        "suits"
+      ],
+      "focus": "Bengaluru venue suits a product launch"
+    },
+    {
+      "query": "How much is the home office allowance?",
+      "answerable": true,
+      "logit": 7.949,
+      "coverage": 1.0,
+      "cos": 0.68,
+      "missing": [],
+      "focus": "much is the home office allowance"
+    },
+    {
+      "query": "Do visitors need an escort?",
+      "answerable": true,
+      "logit": 7.733,
+      "coverage": 1.0,
+      "cos": 0.434,
+      "missing": [],
+      "focus": "visitors need an escort"
+    },
+    {
+      "query": "What memory do engineering laptops have?",
+      "answerable": true,
+      "logit": 7.158,
+      "coverage": 1.0,
+      "cos": 0.776,
+      "missing": [],
+      "focus": "memory do engineering laptops have"
+    },
+    {
+      "query": "When must card transactions be reconciled?",
+      "answerable": true,
+      "logit": 7.357,
+      "coverage": 1.0,
+      "cos": 0.69,
+      "missing": [],
+      "focus": "card transactions be reconciled"
+    },
+    {
+      "query": "How quickly do security incidents need reporting?",
+      "answerable": true,
+      "logit": 7.065,
+      "coverage": 1.0,
+      "cos": 0.718,
+      "missing": [],
+      "focus": "quickly do security incidents need reporting"
+    },
+    {
+      "query": "Can food from outside caterers be brought to venues?",
+      "answerable": true,
+      "logit": 7.291,
+      "coverage": 1.0,
+      "cos": 0.728,
+      "missing": [],
+      "focus": "food from outside caterers be brought to venues"
+    },
+    {
+      "query": "What equipment does Koregaon Park Hall have?",
+      "answerable": true,
+      "logit": 7.152,
+      "coverage": 1.0,
+      "cos": 0.62,
+      "missing": [],
+      "focus": "equipment does Koregaon Park Hall have"
+    },
+    {
+      "query": "How much lead time for a 60 person event in Pune?",
+      "answerable": true,
+      "logit": 5.283,
+      "coverage": 0.757,
+      "cos": 0.646,
+      "missing": [
+        "person"
+      ],
+      "focus": "much lead time for a 60 person event in Pune"
+    },
+    {
+      "query": "Is a medical certificate needed for sick leave?",
+      "answerable": true,
+      "logit": 7.794,
+      "coverage": 0.789,
+      "cos": 0.645,
+      "missing": [
+        "needed"
+      ],
+      "focus": "medical certificate needed for sick leave"
+    },
+    {
+      "query": "How many parental leave weeks for primary caregivers?",
+      "answerable": true,
+      "logit": 9.381,
+      "coverage": 1.0,
+      "cos": 0.913,
+      "missing": [],
+      "focus": "many parental leave weeks for primary caregivers"
+    },
+    {
+      "query": "Who can get a corporate card?",
+      "answerable": true,
+      "logit": 8.881,
+      "coverage": 1.0,
+      "cos": 0.637,
+      "missing": [],
+      "focus": "corporate card"
+    },
+    {
+      "query": "What happens to rooms that nobody checks into?",
+      "answerable": true,
+      "logit": 0.807,
+      "coverage": 0.626,
+      "cos": 0.647,
+      "missing": [
+        "nobody"
+      ],
+      "focus": "happens to rooms that nobody checks into"
+    },
+    {
+      "query": "What class of flight can I book?",
+      "answerable": true,
+      "logit": -1.98,
+      "coverage": 0.625,
+      "cos": 0.578,
+      "missing": [
+        "book"
+      ],
+      "focus": "class of flight can I book"
+    },
+    {
+      "query": "What is the office dress code?",
+      "answerable": false,
+      "logit": -10.156,
+      "coverage": 0.269,
+      "cos": 0.297,
+      "missing": [
+        "dress",
+        "code"
+      ],
+      "focus": "office dress code"
+    },
+    {
+      "query": "Is there a shuttle bus to the Pune office?",
+      "answerable": false,
+      "logit": -2.083,
+      "coverage": 0.381,
+      "cos": 0.596,
+      "missing": [
+        "shuttle",
+        "bus"
+      ],
+      "focus": "shuttle bus to the Pune office"
+    },
+    {
+      "query": "What's on the canteen menu today?",
+      "answerable": false,
+      "logit": -10.389,
+      "coverage": 0.0,
+      "cos": 0.355,
+      "missing": [
+        "canteen",
+        "menu",
+        "today"
+      ],
+      "focus": "canteen menu today"
+    },
+    {
+      "query": "How do I get reimbursed for a gym subscription?",
+      "answerable": false,
+      "logit": -6.342,
+      "coverage": 0.237,
+      "cos": 0.507,
+      "missing": [
+        "gym",
+        "subscription"
+      ],
+      "focus": "reimbursed for a gym subscription"
+    },
+    {
+      "query": "What is the office wifi password?",
+      "answerable": false,
+      "logit": -10.818,
+      "coverage": 0.269,
+      "cos": 0.255,
+      "missing": [
+        "wifi",
+        "password"
+      ],
+      "focus": "office wifi password"
+    },
+    {
+      "query": "When is the annual company offsite?",
+      "answerable": false,
+      "logit": -6.874,
+      "coverage": 0.589,
+      "cos": 0.415,
+      "missing": [
+        "offsite"
+      ],
+      "focus": "annual company offsite"
+    },
+    {
+      "query": "What's the maternity health insurance coverage?",
+      "answerable": false,
+      "logit": -10.961,
+      "coverage": 0.455,
+      "cos": 0.356,
+      "missing": [
+        "maternity",
+        "health"
+      ],
+      "focus": "maternity health insurance coverage"
+    },
+    {
+      "query": "How many employees does the company have?",
+      "answerable": false,
+      "logit": -9.162,
+      "coverage": 1.0,
+      "cos": 0.425,
+      "missing": [],
+      "focus": "many employees does the company have"
+    },
+    {
+      "query": "What is the password policy for email accounts?",
+      "answerable": false,
+      "logit": -10.719,
+      "coverage": 0.08,
+      "cos": 0.237,
+      "missing": [
+        "password",
+        "email",
+        "accounts"
+      ],
+      "focus": "password policy for email accounts"
+    },
+    {
+      "query": "Can I bring my dog to the office?",
+      "answerable": false,
+      "logit": -9.609,
+      "coverage": 0.269,
+      "cos": 0.328,
+      "missing": [
+        "bring",
+        "dog"
+      ],
+      "focus": "bring my dog to the office"
+    },
+    {
+      "query": "What's the bonus payout date?",
+      "answerable": false,
+      "logit": -10.115,
+      "coverage": 0.237,
+      "cos": 0.414,
+      "missing": [
+        "bonus",
+        "payout"
+      ],
+      "focus": "bonus payout date"
+    },
+    {
+      "query": "Which airline do we have a corporate deal with?",
+      "answerable": false,
+      "logit": -7.156,
+      "coverage": 0.172,
+      "cos": 0.33,
+      "missing": [
+        "airline",
+        "deal"
+      ],
+      "focus": "airline do we have a corporate deal with"
+    },
+    {
+      "query": "Is there a referral bonus for hiring?",
+      "answerable": false,
+      "logit": -11.264,
+      "coverage": 0.0,
+      "cos": 0.213,
+      "missing": [
+        "referral",
+        "bonus",
+        "hiring"
+      ],
+      "focus": "referral bonus for hiring"
+    },
+    {
+      "query": "What is the fuel allowance for car travel?",
+      "answerable": false,
+      "logit": -8.236,
+      "coverage": 0.126,
+      "cos": 0.274,
+      "missing": [
+        "fuel",
+        "allowance",
+        "car"
+      ],
+      "focus": "fuel allowance for car travel"
+    },
+    {
+      "query": "How much does renting the Baner centre cost per day?",
+      "answerable": false,
+      "logit": -5.356,
+      "coverage": 0.625,
+      "cos": 0.515,
+      "missing": [
+        "renting",
+        "cost"
+      ],
+      "focus": "much does renting the Baner centre cost per day"
+    },
+    {
+      "query": "Which airport lounges can I use on business trips?",
+      "answerable": false,
+      "logit": -6.7,
+      "coverage": 0.477,
+      "cos": 0.413,
+      "missing": [
+        "airport",
+        "lounges"
+      ],
+      "focus": "airport lounges can I use on business trips"
+    },
+    {
+      "query": "Who manages the travel desk?",
+      "answerable": false,
+      "logit": -1.079,
+      "coverage": 1.0,
+      "cos": 0.417,
+      "missing": [],
+      "focus": "manages the travel desk"
+    },
+    {
+      "query": "Is the visa application fee reimbursed?",
+      "answerable": false,
+      "logit": -1.808,
+      "coverage": 0.18,
+      "cos": 0.485,
+      "missing": [
+        "visa",
+        "application",
+        "fee"
+      ],
+      "focus": "visa application fee reimbursed"
+    },
+    {
+      "query": "Is there a mileage rate for driving my own car?",
+      "answerable": false,
+      "logit": -11.199,
+      "coverage": 0.0,
+      "cos": 0.16,
+      "missing": [
+        "mileage",
+        "rate",
+        "driving",
+        "car"
+      ],
+      "focus": "mileage rate for driving my own car"
+    },
+    {
+      "query": "What time does the Pune office open?",
+      "answerable": false,
+      "logit": 2.595,
+      "coverage": 0.639,
+      "cos": 0.681,
+      "missing": [
+        "open"
+      ],
+      "focus": "time does the Pune office open"
+    },
+    {
+      "query": "How many desks are in the Bengaluru office?",
+      "answerable": false,
+      "logit": -0.382,
+      "coverage": 0.694,
+      "cos": 0.543,
+      "missing": [
+        "office"
+      ],
+      "focus": "many desks are in the Bengaluru office"
+    },
+    {
+      "query": "Can the venue provide a photographer?",
+      "answerable": false,
+      "logit": -6.757,
+      "coverage": 0.589,
+      "cos": 0.456,
+      "missing": [
+        "photographer"
+      ],
+      "focus": "venue provide a photographer"
+    },
+    {
+      "query": "What is the refund for a cancelled catering order?",
+      "answerable": false,
+      "logit": 0.886,
+      "coverage": 0.528,
+      "cos": 0.501,
+      "missing": [
+        "catering",
+        "order"
+      ],
+      "focus": "refund for a cancelled catering order"
+    },
+    {
+      "query": "How long does a visitor NDA stay valid?",
+      "answerable": false,
+      "logit": -6.017,
+      "coverage": 0.465,
+      "cos": 0.349,
+      "missing": [
+        "nda",
+        "valid"
+      ],
+      "focus": "long does a visitor NDA stay valid"
+    },
+    {
+      "query": "How many sick days can I carry over?",
+      "answerable": false,
+      "logit": -3.954,
+      "coverage": 0.577,
+      "cos": 0.597,
+      "missing": [
+        "carry"
+      ],
+      "focus": "many sick days can I carry over"
+    },
+    {
+      "query": "What brand of laptop do engineers get?",
+      "answerable": false,
+      "logit": -0.452,
+      "coverage": 0.667,
+      "cos": 0.546,
+      "missing": [
+        "brand"
+      ],
+      "focus": "brand of laptop do engineers get"
+    },
+    {
+      "query": "Is there a tipping policy for restaurant meals?",
+      "answerable": false,
+      "logit": -7.379,
+      "coverage": 0.318,
+      "cos": 0.27,
+      "missing": [
+        "tipping",
+        "restaurant"
+      ],
+      "focus": "tipping policy for restaurant meals"
+    },
+    {
+      "query": "Do we get a phone allowance for working from home?",
+      "answerable": false,
+      "logit": 3.481,
+      "coverage": 0.75,
+      "cos": 0.499,
+      "missing": [
+        "phone"
+      ],
+      "focus": "phone allowance for working from home"
+    },
+    {
+      "query": "How much do I get per day for food when I'm overseas?",
+      "answerable": true,
+      "logit": 1.493,
+      "coverage": 0.399,
+      "cos": 0.665,
+      "missing": [
+        "food",
+        "overseas"
+      ],
+      "focus": "much do I get per day for food when I'm overseas"
+    },
+    {
+      "query": "What's the most people Koregaon Park Hall can fit?",
+      "answerable": true,
+      "logit": 5.541,
+      "coverage": 1.0,
+      "cos": 0.71,
+      "missing": [],
+      "focus": "people Koregaon Park Hall can fit"
+    },
+    {
+      "query": "Can the Hinjewadi room host a hot lunch?",
+      "answerable": true,
+      "logit": 4.493,
+      "coverage": 0.588,
+      "cos": 0.538,
+      "missing": [
+        "host",
+        "lunch"
+      ],
+      "focus": "Hinjewadi room host a hot lunch"
+    },
+    {
+      "query": "What proof do I need for money spent in foreign currency?",
+      "answerable": true,
+      "logit": -2.695,
+      "coverage": 0.33,
+      "cos": 0.653,
+      "missing": [
+        "proof",
+        "money",
+        "spent"
+      ],
+      "focus": "proof do I need for money spent in foreign currency"
+    },
+    {
+      "query": "How big is the Whitefield suite?",
+      "answerable": true,
+      "logit": 3.831,
+      "coverage": 1.0,
+      "cos": 0.583,
+      "missing": [],
+      "focus": "big is the Whitefield suite"
+    },
+    {
+      "query": "Is there a charge for cancelling six days before an event?",
+      "answerable": true,
+      "logit": 3.614,
+      "coverage": 0.556,
+      "cos": 0.668,
+      "missing": [
+        "charge",
+        "six"
+      ],
+      "focus": "charge for cancelling six days before an event"
+    },
+    {
+      "query": "What's the largest amount a missing-receipt declaration can cover?",
+      "answerable": true,
+      "logit": 1.696,
+      "coverage": 0.828,
+      "cos": 0.66,
+      "missing": [
+        "cover"
+      ],
+      "focus": "largest amount a missing-receipt declaration can cover"
+    },
+    {
+      "query": "What needs to happen before I book an overseas trip?",
+      "answerable": true,
+      "logit": -1.0,
+      "coverage": 0.391,
+      "cos": 0.511,
+      "missing": [
+        "book",
+        "overseas"
+      ],
+      "focus": "happen before I book an overseas trip"
+    },
+    {
+      "query": "Can I upgrade to business class?",
+      "answerable": true,
+      "logit": 3.563,
+      "coverage": 1.0,
+      "cos": 0.319,
+      "missing": [],
+      "focus": "upgrade to business class"
+    },
+    {
+      "query": "How many people fit in the Sahyadri room?",
+      "answerable": true,
+      "logit": 6.09,
+      "coverage": 1.0,
+      "cos": 0.754,
+      "missing": [],
+      "focus": "many people fit in the Sahyadri room"
+    }
+  ]
+}

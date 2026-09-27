@@ -1,0 +1,89 @@
+{
+  "generated_at": "2026-09-28 01:30:18",
+  "python": "3.13.7",
+  "models": "copied from local data/models (slow network); download_models.py not re-run",
+  "clean_copy": {
+    "path": "C:\\Users\\snehp\\AppData\\Local\\Temp\\slrag_clean_zo_p3rco\\repo",
+    "derived_dirs_present": []
+  },
+  "steps": [
+    {
+      "step": "download models (skipped if present)",
+      "cmd": "C:\\Users\\snehp\\AppData\\Local\\Programs\\Python\\Python313\\python.exe scripts/download_models.py",
+      "exit_code": 0,
+      "seconds": 4.7,
+      "tail": [
+        "Fetching 11 files:  73%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e  | 8/11 [00:00<00:00, 18.30it/s]",
+        "Fetching 11 files: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 11/11 [00:00<00:00, 13.87it/s]",
+        "Fetching 11 files: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 11/11 [00:00<00:00, 11.86it/s]"
+      ]
+    },
+    {
+      "step": "ingest + build index",
+      "cmd": "C:\\Users\\snehp\\AppData\\Local\\Programs\\Python\\Python313\\python.exe scripts/build_index.py",
+      "exit_code": 0,
+      "seconds": 47.1,
+      "tail": [
+        "",
+        "Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]",
+        "Loading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 103/103 [00:00<00:00, 1683.96it/s]"
+      ]
+    },
+    {
+      "step": "calibrate sufficiency gate",
+      "cmd": "C:\\Users\\snehp\\AppData\\Local\\Programs\\Python\\Python313\\python.exe scripts/calibrate_sufficiency.py",
+      "exit_code": 0,
+      "seconds": 75.0,
+      "tail": [
+        "",
+        "Loading weights:   0%|          | 0/105 [00:00<?, ?it/s]",
+        "Loading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 105/105 [00:00<00:00, 1575.80it/s]"
+      ]
+    },
+    {
+      "step": "tests",
+      "cmd": "C:\\Users\\snehp\\AppData\\Local\\Programs\\Python\\Python313\\python.exe -m pytest -q -p no:cacheprovider",
+      "exit_code": 0,
+      "seconds": 102.0,
+      "tail": [
+        "",
+        "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+        "56 passed, 2 xfailed, 1 warning in 96.20s (0:01:36)"
+      ]
+    },
+    {
+      "step": "benchmark (dev set, quick)",
+      "cmd": "C:\\Users\\snehp\\AppData\\Local\\Programs\\Python\\Python313\\python.exe scripts/benchmark.py --set dev --quick",
+      "exit_code": 0,
+      "seconds": 531.4,
+      "tail": [
+        "",
+        "Loading weights:   0%|          | 0/105 [00:00<?, ?it/s]",
+        "Loading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 105/105 [00:00<00:00, 1469.23it/s]"
+      ]
+    },
+    {
+      "step": "demo (early_retrieval)",
+      "cmd": "C:\\Users\\snehp\\AppData\\Local\\Programs\\Python\\Python313\\python.exe scripts/demo_stream.py --scenario early_retrieval --speed 4",
+      "exit_code": 0,
+      "seconds": 40.4,
+      "tail": [
+        "",
+        "Loading weights:   0%|          | 0/105 [00:00<?, ?it/s]",
+        "Loading weights: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 105/105 [00:00<00:00, 1491.49it/s]"
+      ]
+    }
+  ],
+  "local_replay": "PASS",
+  "pins_mismatch": [],
+  "docker": "NOT VERIFIED",
+  "docker_note": "docker CLI not installed on this machine; static checks only",
+  "docker_static_checks": {
+    "COPY source exists: backend/requirements.txt": true,
+    "COPY source exists: .": true,
+    "CMD app module exists (backend/app/main.py)": true,
+    ".dockerignore present": true,
+    "torch 2.6.0 CPU wheel for cp313 linux x86_64 published": true,
+    "compose builds from repo root": true
+  }
+}

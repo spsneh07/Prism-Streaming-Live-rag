@@ -1,0 +1,13 @@
+.git
+.claude
+.venv
+**/__pycache__
+**/*.pyc
+.pytest_cache
+.env
+data/processed
+data/models
+results/telemetry
+*.pdf
+*.pptx
+*.docx

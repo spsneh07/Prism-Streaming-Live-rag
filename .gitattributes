@@ -1,0 +1,6 @@
+# Keep LF everywhere so hashes (frozen held-out set, corpus sha256) are identical on every OS.
+* text=auto eol=lf
+# Evaluation data and corpus are hashed byte-for-byte: never convert line endings.
+data/** -text
+configs/*.jsonl -text
+*.png binary
