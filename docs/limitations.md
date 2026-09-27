@@ -21,6 +21,7 @@ Measured failure cases for the held-out set are listed per turn in `docs/evaluat
 - **Abstention gate:**
   - It is a 3-feature logistic regression (cross-encoder logit, term coverage, cosine) fitted on 56 queries. Its leave-one-out balanced accuracy is about 0.88, so it errs in both directions.
   - It can **over-abstain** on paraphrases whose key words are not in the evidence ("daily allowance under the travel policy" vs "per diem").
+  - **On the held-out set it is too conservative.** It refused answerable questions often enough that the full system's citation hit rate does not beat the conventional baseline, and it is below the same pipeline without the gate. It does raise correct abstention sharply. The exact counts are computed in `docs/evaluation.md` §5 ("Key finding"). This was not tuned away on the held-out set. The fix is a larger, independently written calibration set, or an answerability model trained on realistic sub-query fragments.
   - It can **answer topical questions about absent attributes** ("parking fee at the Pune venues" passes because the evidence is strongly on-topic). This is tracked as a strict expected-failure test.
 - **Intent classifier:**
   - It was trained on about 120 utterances.

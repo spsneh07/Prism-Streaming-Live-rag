@@ -111,6 +111,24 @@ def main():
     p, bl, ne = S["proposed"], S["baseline"], S["ablation_no_early_retrieval"]
     abl = ["proposed"] + [k for k in S if k.startswith("ablation")]
     fails = failures(rows)
+    # Abstention trade-off, computed from the per-turn rows: answerable turns the proposed system
+    # refused (no citations, no suppression) vs the same pipeline without the reranker/gate.
+    by = {(r["system"], r["case"], r["turn"]): r for r in rows}
+    ans_turns = [r for r in rows if r["system"] == "proposed" and int(r["gold_intents"] or 0) and not r["abstained"]
+                 and r["final_action"] == "RETRIEVE"]
+    over_abstained = [r for r in ans_turns if not r["citations"]]
+    nr = S.get("ablation_hybrid_no_rerank", {})
+    worse = [r for r in ans_turns if int(r["cite_hits"]) < int(by[("ablation_hybrid_no_rerank", r["case"], r["turn"])]["cite_hits"])]
+    worse_abst = [r for r in worse if not r["citations"]]
+    tradeoff = (f"**Key finding: abstention trade-off.** On held-out answerable turns the proposed system abstained entirely "
+                f"on {len(over_abstained)} of {len(ans_turns)}. Against the same pipeline without the reranker-based gate "
+                f"(`hybrid_no_rerank`), it cites fewer gold sections on {len(worse)} turns, {len(worse_abst)} of them "
+                f"because of abstention. The gate lifts correct abstention from {pct(nr.get('abstention_accuracy'))} to "
+                f"{pct(p['abstention_accuracy'])} but lowers citation hit rate from {pct(nr.get('citation_hit_rate'))} to "
+                f"{pct(p['citation_hit_rate'])}. The gate's leave-one-out accuracy on calibration data was "
+                f"{cal['summary']['loo_balanced_accuracy'] if cal else 'n/a'}. On held-out data it over-abstains more "
+                f"than calibration predicted: the gate is too conservative for this set. This was not tuned against "
+                f"the held-out set; see limitations.")
     corpus = meta["corpus"]
     synthetic = corpus.get("synthetic")
     corpus_line = (f"{corpus['num_documents']} documents → {corpus['num_chunks']} section chunks "
@@ -210,6 +228,8 @@ All three use the same synthesizer and validator and run at real-time pacing.
 - The proposed pipeline does more work per turn than the bare baseline (cross-encoder reranking, several sub-queries, sentence scoring). Its TTFT is {ms(p['ttft_s_mean'])} vs {ms(bl['ttft_s_mean'])} for the baseline.
 - Early retrieval is what hides that work: the same pipeline without it has a TTFT of {ms(ne['ttft_s_mean'])}, against {ms(p['ttft_s_mean'])} with it.
 
+{tradeoff}
+
 ## 6. Ablations (held-out)
 {table(S, abl, ['retrieval_recall@3', 'citation_hit_rate', 'multi_intent_identification', 'single_intent_not_fragmented', 'early_retrieval_rate', 'premature_retrieval_rate', 'intent_accuracy', 'refinement_state_continuity', 'abstention_accuracy', 'unnecessary_retrieval_calls'])}
 Rows marked 5× in the pacing line were run at 5× speed; compare only their quality metrics.
@@ -220,6 +240,8 @@ Rows marked 5× in the pacing line were run at 5× speed; compare only their qua
 - **Streaming:** `no_early_retrieval` vs `proposed`.
 """ + (f"""
 ## 7. Development set (for reference; used for diagnosis, not held-out)
+Run at {dev['meta']['generated_at']} with {'quick 5x' if dev['summary']['proposed']['pacing_speed'] != 1.0 else 'real-time'} pacing; it may predate the final code revision, so compare it with the held-out tables only qualitatively.
+
 {table(dev['summary'], ['baseline', 'proposed'], ['citation_hit_rate', 'multi_intent_identification', 'abstention_accuracy', 'early_retrieval_rate', 'refinement_state_continuity', 'unnecessary_retrieval_calls'])}
 """ if dev else "") + f"""
 ## 8. Failure analysis: every failing held-out turn (proposed system)
@@ -302,6 +324,7 @@ Theme 4, Streaming Live RAG: retrieve the right context mid-conversation from on
 ## Limitations (say them on the slide)
 - The corpus is a synthetic development corpus; the official Theme 4 corpus and held-out replay were not available. All sets were written by the same author as the system.
 - Failing held-out turns: {len(fails)} of {meta['num_turns']}. See `docs/evaluation.md` §8.
+- The abstention gate is too conservative on held-out data. It refused {len(over_abstained)} of {len(ans_turns)} answerable turns, so the end-to-end citation hit rate ({pct(p['citation_hit_rate'])}) does not beat the conventional baseline ({pct(bl['citation_hit_rate'])}), and it is below the same pipeline without the gate ({pct(nr.get('citation_hit_rate'))}). In exchange, correct abstention rose from {pct(bl['abstention_accuracy'])} to {pct(p['abstention_accuracy'])}.
 - The proposed pipeline costs more compute per turn than bare RAG; early retrieval hides most of it.
 - Answers are extractive (grounded, not fluent). Speech is simulated from transcripts.
 - G1: Docker is {repro['docker'] if repro else 'not run'} in the development environment.
