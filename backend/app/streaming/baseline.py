@@ -36,7 +36,7 @@ class BaselineEngine:
                        speed: float = 1.0, sink=None) -> TurnResult:
         log = EventLog(session.session_id, uuid.uuid4().hex[:8], sink)
         end_t = end_t if end_t is not None else chunks[-1]["t"] + self.endpoint_delay_s
-        log.emit("TURN_STARTED", num_chunks=len(chunks), scheduled_end_t=end_t, baseline=True)
+        log.emit("TURN_STARTED", num_chunks=len(chunks), scheduled_end_t=end_t, speed=speed, baseline=True)
         text = ""
         for i, ch in enumerate(chunks):
             delay = ch["t"] / speed - log.now()
@@ -76,13 +76,14 @@ class BaselineEngine:
         log.emit("FINAL_RESPONSE", answer=version.text or INSUFFICIENT_MSG, answer_version=version.version,
                  citations=cites, uncertainty=version.uncertainty, suppressed=False)
         end = log.first("UTTERANCE_END")["t"]
-        first_tok = next((e["t"] for e in log.events if e["type"] == "ANSWER_DELTA"), None)
+        first_tok = next((e["t"] for e in log.events if e["type"] in ("ANSWER_DELTA", "FINAL_RESPONSE")), None)
         summary = {
             "request_id": log.request_id, "session_id": session.session_id, "utterance": text,
             "final_action": "RETRIEVE", "intent": "n/a", "answer_version": version.version,
             "utterance_end_t": end, "first_retrieval_t": log.first("RETRIEVAL_STARTED")["t"],
             "early_retrieval": False, "retrieval_lead_s": 0.0,
             "ttft_s": round(first_tok - end, 4) if first_tok is not None else None,
+            "utterance_end_lag_s": round(end - end_t / speed, 4),
             "turn_latency_s": round(log.first("FINAL_RESPONSE")["t"] - end, 4),
             "retrieval_calls_total": 1, "retrieval_calls_after_end": 1, "provisional_calls": 0,
             "reused_subqueries": 0, "retrieval_ms_total": round(res.retrieval_ms, 2), "rerank_ms_total": 0.0, "planning_ms_total": 0.0,

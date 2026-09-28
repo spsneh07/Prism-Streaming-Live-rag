@@ -121,7 +121,7 @@ class StreamingEngine:
         req = uuid.uuid4().hex[:8]
         log = EventLog(session.session_id, req, sink)
         end_t = end_t if end_t is not None else chunks[-1]["t"] + self.opt.endpoint_delay_s
-        log.emit("TURN_STARTED", num_chunks=len(chunks), scheduled_end_t=end_t,
+        log.emit("TURN_STARTED", num_chunks=len(chunks), scheduled_end_t=end_t, speed=speed,
                  answer_version=session.current.version if session.current else 0)
         state = StreamState()
         prev_topic = session.topic_utterance if session.current else None
@@ -359,7 +359,11 @@ class StreamingEngine:
         ev = log.events
         end = log.first("UTTERANCE_END")["t"]
         first_ret = next((e["t"] for e in ev if e["type"] == "RETRIEVAL_STARTED"), None)
-        first_tok = next((e["t"] for e in ev if e["type"] == "ANSWER_DELTA"), None)
+        # First response output: a claim, or the abstention / no-lookup message. Counting the
+        # final response when no claim is streamed keeps abstaining turns in the latency stats.
+        first_tok = next((e["t"] for e in ev if e["type"] in ("ANSWER_DELTA", "FINAL_RESPONSE")), None)
+        started = log.first("TURN_STARTED")
+        end_lag = end - started["scheduled_end_t"] / started.get("speed", 1.0)
         final = log.first("FINAL_RESPONSE")
         comp = [e for e in ev if e["type"] == "RETRIEVAL_COMPLETED" and not e.get("batch")]
         return {
@@ -374,6 +378,7 @@ class StreamingEngine:
             "early_retrieval": first_ret is not None and first_ret < end,
             "retrieval_lead_s": round(end - first_ret, 4) if first_ret is not None else None,
             "ttft_s": round(first_tok - end, 4) if first_tok is not None else None,
+            "utterance_end_lag_s": round(end_lag, 4),
             "turn_latency_s": round(final["t"] - end, 4),
             "retrieval_calls_total": sum(1 for _ in comp),
             "retrieval_calls_after_end": counters["retrieval_calls"],

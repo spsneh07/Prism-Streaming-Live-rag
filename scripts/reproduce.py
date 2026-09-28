@@ -103,7 +103,13 @@ def main() -> None:
         report["models"] = "downloaded"
     report["clean_copy"] = {"path": str(work), "derived_dirs_present": [d for d in ("data/processed", "results")
                                                                         if (work / d).exists()]}
-    env = {**os.environ, "PYTHONIOENCODING": "utf-8"}
+    # No reliance on this machine's Hugging Face cache: an empty cache directory and offline
+    # mode, so models can only come from the copy's own data/models (as in the Docker image).
+    hf_empty = tmp / "hf_cache_empty"
+    hf_empty.mkdir()
+    env = {**os.environ, "PYTHONIOENCODING": "utf-8", "HF_HOME": str(hf_empty), "HF_HUB_OFFLINE": "1",
+           "TRANSFORMERS_OFFLINE": "1"}
+    report["isolation"] = "HF_HOME=<empty temp dir>, HF_HUB_OFFLINE=1; derived data/results absent in the copy"
     py = sys.executable
     steps = [
         ("download models (skipped if present)", [py, "scripts/download_models.py"], work),
@@ -111,7 +117,9 @@ def main() -> None:
         ("calibrate sufficiency gate", [py, "scripts/calibrate_sufficiency.py"], work),
         ("tests", [py, "-m", "pytest", "-q", "-p", "no:cacheprovider"], work / "backend"),
         ("benchmark (dev set, quick)", [py, "scripts/benchmark.py", "--set", "dev", "--quick"], work),
-        ("demo (early_retrieval)", [py, "scripts/demo_stream.py", "--scenario", "early_retrieval", "--speed", "4"], work),
+    ] + [(f"demo ({n})", [py, "scripts/demo_stream.py", "--scenario", n, "--speed", "4"], work)
+         for n in ("early_retrieval", "multi_intent", "refinement", "suppression", "insufficient_evidence")] + [
+        ("backend starts and serves /api/health and /", [py, "scripts/_smoke_server.py"], work),
     ]
     ok = True
     for name, cmd, cwd in steps:
@@ -121,6 +129,13 @@ def main() -> None:
     report["steps"] = log
     report["local_replay"] = "PASS" if ok else "FAIL"
     report["pins_mismatch"] = pins_check()
+    if "--pip-dry-run" in sys.argv:
+        # Resolve the pinned requirements against the package index without installing
+        # (a full fresh install of torch was not feasible on the development network).
+        p = subprocess.run([py, "-m", "pip", "install", "--dry-run", "--ignore-installed", "--quiet",
+                            "--report", str(tmp / "pip_report.json"), "-r", str(ROOT / "backend" / "requirements.txt")],
+                           capture_output=True, text=True)
+        report["pip_dry_run"] = "PASS" if p.returncode == 0 else f"FAIL: {(p.stderr or p.stdout).strip()[-300:]}"
     if shutil.which("docker"):
         d_ok = run("docker compose build", ["docker", "compose", "build"], ROOT, log, env)
         report["docker"] = "PASS" if d_ok else "FAIL"

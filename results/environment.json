@@ -1,0 +1,62 @@
+﻿{
+    "captured_at":  "2026-09-28T18:05:33",
+    "cpu":  {
+                "Name":  "13th Gen Intel(R) Core(TM) i5-13420H",
+                "NumberOfCores":  8,
+                "NumberOfLogicalProcessors":  12,
+                "LoadPercentage":  null
+            },
+    "os":  {
+               "Caption":  "Microsoft Windows 11 Home Single Language",
+               "Version":  "10.0.26200",
+               "TotalVisibleMemorySize":  16409092,
+               "FreePhysicalMemory":  2836192
+           },
+    "cpu_busy_percent_samples_before_run":  [
+                                                17.4,
+                                                11.8,
+                                                13.7
+                                            ],
+    "top_processes_by_cumulative_cpu":  [
+                                            {
+                                                "Name":  "msedge",
+                                                "Id":  13864,
+                                                "CPU_s":  496.4
+                                            },
+                                            {
+                                                "Name":  "msedge",
+                                                "Id":  4960,
+                                                "CPU_s":  399.9
+                                            },
+                                            {
+                                                "Name":  "msedge",
+                                                "Id":  18872,
+                                                "CPU_s":  283.4
+                                            },
+                                            {
+                                                "Name":  "audiodg",
+                                                "Id":  3968,
+                                                "CPU_s":  204.7
+                                            },
+                                            {
+                                                "Name":  "msedgewebview2",
+                                                "Id":  2864,
+                                                "CPU_s":  179.8
+                                            },
+                                            {
+                                                "Name":  "msedgewebview2",
+                                                "Id":  21400,
+                                                "CPU_s":  128.5
+                                            },
+                                            {
+                                                "Name":  "claude",
+                                                "Id":  17432,
+                                                "CPU_s":  120
+                                            },
+                                            {
+                                                "Name":  "ms-teams",
+                                                "Id":  19992,
+                                                "CPU_s":  118.2
+                                            }
+                                        ]
+}

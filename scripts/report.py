@@ -8,6 +8,7 @@ Inputs: results/benchmark.json + benchmark.csv (held-out), results/dev/benchmark
 """
 import csv
 import json
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -99,6 +100,22 @@ def failures(rows):
     return out
 
 
+PREVIOUS_HELDOUT_RUNS = ["4b4a0ba"]   # commits holding earlier held-out results (append-only)
+
+
+def previous_runs():
+    """Earlier held-out runs, read from git history so they cannot be edited silently."""
+    out = []
+    for rev in PREVIOUS_HELDOUT_RUNS:
+        try:
+            raw = subprocess.run(["git", "show", f"{rev}:results/benchmark.json"], cwd=ROOT, capture_output=True,
+                                 check=True).stdout.decode("utf-8")
+            out.append((rev, json.loads(raw)))
+        except Exception:
+            pass
+    return out
+
+
 def main():
     b = load(R / "benchmark.json")
     if b is None or b["meta"].get("set") != "heldout":
@@ -120,15 +137,26 @@ def main():
     nr = S.get("ablation_hybrid_no_rerank", {})
     worse = [r for r in ans_turns if int(r["cite_hits"]) < int(by[("ablation_hybrid_no_rerank", r["case"], r["turn"])]["cite_hits"])]
     worse_abst = [r for r in worse if not r["citations"]]
+    d_hit = (p["citation_hit_rate"] or 0) - (bl["citation_hit_rate"] or 0)
+    vs_base = ("beats" if d_hit > 0.005 else "does not beat" if d_hit > -0.005 else "is below")
     tradeoff = (f"**Key finding: abstention trade-off.** On held-out answerable turns the proposed system abstained entirely "
                 f"on {len(over_abstained)} of {len(ans_turns)}. Against the same pipeline without the reranker-based gate "
                 f"(`hybrid_no_rerank`), it cites fewer gold sections on {len(worse)} turns, {len(worse_abst)} of them "
-                f"because of abstention. The gate lifts correct abstention from {pct(nr.get('abstention_accuracy'))} to "
-                f"{pct(p['abstention_accuracy'])} but lowers citation hit rate from {pct(nr.get('citation_hit_rate'))} to "
-                f"{pct(p['citation_hit_rate'])}. The gate's leave-one-out accuracy on calibration data was "
-                f"{cal['summary']['loo_balanced_accuracy'] if cal else 'n/a'}. On held-out data it over-abstains more "
-                f"than calibration predicted: the gate is too conservative for this set. This was not tuned against "
-                f"the held-out set; see limitations.")
+                f"because of abstention. The gate moves correct abstention from {pct(nr.get('abstention_accuracy'))} to "
+                f"{pct(p['abstention_accuracy'])} and citation hit rate from {pct(nr.get('citation_hit_rate'))} to "
+                f"{pct(p['citation_hit_rate'])}. Against the conventional baseline, the citation hit rate {vs_base} "
+                f"({pct(bl['citation_hit_rate'])}). The gate's leave-one-group-out balanced accuracy on development data was "
+                f"{cal['summary']['loo_balanced_accuracy'] if cal else 'n/a'}. Nothing was tuned against the held-out set; "
+                f"see limitations.")
+    prev = previous_runs()
+    hist_keys = ["citation_hit_rate", "abstention_accuracy", "early_retrieval_rate", "multi_intent_identification",
+                 "refinement_state_continuity", "citation_support_rate", "ttft_s_mean", "ttft_s_p50"]
+    history = "| Run | Code / gate | " + " | ".join(LABELS.get(k, k) for k in hist_keys) + " |\n|---|---|" + "---|" * len(hist_keys) + "\n"
+    for rev, pb in prev:
+        history += (f"| {pb['meta']['generated_at']} (commit `{rev}`) | gate fitted on calibration queries only | "
+                    + " | ".join(fmt(pb['summary']['proposed'].get(k)) for k in hist_keys) + " |\n")
+    history += (f"| {meta['generated_at']} (this report) | gate refitted on development + calibration data | "
+                + " | ".join(fmt(p.get(k)) for k in hist_keys) + " |\n")
     corpus = meta["corpus"]
     synthetic = corpus.get("synthetic")
     corpus_line = (f"{corpus['num_documents']} documents → {corpus['num_chunks']} section chunks "
@@ -149,10 +177,16 @@ def main():
     cal_line = ""
     if cal:
         cs = cal["summary"]
-        cal_line = (f"- **Evidence-sufficiency gate:** logistic regression over (cross-encoder logit, coverage, "
-                    f"cosine), fitted on {cs['n']} calibration queries (disjoint from the benchmark). Leave-one-out "
-                    f"balanced accuracy {cs['loo_balanced_accuracy']} (TPR {cs['loo_tpr']}, TNR {cs['loo_tnr']}); "
-                    f"training balanced accuracy {cs['train_balanced_accuracy']}.\n")
+        feats = ", ".join(cal["gate"].get("features", []))
+        src = cs.get("sources", {})
+        cal_line = (f"- **Evidence-sufficiency gate:** class-balanced logistic regression over ({feats}), fitted on "
+                    f"{cs['n']} development examples ({src.get('calibration', '?')} calibration queries + "
+                    f"{src.get('dev', '?')} dev-set sub-queries; never the held-out set). Model chosen by "
+                    f"leave-one-group-out balanced accuracy: {cs.get('model', 'n/a')} "
+                    f"({cs.get('legacy_loo_balanced_accuracy', 'n/a')} for 3 features vs "
+                    f"{cs.get('full_loo_balanced_accuracy', 'n/a')} for 6 aggregate features; ties go to the simpler "
+                    f"model). Selected model: {cs['loo_balanced_accuracy']} (TPR {cs['loo_tpr']}, TNR {cs['loo_tnr']}). "
+                    f"Weak-evidence answer band: {cs.get('hedge_threshold') or 'none; no band met the pre-set criteria'}.\n")
     repro_block = ""
     if repro:
         steps = "".join(f"| {s['step']} | {'ok' if s['exit_code'] == 0 else 'FAIL'} | {s['seconds']} |\n" for s in repro["steps"])
@@ -188,6 +222,11 @@ _Generated by `scripts/report.py` from `results/` ({meta['generated_at']}). Do n
 | Development streams | `data/eval/dev_streams.jsonl` | 49 cases / 61 turns | failure diagnosis during development; **not held-out** |
 | **Held-out benchmark** | `{meta['set_file']}` | {meta['num_cases']} cases / {meta['num_turns']} turns | every number in sections 2, 3, 5 and 6 |
 
+- **Frozen-benchmark policy:**
+  - `heldout_streams.jsonl`, its recorded hash and its labels are never modified.
+  - Held-out examples are never used to choose thresholds, features or code paths, and no code path is benchmark-specific.
+  - If an implementation change breaks a held-out-related test, the implementation is investigated, never the set.
+  - Each held-out run is published (see the run history in §5).
 - **Freezing:** the held-out file was written and frozen before the failure fixes, and was not used to choose any parameter. Its sha256 `{meta['set_sha256'][:16]}…` is checked by `tests/test_eval_sets.py`, and the rules are in `data/benchmark/FROZEN.md`.
 - **Overlap check:** the same test rejects any held-out utterance within cosine 0.92 of the other sets.
 - **Caveat:** all sets were written by the same author as the system.
@@ -230,6 +269,12 @@ All three use the same synthesizer and validator and run at real-time pacing.
 
 {tradeoff}
 
+### Held-out run history
+The held-out set has been run exactly the number of times listed here. Between runs, only development-data calibration and measurement fixes changed; these are listed in `docs/design_decisions.md` (D23–D25).
+
+{history}
+The time-to-first-token definition changed between runs: it now counts the abstention message as the first output, so turns that abstain are no longer excluded. Earlier TTFT values are therefore not directly comparable.
+
 ## 6. Ablations (held-out)
 {table(S, abl, ['retrieval_recall@3', 'citation_hit_rate', 'multi_intent_identification', 'single_intent_not_fragmented', 'early_retrieval_rate', 'premature_retrieval_rate', 'intent_accuracy', 'refinement_state_continuity', 'abstention_accuracy', 'unnecessary_retrieval_calls'])}
 Rows marked 5× in the pacing line were run at 5× speed; compare only their quality metrics.
@@ -263,6 +308,10 @@ Known dev-set failures are tracked as strict expected-failure tests in `backend/
 
 _Source: `results/benchmark.json` ({meta['generated_at']}); held-out set `{meta['set_file']}` ({meta['num_cases']} cases / {meta['num_turns']} turns); same CPU machine for every system. Regenerate with `python scripts/report.py`._
 
+> **What these numbers are:** a *development benchmark on a 16-document synthetic corpus*, built by the team for development.
+>
+> **What they are not:** an official Samsung / hackathon evaluation. No official Theme 4 corpus or official benchmark was available or run. Use this wording on slides.
+
 > {corpus_warn}
 
 ## Theme
@@ -287,7 +336,7 @@ Theme 4, Streaming Live RAG: retrieve the right context mid-conversation from on
 | Gate | Measured | Target | Status |
 |---|---|---|---|
 {gate_rows}
-## Headline results: conventional RAG vs Streaming Live RAG (held-out)
+## Headline results: development benchmark on a 16-document synthetic corpus (held-out split): conventional RAG vs Streaming Live RAG
 | Metric | Conventional | Streaming Live RAG |
 |---|---|---|
 | Retrieval starts before the user finishes | {pct(bl['early_retrieval_rate'])} | **{pct(p['early_retrieval_rate'])}** (mean lead {fmt(p['mean_retrieval_lead_s'])} s) |
@@ -324,7 +373,10 @@ Theme 4, Streaming Live RAG: retrieve the right context mid-conversation from on
 ## Limitations (say them on the slide)
 - The corpus is a synthetic development corpus; the official Theme 4 corpus and held-out replay were not available. All sets were written by the same author as the system.
 - Failing held-out turns: {len(fails)} of {meta['num_turns']}. See `docs/evaluation.md` §8.
-- The abstention gate is too conservative on held-out data. It refused {len(over_abstained)} of {len(ans_turns)} answerable turns, so the end-to-end citation hit rate ({pct(p['citation_hit_rate'])}) does not beat the conventional baseline ({pct(bl['citation_hit_rate'])}), and it is below the same pipeline without the gate ({pct(nr.get('citation_hit_rate'))}). In exchange, correct abstention rose from {pct(bl['abstention_accuracy'])} to {pct(p['abstention_accuracy'])}.
+- **Abstention trade-off.**
+  - The gate refused {len(over_abstained)} of {len(ans_turns)} answerable held-out turns.
+  - Citation hit rate is {pct(p['citation_hit_rate'])}: the conventional baseline scores {pct(bl['citation_hit_rate'])}, and the same pipeline without the gate {pct(nr.get('citation_hit_rate'))}.
+  - Correct abstention is {pct(p['abstention_accuracy'])}, against {pct(bl['abstention_accuracy'])} for the baseline.
 - The proposed pipeline costs more compute per turn than bare RAG; early retrieval hides most of it.
 - Answers are extractive (grounded, not fluent). Speech is simulated from transcripts.
 - G1: Docker is {repro['docker'] if repro else 'not run'} in the development environment.
@@ -337,6 +389,15 @@ Python 3.13 · FastAPI + Server-Sent Events · asyncio · PyTorch (CPU) + Huggin
     demo = f"""# Final demo script (≤ 5 minutes)
 
 _Numbers quoted here are read from `results/` by `scripts/report.py` ({meta['generated_at']}). Rehearse with the dashboard at real-time pace._
+
+**Terminal alternative (deterministic, no browser):**
+- `python scripts/demo_stream.py --scenario early_retrieval`
+- `python scripts/demo_stream.py --scenario multi_intent`
+- `python scripts/demo_stream.py --scenario refinement`
+- `python scripts/demo_stream.py --scenario suppression`
+- `python scripts/demo_stream.py --scenario insufficient_evidence`
+
+No external API is called.
 
 **Setup, before recording:**
 1. `python -m uvicorn app.main:app --app-dir backend --port 8000`, then open http://localhost:8000.

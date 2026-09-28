@@ -121,7 +121,7 @@ def turn_row(case, ti, turn, res, system, index, prev_sq_ids):
         "num_chunks": len(turn["chunks"]), "end_t": turn["end_t"],
         "early_retrieval": s["early_retrieval"], "retrieval_lead_s": s["retrieval_lead_s"],
         "first_retrieve_chunk": first_ret_chunk, "earliest_ok_chunk": eok, "premature_retrieval": premature,
-        "ttft_s": s["ttft_s"], "turn_latency_s": s["turn_latency_s"],
+        "ttft_s": s["ttft_s"], "turn_latency_s": s["turn_latency_s"], "utterance_end_lag_s": s["utterance_end_lag_s"],
         "retrieval_calls": s["retrieval_calls_total"], "provisional_calls": s["provisional_calls"],
         "reused_subqueries": s["reused_subqueries"], "retrieval_ms": s["retrieval_ms_total"],
         "rerank_ms": s["rerank_ms_total"], "synth_ms": s["synth_ms"],
@@ -214,6 +214,9 @@ def aggregate(rows):
         "ttft_s_p50": pct([r["ttft_s"] for r in R], 0.5),
         "ttft_s_p95": pct([r["ttft_s"] for r in R], 0.95),
         "turn_latency_s_mean": mean([r["turn_latency_s"] for r in R]),
+        "ttft_turns": sum(1 for r in R if r["ttft_s"] is not None),
+        # CPU-contention check: how late the simulated utterance end fired vs its schedule
+        "utterance_end_lag_s_max": pct([r["utterance_end_lag_s"] for r in rows], 1.0),
         "turn_latency_s_p95": pct([r["turn_latency_s"] for r in R], 0.95),
         "retrieval_calls_per_turn": mean([r["retrieval_calls"] for r in rows]),
         "search_ms_per_turn": mean([r["search_ms"] for r in rows]),

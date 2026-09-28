@@ -8,644 +8,2095 @@
       "cos"
     ],
     "coef": [
-      1.7164,
-      0.3864,
-      1.1263
+      1.7795,
+      0.5348,
+      1.0655
     ],
-    "intercept": -0.2739,
+    "intercept": 0.7865,
     "mean": [
-      -0.5751,
-      0.6177,
-      0.5291
+      1.6291,
+      0.6884,
+      0.5727
     ],
     "scale": [
-      6.6678,
-      0.3266,
-      0.1691
+      6.19,
+      0.3088,
+      0.1663
     ],
     "threshold": 0.5
   },
   "summary": {
-    "n": 56,
-    "loo_balanced_accuracy": 0.875,
-    "loo_tpr": 0.857,
-    "loo_tnr": 0.893,
-    "train_balanced_accuracy": 0.893
+    "n": 116,
+    "n_answerable": 83,
+    "n_unanswerable": 33,
+    "sources": {
+      "calibration": 56,
+      "dev": 60
+    },
+    "model": "legacy",
+    "loo_balanced_accuracy": 0.864,
+    "loo_tpr": 0.88,
+    "loo_tnr": 0.848,
+    "legacy_loo_balanced_accuracy": 0.864,
+    "full_loo_balanced_accuracy": 0.855,
+    "hedge_threshold": null,
+    "hedge_band_precision": null,
+    "hedge_band_unanswerable_share": null,
+    "hedge_band_n": 0,
+    "policy_loo_answer_rate_on_answerable": 0.88,
+    "policy_loo_abstention_on_unanswerable": 0.848,
+    "train_balanced_accuracy": 0.906,
+    "criteria": {
+      "hedge_min_precision": 0.75,
+      "hedge_max_unanswerable_share": 0.1
+    }
   },
   "scores": [
     {
-      "query": "How many paid sick days are there?",
-      "answerable": true,
-      "logit": 4.968,
-      "coverage": 1.0,
-      "cos": 0.731,
+      "group": "cal0",
+      "source": "calibration",
+      "text": "How many paid sick days are there?",
+      "label": 1,
+      "features": {
+        "logit": 4.9678,
+        "logit_top3_mean": -2.5458,
+        "n_support": 0.2,
+        "coverage": 1.0,
+        "cos": 0.7311,
+        "rerank_max": 5.0475
+      },
       "missing": [],
-      "focus": "many paid sick days are there"
+      "p_logo": 0.9643
     },
     {
-      "query": "What's the per diem when travelling internationally?",
-      "answerable": true,
-      "logit": 8.121,
-      "coverage": 1.0,
-      "cos": 0.625,
+      "group": "cal1",
+      "source": "calibration",
+      "text": "What's the per diem when travelling internationally?",
+      "label": 1,
+      "features": {
+        "logit": 6.0775,
+        "logit_top3_mean": 5.7095,
+        "n_support": 1.0,
+        "coverage": 1.0,
+        "cos": 0.532,
+        "rerank_max": 8.2596
+      },
       "missing": [],
-      "focus": "per diem when travelling internationally"
+      "p_logo": 0.9111
     },
     {
-      "query": "Who approves a big customer workshop budget?",
-      "answerable": true,
-      "logit": 6.547,
-      "coverage": 1.0,
-      "cos": 0.755,
+      "group": "cal2",
+      "source": "calibration",
+      "text": "Who approves a big customer workshop budget?",
+      "label": 1,
+      "features": {
+        "logit": 6.5468,
+        "logit_top3_mean": 3.0379,
+        "n_support": 0.6,
+        "coverage": 1.0,
+        "cos": 0.7546,
+        "rerank_max": 6.6529
+      },
       "missing": [],
-      "focus": "approves a big customer workshop budget"
+      "p_logo": 0.9802
     },
     {
-      "query": "What's the refund if we cancel more than two weeks ahead?",
-      "answerable": true,
-      "logit": 2.088,
-      "coverage": 0.351,
-      "cos": 0.678,
+      "group": "cal3",
+      "source": "calibration",
+      "text": "What's the refund if we cancel more than two weeks ahead?",
+      "label": 1,
+      "features": {
+        "logit": 2.0877,
+        "logit_top3_mean": 1.8165,
+        "n_support": 0.8,
+        "coverage": 0.3507,
+        "cos": 0.6779,
+        "rerank_max": 3.0871
+      },
       "missing": [
         "two",
         "weeks",
         "ahead"
       ],
-      "focus": "refund if we cancel more than two weeks ahead"
+      "p_logo": 0.7212
     },
     {
-      "query": "Which Bengaluru venue suits a product launch?",
-      "answerable": true,
-      "logit": 5.577,
-      "coverage": 0.756,
-      "cos": 0.633,
+      "group": "cal4",
+      "source": "calibration",
+      "text": "Which Bengaluru venue suits a product launch?",
+      "label": 1,
+      "features": {
+        "logit": 5.5766,
+        "logit_top3_mean": 1.8198,
+        "n_support": 0.4,
+        "coverage": 0.7562,
+        "cos": 0.6333,
+        "rerank_max": 4.8521
+      },
       "missing": [
         "suits"
       ],
-      "focus": "Bengaluru venue suits a product launch"
+      "p_logo": 0.9183
     },
     {
-      "query": "How much is the home office allowance?",
-      "answerable": true,
-      "logit": 7.949,
-      "coverage": 1.0,
-      "cos": 0.68,
+      "group": "cal5",
+      "source": "calibration",
+      "text": "How much is the home office allowance?",
+      "label": 1,
+      "features": {
+        "logit": 7.9489,
+        "logit_top3_mean": -4.1571,
+        "n_support": 0.2,
+        "coverage": 1.0,
+        "cos": 0.68,
+        "rerank_max": 7.9489
+      },
       "missing": [],
-      "focus": "much is the home office allowance"
+      "p_logo": 0.9787
     },
     {
-      "query": "Do visitors need an escort?",
-      "answerable": true,
-      "logit": 7.733,
-      "coverage": 1.0,
-      "cos": 0.434,
+      "group": "cal6",
+      "source": "calibration",
+      "text": "Do visitors need an escort?",
+      "label": 1,
+      "features": {
+        "logit": 7.733,
+        "logit_top3_mean": -1.0677,
+        "n_support": 0.2,
+        "coverage": 1.0,
+        "cos": 0.4343,
+        "rerank_max": 7.733
+      },
       "missing": [],
-      "focus": "visitors need an escort"
+      "p_logo": 0.8956
     },
     {
-      "query": "What memory do engineering laptops have?",
-      "answerable": true,
-      "logit": 7.158,
-      "coverage": 1.0,
-      "cos": 0.776,
+      "group": "cal7",
+      "source": "calibration",
+      "text": "What memory do engineering laptops have?",
+      "label": 1,
+      "features": {
+        "logit": 7.1585,
+        "logit_top3_mean": -0.0509,
+        "n_support": 0.4,
+        "coverage": 1.0,
+        "cos": 0.7764,
+        "rerank_max": 7.725
+      },
       "missing": [],
-      "focus": "memory do engineering laptops have"
+      "p_logo": 0.9855
     },
     {
-      "query": "When must card transactions be reconciled?",
-      "answerable": true,
-      "logit": 7.357,
-      "coverage": 1.0,
-      "cos": 0.69,
+      "group": "cal8",
+      "source": "calibration",
+      "text": "When must card transactions be reconciled?",
+      "label": 1,
+      "features": {
+        "logit": 7.3571,
+        "logit_top3_mean": 1.6125,
+        "n_support": 0.4,
+        "coverage": 1.0,
+        "cos": 0.6905,
+        "rerank_max": 7.5908
+      },
       "missing": [],
-      "focus": "card transactions be reconciled"
+      "p_logo": 0.9765
     },
     {
-      "query": "How quickly do security incidents need reporting?",
-      "answerable": true,
-      "logit": 7.065,
-      "coverage": 1.0,
-      "cos": 0.718,
+      "group": "cal9",
+      "source": "calibration",
+      "text": "How quickly do security incidents need reporting?",
+      "label": 1,
+      "features": {
+        "logit": 7.0647,
+        "logit_top3_mean": -3.0188,
+        "n_support": 0.2,
+        "coverage": 1.0,
+        "cos": 0.7181,
+        "rerank_max": 7.0647
+      },
       "missing": [],
-      "focus": "quickly do security incidents need reporting"
+      "p_logo": 0.9785
     },
     {
-      "query": "Can food from outside caterers be brought to venues?",
-      "answerable": true,
-      "logit": 7.291,
-      "coverage": 1.0,
-      "cos": 0.728,
+      "group": "cal10",
+      "source": "calibration",
+      "text": "Can food from outside caterers be brought to venues?",
+      "label": 1,
+      "features": {
+        "logit": 7.2913,
+        "logit_top3_mean": 2.6996,
+        "n_support": 0.6,
+        "coverage": 1.0,
+        "cos": 0.7281,
+        "rerank_max": 7.2913
+      },
       "missing": [],
-      "focus": "food from outside caterers be brought to venues"
+      "p_logo": 0.9811
     },
     {
-      "query": "What equipment does Koregaon Park Hall have?",
-      "answerable": true,
-      "logit": 7.152,
-      "coverage": 1.0,
-      "cos": 0.62,
+      "group": "cal11",
+      "source": "calibration",
+      "text": "What equipment does Koregaon Park Hall have?",
+      "label": 1,
+      "features": {
+        "logit": 7.1518,
+        "logit_top3_mean": 3.1486,
+        "n_support": 0.8,
+        "coverage": 1.0,
+        "cos": 0.62,
+        "rerank_max": 7.2178
+      },
       "missing": [],
-      "focus": "equipment does Koregaon Park Hall have"
+      "p_logo": 0.9613
     },
     {
-      "query": "How much lead time for a 60 person event in Pune?",
-      "answerable": true,
-      "logit": 5.283,
-      "coverage": 0.757,
-      "cos": 0.646,
+      "group": "cal12",
+      "source": "calibration",
+      "text": "How much lead time for a 60 person event in Pune?",
+      "label": 1,
+      "features": {
+        "logit": 5.2829,
+        "logit_top3_mean": 2.74,
+        "n_support": 0.4,
+        "coverage": 0.7572,
+        "cos": 0.6456,
+        "rerank_max": 5.3664
+      },
       "missing": [
         "person"
       ],
-      "focus": "much lead time for a 60 person event in Pune"
+      "p_logo": 0.9181
     },
     {
-      "query": "Is a medical certificate needed for sick leave?",
-      "answerable": true,
-      "logit": 7.794,
-      "coverage": 0.789,
-      "cos": 0.645,
+      "group": "cal13",
+      "source": "calibration",
+      "text": "Is a medical certificate needed for sick leave?",
+      "label": 1,
+      "features": {
+        "logit": 7.7942,
+        "logit_top3_mean": -2.4415,
+        "n_support": 0.2,
+        "coverage": 0.7889,
+        "cos": 0.6446,
+        "rerank_max": 6.1375
+      },
       "missing": [
         "needed"
       ],
-      "focus": "medical certificate needed for sick leave"
+      "p_logo": 0.9605
     },
     {
-      "query": "How many parental leave weeks for primary caregivers?",
-      "answerable": true,
-      "logit": 9.381,
-      "coverage": 1.0,
-      "cos": 0.913,
+      "group": "cal14",
+      "source": "calibration",
+      "text": "How many parental leave weeks for primary caregivers?",
+      "label": 1,
+      "features": {
+        "logit": 9.3812,
+        "logit_top3_mean": 2.8011,
+        "n_support": 0.4,
+        "coverage": 1.0,
+        "cos": 0.9134,
+        "rerank_max": 9.3852
+      },
       "missing": [],
-      "focus": "many parental leave weeks for primary caregivers"
+      "p_logo": 0.9968
     },
     {
-      "query": "Who can get a corporate card?",
-      "answerable": true,
-      "logit": 8.881,
-      "coverage": 1.0,
-      "cos": 0.637,
+      "group": "cal15",
+      "source": "calibration",
+      "text": "Who can get a corporate card?",
+      "label": 1,
+      "features": {
+        "logit": 8.8811,
+        "logit_top3_mean": 7.7594,
+        "n_support": 1.0,
+        "coverage": 1.0,
+        "cos": 0.6371,
+        "rerank_max": 8.8811
+      },
       "missing": [],
-      "focus": "corporate card"
+      "p_logo": 0.9786
     },
     {
-      "query": "What happens to rooms that nobody checks into?",
-      "answerable": true,
-      "logit": 0.807,
-      "coverage": 0.626,
-      "cos": 0.647,
+      "group": "cal16",
+      "source": "calibration",
+      "text": "What happens to rooms that nobody checks into?",
+      "label": 1,
+      "features": {
+        "logit": 0.807,
+        "logit_top3_mean": -6.4575,
+        "n_support": 0.2,
+        "coverage": 0.6256,
+        "cos": 0.6466,
+        "rerank_max": 0.807
+      },
       "missing": [
         "nobody"
       ],
-      "focus": "happens to rooms that nobody checks into"
+      "p_logo": 0.7087
     },
     {
-      "query": "What class of flight can I book?",
-      "answerable": true,
-      "logit": -1.98,
-      "coverage": 0.625,
-      "cos": 0.578,
+      "group": "cal17",
+      "source": "calibration",
+      "text": "What class of flight can I book?",
+      "label": 1,
+      "features": {
+        "logit": -1.9795,
+        "logit_top3_mean": -6.47,
+        "n_support": 0.0,
+        "coverage": 0.625,
+        "cos": 0.5782,
+        "rerank_max": -4.5799
+      },
       "missing": [
         "book"
       ],
-      "focus": "class of flight can I book"
+      "p_logo": 0.4058
     },
     {
-      "query": "What is the office dress code?",
-      "answerable": false,
-      "logit": -10.156,
-      "coverage": 0.269,
-      "cos": 0.297,
+      "group": "cal18",
+      "source": "calibration",
+      "text": "What is the office dress code?",
+      "label": 0,
+      "features": {
+        "logit": -10.156,
+        "logit_top3_mean": -10.6539,
+        "n_support": 0.0,
+        "coverage": 0.2695,
+        "cos": 0.2968,
+        "rerank_max": -10.156
+      },
       "missing": [
         "dress",
         "code"
       ],
-      "focus": "office dress code"
+      "p_logo": 0.0058
     },
     {
-      "query": "Is there a shuttle bus to the Pune office?",
-      "answerable": false,
-      "logit": -2.083,
-      "coverage": 0.381,
-      "cos": 0.596,
+      "group": "cal19",
+      "source": "calibration",
+      "text": "Is there a shuttle bus to the Pune office?",
+      "label": 0,
+      "features": {
+        "logit": -2.0826,
+        "logit_top3_mean": -2.3879,
+        "n_support": 0.0,
+        "coverage": 0.3805,
+        "cos": 0.596,
+        "rerank_max": -1.4256
+      },
       "missing": [
         "shuttle",
         "bus"
       ],
-      "focus": "shuttle bus to the Pune office"
+      "p_logo": 0.366
     },
     {
-      "query": "What's on the canteen menu today?",
-      "answerable": false,
-      "logit": -10.389,
-      "coverage": 0.0,
-      "cos": 0.355,
+      "group": "cal20",
+      "source": "calibration",
+      "text": "What's on the canteen menu today?",
+      "label": 0,
+      "features": {
+        "logit": -10.3885,
+        "logit_top3_mean": -10.5445,
+        "n_support": 0.0,
+        "coverage": 0.0,
+        "cos": 0.3553,
+        "rerank_max": -10.2187
+      },
       "missing": [
         "canteen",
         "menu",
         "today"
       ],
-      "focus": "canteen menu today"
+      "p_logo": 0.005
     },
     {
-      "query": "How do I get reimbursed for a gym subscription?",
-      "answerable": false,
-      "logit": -6.342,
-      "coverage": 0.237,
-      "cos": 0.507,
+      "group": "cal21",
+      "source": "calibration",
+      "text": "How do I get reimbursed for a gym subscription?",
+      "label": 0,
+      "features": {
+        "logit": -6.3417,
+        "logit_top3_mean": -6.9377,
+        "n_support": 0.0,
+        "coverage": 0.2367,
+        "cos": 0.5075,
+        "rerank_max": -6.5227
+      },
       "missing": [
         "gym",
         "subscription"
       ],
-      "focus": "reimbursed for a gym subscription"
+      "p_logo": 0.0634
     },
     {
-      "query": "What is the office wifi password?",
-      "answerable": false,
-      "logit": -10.818,
-      "coverage": 0.269,
-      "cos": 0.255,
+      "group": "cal22",
+      "source": "calibration",
+      "text": "What is the office wifi password?",
+      "label": 0,
+      "features": {
+        "logit": -10.8181,
+        "logit_top3_mean": -10.9008,
+        "n_support": 0.0,
+        "coverage": 0.2695,
+        "cos": 0.2551,
+        "rerank_max": -10.8181
+      },
       "missing": [
         "wifi",
         "password"
       ],
-      "focus": "office wifi password"
+      "p_logo": 0.0037
     },
     {
-      "query": "When is the annual company offsite?",
-      "answerable": false,
-      "logit": -6.874,
-      "coverage": 0.589,
-      "cos": 0.415,
+      "group": "cal23",
+      "source": "calibration",
+      "text": "When is the annual company offsite?",
+      "label": 0,
+      "features": {
+        "logit": -6.8737,
+        "logit_top3_mean": -8.7104,
+        "n_support": 0.0,
+        "coverage": 0.5886,
+        "cos": 0.4146,
+        "rerank_max": -6.2224
+      },
       "missing": [
         "offsite"
       ],
-      "focus": "annual company offsite"
+      "p_logo": 0.0554
     },
     {
-      "query": "What's the maternity health insurance coverage?",
-      "answerable": false,
-      "logit": -10.961,
-      "coverage": 0.455,
-      "cos": 0.356,
+      "group": "cal24",
+      "source": "calibration",
+      "text": "What's the maternity health insurance coverage?",
+      "label": 0,
+      "features": {
+        "logit": -10.9614,
+        "logit_top3_mean": -11.0155,
+        "n_support": 0.0,
+        "coverage": 0.4546,
+        "cos": 0.3555,
+        "rerank_max": -10.9291
+      },
       "missing": [
         "maternity",
         "health"
       ],
-      "focus": "maternity health insurance coverage"
+      "p_logo": 0.0093
     },
     {
-      "query": "How many employees does the company have?",
-      "answerable": false,
-      "logit": -9.162,
-      "coverage": 1.0,
-      "cos": 0.425,
+      "group": "cal25",
+      "source": "calibration",
+      "text": "How many employees does the company have?",
+      "label": 0,
+      "features": {
+        "logit": -9.1622,
+        "logit_top3_mean": -9.4931,
+        "n_support": 0.0,
+        "coverage": 1.0,
+        "cos": 0.4252,
+        "rerank_max": -8.4016
+      },
       "missing": [],
-      "focus": "many employees does the company have"
+      "p_logo": 0.0666
     },
     {
-      "query": "What is the password policy for email accounts?",
-      "answerable": false,
-      "logit": -10.719,
-      "coverage": 0.08,
-      "cos": 0.237,
+      "group": "cal26",
+      "source": "calibration",
+      "text": "What is the password policy for email accounts?",
+      "label": 0,
+      "features": {
+        "logit": -10.7193,
+        "logit_top3_mean": -10.8329,
+        "n_support": 0.0,
+        "coverage": 0.0804,
+        "cos": 0.2373,
+        "rerank_max": -10.7193
+      },
       "missing": [
         "password",
         "email",
         "accounts"
       ],
-      "focus": "password policy for email accounts"
+      "p_logo": 0.0024
     },
     {
-      "query": "Can I bring my dog to the office?",
-      "answerable": false,
-      "logit": -9.609,
-      "coverage": 0.269,
-      "cos": 0.328,
+      "group": "cal27",
+      "source": "calibration",
+      "text": "Can I bring my dog to the office?",
+      "label": 0,
+      "features": {
+        "logit": -9.6092,
+        "logit_top3_mean": -10.5262,
+        "n_support": 0.0,
+        "coverage": 0.2695,
+        "cos": 0.3283,
+        "rerank_max": -9.6092
+      },
       "missing": [
         "bring",
         "dog"
       ],
-      "focus": "bring my dog to the office"
+      "p_logo": 0.0084
     },
     {
-      "query": "What's the bonus payout date?",
-      "answerable": false,
-      "logit": -10.115,
-      "coverage": 0.237,
-      "cos": 0.414,
+      "group": "cal28",
+      "source": "calibration",
+      "text": "What's the bonus payout date?",
+      "label": 0,
+      "features": {
+        "logit": -10.1153,
+        "logit_top3_mean": -10.4976,
+        "n_support": 0.0,
+        "coverage": 0.2367,
+        "cos": 0.4136,
+        "rerank_max": -9.7479
+      },
       "missing": [
         "bonus",
         "payout"
       ],
-      "focus": "bonus payout date"
+      "p_logo": 0.0118
     },
     {
-      "query": "Which airline do we have a corporate deal with?",
-      "answerable": false,
-      "logit": -7.156,
-      "coverage": 0.172,
-      "cos": 0.33,
+      "group": "cal29",
+      "source": "calibration",
+      "text": "Which airline do we have a corporate deal with?",
+      "label": 0,
+      "features": {
+        "logit": -7.1564,
+        "logit_top3_mean": -7.7225,
+        "n_support": 0.0,
+        "coverage": 0.1717,
+        "cos": 0.33,
+        "rerank_max": -7.4591
+      },
       "missing": [
         "airline",
         "deal"
       ],
-      "focus": "airline do we have a corporate deal with"
+      "p_logo": 0.0146
     },
     {
-      "query": "Is there a referral bonus for hiring?",
-      "answerable": false,
-      "logit": -11.264,
-      "coverage": 0.0,
-      "cos": 0.213,
+      "group": "cal30",
+      "source": "calibration",
+      "text": "Is there a referral bonus for hiring?",
+      "label": 0,
+      "features": {
+        "logit": -11.2639,
+        "logit_top3_mean": -11.2929,
+        "n_support": 0.0,
+        "coverage": 0.0,
+        "cos": 0.2125,
+        "rerank_max": -11.2614
+      },
       "missing": [
         "referral",
         "bonus",
         "hiring"
       ],
-      "focus": "referral bonus for hiring"
+      "p_logo": 0.0015
     },
     {
-      "query": "What is the fuel allowance for car travel?",
-      "answerable": false,
-      "logit": -8.236,
-      "coverage": 0.126,
-      "cos": 0.274,
+      "group": "cal31",
+      "source": "calibration",
+      "text": "What is the fuel allowance for car travel?",
+      "label": 0,
+      "features": {
+        "logit": -8.2363,
+        "logit_top3_mean": -9.1968,
+        "n_support": 0.0,
+        "coverage": 0.1256,
+        "cos": 0.2744,
+        "rerank_max": -9.123
+      },
       "missing": [
         "fuel",
         "allowance",
         "car"
       ],
-      "focus": "fuel allowance for car travel"
+      "p_logo": 0.0069
     },
     {
-      "query": "How much does renting the Baner centre cost per day?",
-      "answerable": false,
-      "logit": -5.356,
-      "coverage": 0.625,
-      "cos": 0.515,
+      "group": "cal32",
+      "source": "calibration",
+      "text": "How much does renting the Baner centre cost per day?",
+      "label": 0,
+      "features": {
+        "logit": -5.356,
+        "logit_top3_mean": -5.9271,
+        "n_support": 0.0,
+        "coverage": 0.6245,
+        "cos": 0.5152,
+        "rerank_max": -2.5752
+      },
       "missing": [
         "renting",
         "cost"
       ],
-      "focus": "much does renting the Baner centre cost per day"
+      "p_logo": 0.1617
     },
     {
-      "query": "Which airport lounges can I use on business trips?",
-      "answerable": false,
-      "logit": -6.7,
-      "coverage": 0.477,
-      "cos": 0.413,
+      "group": "cal33",
+      "source": "calibration",
+      "text": "Which airport lounges can I use on business trips?",
+      "label": 0,
+      "features": {
+        "logit": -6.7004,
+        "logit_top3_mean": -8.2806,
+        "n_support": 0.0,
+        "coverage": 0.4769,
+        "cos": 0.4129,
+        "rerank_max": -3.9093
+      },
       "missing": [
         "airport",
         "lounges"
       ],
-      "focus": "airport lounges can I use on business trips"
+      "p_logo": 0.0475
     },
     {
-      "query": "Who manages the travel desk?",
-      "answerable": false,
-      "logit": -1.079,
-      "coverage": 1.0,
-      "cos": 0.417,
+      "group": "cal34",
+      "source": "calibration",
+      "text": "Who manages the travel desk?",
+      "label": 0,
+      "features": {
+        "logit": -1.0788,
+        "logit_top3_mean": -4.9623,
+        "n_support": 0.0,
+        "coverage": 1.0,
+        "cos": 0.4167,
+        "rerank_max": -3.3775
+      },
       "missing": [],
-      "focus": "manages the travel desk"
+      "p_logo": 0.4759
     },
     {
-      "query": "Is the visa application fee reimbursed?",
-      "answerable": false,
-      "logit": -1.808,
-      "coverage": 0.18,
-      "cos": 0.485,
+      "group": "cal35",
+      "source": "calibration",
+      "text": "Is the visa application fee reimbursed?",
+      "label": 0,
+      "features": {
+        "logit": -1.8084,
+        "logit_top3_mean": -2.0388,
+        "n_support": 0.0,
+        "coverage": 0.1795,
+        "cos": 0.4849,
+        "rerank_max": -1.4311
+      },
       "missing": [
         "visa",
         "application",
         "fee"
       ],
-      "focus": "visa application fee reimbursed"
+      "p_logo": 0.1737
     },
     {
-      "query": "Is there a mileage rate for driving my own car?",
-      "answerable": false,
-      "logit": -11.199,
-      "coverage": 0.0,
-      "cos": 0.16,
+      "group": "cal36",
+      "source": "calibration",
+      "text": "Is there a mileage rate for driving my own car?",
+      "label": 0,
+      "features": {
+        "logit": -11.1987,
+        "logit_top3_mean": -11.2325,
+        "n_support": 0.0,
+        "coverage": 0.0,
+        "cos": 0.1602,
+        "rerank_max": -11.1651
+      },
       "missing": [
         "mileage",
         "rate",
         "driving",
         "car"
       ],
-      "focus": "mileage rate for driving my own car"
+      "p_logo": 0.0011
     },
     {
-      "query": "What time does the Pune office open?",
-      "answerable": false,
-      "logit": 2.595,
-      "coverage": 0.639,
-      "cos": 0.681,
+      "group": "cal37",
+      "source": "calibration",
+      "text": "What time does the Pune office open?",
+      "label": 0,
+      "features": {
+        "logit": 2.595,
+        "logit_top3_mean": 1.7389,
+        "n_support": 0.6,
+        "coverage": 0.6394,
+        "cos": 0.6809,
+        "rerank_max": 3.334
+      },
       "missing": [
         "open"
       ],
-      "focus": "time does the Pune office open"
+      "p_logo": 0.8856
     },
     {
-      "query": "How many desks are in the Bengaluru office?",
-      "answerable": false,
-      "logit": -0.382,
-      "coverage": 0.694,
-      "cos": 0.543,
+      "group": "cal38",
+      "source": "calibration",
+      "text": "How many desks are in the Bengaluru office?",
+      "label": 0,
+      "features": {
+        "logit": -0.3825,
+        "logit_top3_mean": -2.467,
+        "n_support": 0.0,
+        "coverage": 0.6937,
+        "cos": 0.5427,
+        "rerank_max": 0.0312
+      },
       "missing": [
         "office"
       ],
-      "focus": "many desks are in the Bengaluru office"
+      "p_logo": 0.5254
     },
     {
-      "query": "Can the venue provide a photographer?",
-      "answerable": false,
-      "logit": -6.757,
-      "coverage": 0.589,
-      "cos": 0.456,
+      "group": "cal39",
+      "source": "calibration",
+      "text": "Can the venue provide a photographer?",
+      "label": 0,
+      "features": {
+        "logit": -6.7574,
+        "logit_top3_mean": -7.4265,
+        "n_support": 0.0,
+        "coverage": 0.5886,
+        "cos": 0.4557,
+        "rerank_max": -7.1337
+      },
       "missing": [
         "photographer"
       ],
-      "focus": "venue provide a photographer"
+      "p_logo": 0.0738
     },
     {
-      "query": "What is the refund for a cancelled catering order?",
-      "answerable": false,
-      "logit": 0.886,
-      "coverage": 0.528,
-      "cos": 0.501,
+      "group": "cal40",
+      "source": "calibration",
+      "text": "What is the refund for a cancelled catering order?",
+      "label": 0,
+      "features": {
+        "logit": 0.8857,
+        "logit_top3_mean": 0.6566,
+        "n_support": 0.8,
+        "coverage": 0.5279,
+        "cos": 0.5013,
+        "rerank_max": 0.9729
+      },
       "missing": [
         "catering",
         "order"
       ],
-      "focus": "refund for a cancelled catering order"
+      "p_logo": 0.4826
     },
     {
-      "query": "How long does a visitor NDA stay valid?",
-      "answerable": false,
-      "logit": -6.017,
-      "coverage": 0.465,
-      "cos": 0.349,
+      "group": "cal41",
+      "source": "calibration",
+      "text": "How long does a visitor NDA stay valid?",
+      "label": 0,
+      "features": {
+        "logit": -6.0172,
+        "logit_top3_mean": -7.8421,
+        "n_support": 0.0,
+        "coverage": 0.4649,
+        "cos": 0.3491,
+        "rerank_max": -6.0172
+      },
       "missing": [
         "nda",
         "valid"
       ],
-      "focus": "long does a visitor NDA stay valid"
+      "p_logo": 0.0379
     },
     {
-      "query": "How many sick days can I carry over?",
-      "answerable": false,
-      "logit": -3.954,
-      "coverage": 0.577,
-      "cos": 0.597,
+      "group": "cal42",
+      "source": "calibration",
+      "text": "How many sick days can I carry over?",
+      "label": 0,
+      "features": {
+        "logit": -3.9545,
+        "logit_top3_mean": -5.9748,
+        "n_support": 0.0,
+        "coverage": 0.5767,
+        "cos": 0.5965,
+        "rerank_max": -3.0754
+      },
       "missing": [
         "carry"
       ],
-      "focus": "many sick days can I carry over"
+      "p_logo": 0.3259
     },
     {
-      "query": "What brand of laptop do engineers get?",
-      "answerable": false,
-      "logit": -0.452,
-      "coverage": 0.667,
-      "cos": 0.546,
+      "group": "cal43",
+      "source": "calibration",
+      "text": "What brand of laptop do engineers get?",
+      "label": 0,
+      "features": {
+        "logit": -0.4518,
+        "logit_top3_mean": -6.2563,
+        "n_support": 0.0,
+        "coverage": 0.6667,
+        "cos": 0.5461,
+        "rerank_max": 0.5165
+      },
       "missing": [
         "brand"
       ],
-      "focus": "brand of laptop do engineers get"
+      "p_logo": 0.5124
     },
     {
-      "query": "Is there a tipping policy for restaurant meals?",
-      "answerable": false,
-      "logit": -7.379,
-      "coverage": 0.318,
-      "cos": 0.27,
+      "group": "cal44",
+      "source": "calibration",
+      "text": "Is there a tipping policy for restaurant meals?",
+      "label": 0,
+      "features": {
+        "logit": -7.3788,
+        "logit_top3_mean": -7.8901,
+        "n_support": 0.0,
+        "coverage": 0.3182,
+        "cos": 0.2704,
+        "rerank_max": -8.8068
+      },
       "missing": [
         "tipping",
         "restaurant"
       ],
-      "focus": "tipping policy for restaurant meals"
+      "p_logo": 0.012
     },
     {
-      "query": "Do we get a phone allowance for working from home?",
-      "answerable": false,
-      "logit": 3.481,
-      "coverage": 0.75,
-      "cos": 0.499,
+      "group": "cal45",
+      "source": "calibration",
+      "text": "Do we get a phone allowance for working from home?",
+      "label": 0,
+      "features": {
+        "logit": 3.4813,
+        "logit_top3_mean": -5.3612,
+        "n_support": 0.2,
+        "coverage": 0.75,
+        "cos": 0.4986,
+        "rerank_max": 3.4813
+      },
       "missing": [
         "phone"
       ],
-      "focus": "phone allowance for working from home"
+      "p_logo": 0.7721
     },
     {
-      "query": "How much do I get per day for food when I'm overseas?",
-      "answerable": true,
-      "logit": 1.493,
-      "coverage": 0.399,
-      "cos": 0.665,
+      "group": "cal46",
+      "source": "calibration",
+      "text": "How much do I get per day for food when I'm overseas?",
+      "label": 1,
+      "features": {
+        "logit": 1.4927,
+        "logit_top3_mean": -1.226,
+        "n_support": 0.4,
+        "coverage": 0.3988,
+        "cos": 0.6645,
+        "rerank_max": 0.9275
+      },
       "missing": [
         "food",
         "overseas"
       ],
-      "focus": "much do I get per day for food when I'm overseas"
+      "p_logo": 0.6865
     },
     {
-      "query": "What's the most people Koregaon Park Hall can fit?",
-      "answerable": true,
-      "logit": 5.541,
-      "coverage": 1.0,
-      "cos": 0.71,
+      "group": "cal47",
+      "source": "calibration",
+      "text": "What's the most people Koregaon Park Hall can fit?",
+      "label": 1,
+      "features": {
+        "logit": 5.5413,
+        "logit_top3_mean": 3.1801,
+        "n_support": 0.8,
+        "coverage": 1.0,
+        "cos": 0.7097,
+        "rerank_max": 6.4815
+      },
       "missing": [],
-      "focus": "people Koregaon Park Hall can fit"
+      "p_logo": 0.9652
     },
     {
-      "query": "Can the Hinjewadi room host a hot lunch?",
-      "answerable": true,
-      "logit": 4.493,
-      "coverage": 0.588,
-      "cos": 0.538,
+      "group": "cal48",
+      "source": "calibration",
+      "text": "Can the Hinjewadi room host a hot lunch?",
+      "label": 1,
+      "features": {
+        "logit": 4.4929,
+        "logit_top3_mean": 1.3062,
+        "n_support": 0.4,
+        "coverage": 0.5883,
+        "cos": 0.5378,
+        "rerank_max": 4.5896
+      },
       "missing": [
         "host",
         "lunch"
       ],
-      "focus": "Hinjewadi room host a hot lunch"
+      "p_logo": 0.7657
     },
     {
-      "query": "What proof do I need for money spent in foreign currency?",
-      "answerable": true,
-      "logit": -2.695,
-      "coverage": 0.33,
-      "cos": 0.653,
+      "group": "cal49",
+      "source": "calibration",
+      "text": "What proof do I need for money spent in foreign currency?",
+      "label": 1,
+      "features": {
+        "logit": -2.6951,
+        "logit_top3_mean": -4.8765,
+        "n_support": 0.0,
+        "coverage": 0.3297,
+        "cos": 0.653,
+        "rerank_max": -2.6951
+      },
       "missing": [
         "proof",
         "money",
         "spent"
       ],
-      "focus": "proof do I need for money spent in foreign currency"
+      "p_logo": 0.3248
     },
     {
-      "query": "How big is the Whitefield suite?",
-      "answerable": true,
-      "logit": 3.831,
-      "coverage": 1.0,
-      "cos": 0.583,
+      "group": "cal50",
+      "source": "calibration",
+      "text": "How big is the Whitefield suite?",
+      "label": 1,
+      "features": {
+        "logit": 3.8309,
+        "logit_top3_mean": -1.5176,
+        "n_support": 0.4,
+        "coverage": 1.0,
+        "cos": 0.5828,
+        "rerank_max": 4.392
+      },
       "missing": [],
-      "focus": "big is the Whitefield suite"
+      "p_logo": 0.8816
     },
     {
-      "query": "Is there a charge for cancelling six days before an event?",
-      "answerable": true,
-      "logit": 3.614,
-      "coverage": 0.556,
-      "cos": 0.668,
+      "group": "cal51",
+      "source": "calibration",
+      "text": "Is there a charge for cancelling six days before an event?",
+      "label": 1,
+      "features": {
+        "logit": 3.6139,
+        "logit_top3_mean": 3.3581,
+        "n_support": 0.8,
+        "coverage": 0.5557,
+        "cos": 0.6679,
+        "rerank_max": 3.9243
+      },
       "missing": [
         "charge",
         "six"
       ],
-      "focus": "charge for cancelling six days before an event"
+      "p_logo": 0.8482
     },
     {
-      "query": "What's the largest amount a missing-receipt declaration can cover?",
-      "answerable": true,
-      "logit": 1.696,
-      "coverage": 0.828,
-      "cos": 0.66,
+      "group": "cal52",
+      "source": "calibration",
+      "text": "What's the largest amount a missing-receipt declaration can cover?",
+      "label": 1,
+      "features": {
+        "logit": 1.6964,
+        "logit_top3_mean": -6.9147,
+        "n_support": 0.2,
+        "coverage": 0.8276,
+        "cos": 0.6596,
+        "rerank_max": 1.6821
+      },
       "missing": [
         "cover"
       ],
-      "focus": "largest amount a missing-receipt declaration can cover"
+      "p_logo": 0.8296
     },
     {
-      "query": "What needs to happen before I book an overseas trip?",
-      "answerable": true,
-      "logit": -1.0,
-      "coverage": 0.391,
-      "cos": 0.511,
+      "group": "cal53",
+      "source": "calibration",
+      "text": "What needs to happen before I book an overseas trip?",
+      "label": 1,
+      "features": {
+        "logit": -1.0001,
+        "logit_top3_mean": -5.3309,
+        "n_support": 0.0,
+        "coverage": 0.3908,
+        "cos": 0.5112,
+        "rerank_max": -1.3081
+      },
       "missing": [
         "book",
         "overseas"
       ],
-      "focus": "happen before I book an overseas trip"
+      "p_logo": 0.2772
     },
     {
-      "query": "Can I upgrade to business class?",
-      "answerable": true,
-      "logit": 3.563,
-      "coverage": 1.0,
-      "cos": 0.319,
+      "group": "cal54",
+      "source": "calibration",
+      "text": "Can I upgrade to business class?",
+      "label": 1,
+      "features": {
+        "logit": 3.5632,
+        "logit_top3_mean": -5.4255,
+        "n_support": 0.2,
+        "coverage": 1.0,
+        "cos": 0.3189,
+        "rerank_max": 3.7132
+      },
       "missing": [],
-      "focus": "upgrade to business class"
+      "p_logo": 0.4866
     },
     {
-      "query": "How many people fit in the Sahyadri room?",
-      "answerable": true,
-      "logit": 6.09,
-      "coverage": 1.0,
-      "cos": 0.754,
+      "group": "cal55",
+      "source": "calibration",
+      "text": "How many people fit in the Sahyadri room?",
+      "label": 1,
+      "features": {
+        "logit": 6.0905,
+        "logit_top3_mean": -2.4591,
+        "n_support": 0.2,
+        "coverage": 1.0,
+        "cos": 0.7544,
+        "rerank_max": 5.22
+      },
       "missing": [],
-      "focus": "many people fit in the Sahyadri room"
+      "p_logo": 0.9775
+    },
+    {
+      "group": "single_paraphrase_meal_allowance#0",
+      "source": "dev",
+      "text": "travelling abroad",
+      "label": 1,
+      "features": {
+        "logit": -0.0448,
+        "logit_top3_mean": -0.766,
+        "n_support": 0.0,
+        "coverage": 0.5,
+        "cos": 0.4913,
+        "rerank_max": 2.9139
+      },
+      "missing": [
+        "abroad"
+      ],
+      "p_logo": 0.355
+    },
+    {
+      "group": "single_intl_booking_lead#0",
+      "source": "dev",
+      "text": "far in advance do I have to book a flight to another country",
+      "label": 1,
+      "features": {
+        "logit": 4.5595,
+        "logit_top3_mean": -2.9436,
+        "n_support": 0.2,
+        "coverage": 0.641,
+        "cos": 0.6446,
+        "rerank_max": 5.3444
+      },
+      "missing": [
+        "far",
+        "book"
+      ],
+      "p_logo": 0.8805
+    },
+    {
+      "group": "single_baner_rooms#0",
+      "source": "dev",
+      "text": "rooms at Baner Conference Centre fit a group of 35",
+      "label": 1,
+      "features": {
+        "logit": 6.3635,
+        "logit_top3_mean": 2.3685,
+        "n_support": 0.4,
+        "coverage": 0.778,
+        "cos": 0.8303,
+        "rerank_max": 6.8291
+      },
+      "missing": [
+        "group"
+      ],
+      "p_logo": 0.9812
+    },
+    {
+      "group": "single_refund_ten_days#0",
+      "source": "dev",
+      "text": "refund do we get if we cancel a venue ten days before the event",
+      "label": 1,
+      "features": {
+        "logit": 8.0958,
+        "logit_top3_mean": 7.7368,
+        "n_support": 1.0,
+        "coverage": 0.7698,
+        "cos": 0.7558,
+        "rerank_max": 8.1629
+      },
+      "missing": [
+        "ten"
+      ],
+      "p_logo": 0.9813
+    },
+    {
+      "group": "single_claim_approver#0",
+      "source": "dev",
+      "text": "approve an expense claim of sixty thousand rupees",
+      "label": 1,
+      "features": {
+        "logit": 2.7289,
+        "logit_top3_mean": 0.5556,
+        "n_support": 0.4,
+        "coverage": 0.4422,
+        "cos": 0.5677,
+        "rerank_max": 2.7693
+      },
+      "missing": [
+        "sixty",
+        "thousand",
+        "rupees"
+      ],
+      "p_logo": 0.647
+    },
+    {
+      "group": "single_currency_conversion#0",
+      "source": "dev",
+      "text": "file expenses",
+      "label": 1,
+      "features": {
+        "logit": -1.3884,
+        "logit_top3_mean": -2.4082,
+        "n_support": 0.0,
+        "coverage": 0.3827,
+        "cos": 0.4904,
+        "rerank_max": 1.0598
+      },
+      "missing": [
+        "file"
+      ],
+      "p_logo": 0.2249
+    },
+    {
+      "group": "single_cash_withdrawal#0",
+      "source": "dev",
+      "text": "much cash I can withdraw with the company card abroad",
+      "label": 1,
+      "features": {
+        "logit": 5.5874,
+        "logit_top3_mean": -3.4778,
+        "n_support": 0.2,
+        "coverage": 0.6468,
+        "cos": 0.6885,
+        "rerank_max": 4.7547
+      },
+      "missing": [
+        "company",
+        "abroad"
+      ],
+      "p_logo": 0.93
+    },
+    {
+      "group": "single_catering_lead#0",
+      "source": "dev",
+      "text": "many days before an event must catering be ordered",
+      "label": 1,
+      "features": {
+        "logit": 9.4154,
+        "logit_top3_mean": 7.7787,
+        "n_support": 0.8,
+        "coverage": 1.0,
+        "cos": 0.901,
+        "rerank_max": 9.6099
+      },
+      "missing": [],
+      "p_logo": 0.9966
+    },
+    {
+      "group": "single_vegan#0",
+      "source": "dev",
+      "text": "vegan meals for the workshop",
+      "label": 1,
+      "features": {
+        "logit": -1.3505,
+        "logit_top3_mean": -5.7699,
+        "n_support": 0.0,
+        "coverage": 1.0,
+        "cos": 0.6412,
+        "rerank_max": -1.6982
+      },
+      "missing": [],
+      "p_logo": 0.6922
+    },
+    {
+      "group": "single_after_workshop#0",
+      "source": "dev",
+      "text": "after a customer workshop is over",
+      "label": 1,
+      "features": {
+        "logit": 5.4311,
+        "logit_top3_mean": 4.7262,
+        "n_support": 1.0,
+        "coverage": 1.0,
+        "cos": 0.5387,
+        "rerank_max": 5.3997
+      },
+      "missing": [],
+      "p_logo": 0.8988
+    },
+    {
+      "group": "single_attendee_data#0",
+      "source": "dev",
+      "text": "long can customer attendee data be kept",
+      "label": 1,
+      "features": {
+        "logit": 5.0195,
+        "logit_top3_mean": -0.385,
+        "n_support": 0.2,
+        "coverage": 0.65,
+        "cos": 0.6566,
+        "rerank_max": 5.8956
+      },
+      "missing": [
+        "kept"
+      ],
+      "p_logo": 0.9023
+    },
+    {
+      "group": "single_exec_briefing#0",
+      "source": "dev",
+      "text": "venue in Hinjewadi is suitable for an executive briefing",
+      "label": 1,
+      "features": {
+        "logit": 8.202,
+        "logit_top3_mean": 4.4363,
+        "n_support": 0.6,
+        "coverage": 0.7743,
+        "cos": 0.6132,
+        "rerank_max": 8.4381
+      },
+      "missing": [
+        "suitable"
+      ],
+      "p_logo": 0.9561
+    },
+    {
+      "group": "single_very_short#0",
+      "source": "dev",
+      "text": "Sick leave",
+      "label": 1,
+      "features": {
+        "logit": 6.848,
+        "logit_top3_mean": 2.615,
+        "n_support": 0.4,
+        "coverage": 1.0,
+        "cos": 0.5398,
+        "rerank_max": 7.1159
+      },
+      "missing": [],
+      "p_logo": 0.931
+    },
+    {
+      "group": "single_long_irrelevant_details#0",
+      "source": "dev",
+      "text": "often do laptops actually get replaced here",
+      "label": 1,
+      "features": {
+        "logit": 7.6289,
+        "logit_top3_mean": -3.7378,
+        "n_support": 0.2,
+        "coverage": 1.0,
+        "cos": 0.7409,
+        "rerank_max": 5.0679
+      },
+      "missing": [],
+      "p_logo": 0.9842
+    },
+    {
+      "group": "single_ambiguous_event_policy#0",
+      "source": "dev",
+      "text": "policy for the event",
+      "label": 1,
+      "features": {
+        "logit": 5.0261,
+        "logit_top3_mean": 4.223,
+        "n_support": 0.6,
+        "coverage": 1.0,
+        "cos": 0.517,
+        "rerank_max": 5.0261
+      },
+      "missing": [],
+      "p_logo": 0.8723
+    },
+    {
+      "group": "single_paraphrase_force_majeure#0",
+      "source": "dev",
+      "text": "hurricane shuts the venue do we lose our deposit",
+      "label": 1,
+      "features": {
+        "logit": 1.4276,
+        "logit_top3_mean": -2.9691,
+        "n_support": 0.2,
+        "coverage": 0.2803,
+        "cos": 0.5782,
+        "rerank_max": 1.4276
+      },
+      "missing": [
+        "hurricane",
+        "shuts",
+        "lose"
+      ],
+      "p_logo": 0.4906
+    },
+    {
+      "group": "single_koregaon_own_caterer#0",
+      "source": "dev",
+      "text": "Koregaon hall let us bring in our own caterer",
+      "label": 1,
+      "features": {
+        "logit": 2.6993,
+        "logit_top3_mean": 0.3688,
+        "n_support": 0.4,
+        "coverage": 1.0,
+        "cos": 0.5736,
+        "rerank_max": 2.4642
+      },
+      "missing": [],
+      "p_logo": 0.8343
+    },
+    {
+      "group": "single_conflict_intl_daily_allowance#0",
+      "source": "dev",
+      "text": "daily allowance under the travel policy for overseas trips",
+      "label": 1,
+      "features": {
+        "logit": 1.2688,
+        "logit_top3_mean": 0.0876,
+        "n_support": 0.4,
+        "coverage": 0.3229,
+        "cos": 0.5112,
+        "rerank_max": 2.8003
+      },
+      "missing": [
+        "daily",
+        "allowance",
+        "overseas"
+      ],
+      "p_logo": 0.3886
+    },
+    {
+      "group": "single_conflict_claim_deadline#0",
+      "source": "dev",
+      "text": "deadline to submit travel expense claims",
+      "label": 1,
+      "features": {
+        "logit": 8.1898,
+        "logit_top3_mean": 5.6021,
+        "n_support": 0.8,
+        "coverage": 0.716,
+        "cos": 0.8114,
+        "rerank_max": 7.3673
+      },
+      "missing": [
+        "deadline"
+      ],
+      "p_logo": 0.986
+    },
+    {
+      "group": "single_duplicate_vendors#0",
+      "source": "dev",
+      "text": "outside catering vendors we're allowed to use in Pune",
+      "label": 1,
+      "features": {
+        "logit": 7.3455,
+        "logit_top3_mean": 5.6584,
+        "n_support": 0.6,
+        "coverage": 0.446,
+        "cos": 0.7597,
+        "rerank_max": 7.3747
+      },
+      "missing": [
+        "outside",
+        "vendors"
+      ],
+      "p_logo": 0.9608
+    },
+    {
+      "group": "compound_guide_workshop#0",
+      "source": "dev",
+      "text": "cancellation policy",
+      "label": 1,
+      "features": {
+        "logit": 6.9241,
+        "logit_top3_mean": 6.6611,
+        "n_support": 1.0,
+        "coverage": 1.0,
+        "cos": 0.5914,
+        "rerank_max": 7.3971
+      },
+      "missing": [],
+      "p_logo": 0.9508
+    },
+    {
+      "group": "compound_guide_workshop#0",
+      "source": "dev",
+      "text": "catering options",
+      "label": 1,
+      "features": {
+        "logit": 6.8507,
+        "logit_top3_mean": 4.5754,
+        "n_support": 0.8,
+        "coverage": 1.0,
+        "cos": 0.6729,
+        "rerank_max": 8.3513
+      },
+      "missing": [],
+      "p_logo": 0.9695
+    },
+    {
+      "group": "compound_leave#0",
+      "source": "dev",
+      "text": "many annual leave days do I get",
+      "label": 1,
+      "features": {
+        "logit": 6.0829,
+        "logit_top3_mean": 4.1423,
+        "n_support": 0.6,
+        "coverage": 1.0,
+        "cos": 0.7357,
+        "rerank_max": 6.4269
+      },
+      "missing": [],
+      "p_logo": 0.9738
+    },
+    {
+      "group": "compound_leave#0",
+      "source": "dev",
+      "text": "many sick days",
+      "label": 1,
+      "features": {
+        "logit": 2.3336,
+        "logit_top3_mean": -3.1607,
+        "n_support": 0.2,
+        "coverage": 1.0,
+        "cos": 0.5906,
+        "rerank_max": 2.6159
+      },
+      "missing": [],
+      "p_logo": 0.8352
+    },
+    {
+      "group": "compound_laptops#0",
+      "source": "dev",
+      "text": "often do we get new laptops",
+      "label": 1,
+      "features": {
+        "logit": 4.7536,
+        "logit_top3_mean": -4.4131,
+        "n_support": 0.2,
+        "coverage": 1.0,
+        "cos": 0.6637,
+        "rerank_max": 4.7536
+      },
+      "missing": [],
+      "p_logo": 0.9422
+    },
+    {
+      "group": "compound_laptops#0",
+      "source": "dev",
+      "text": "laptop gets stolen",
+      "label": 1,
+      "features": {
+        "logit": -1.8157,
+        "logit_top3_mean": -5.6084,
+        "n_support": 0.0,
+        "coverage": 0.6667,
+        "cos": 0.4666,
+        "rerank_max": -1.8157
+      },
+      "missing": [
+        "gets"
+      ],
+      "p_logo": 0.2719
+    },
+    {
+      "group": "compound_remote#0",
+      "source": "dev",
+      "text": "home office allowance",
+      "label": 1,
+      "features": {
+        "logit": 9.3072,
+        "logit_top3_mean": -3.9265,
+        "n_support": 0.2,
+        "coverage": 1.0,
+        "cos": 0.6907,
+        "rerank_max": 9.3072
+      },
+      "missing": [],
+      "p_logo": 0.986
+    },
+    {
+      "group": "compound_remote#0",
+      "source": "dev",
+      "text": "whether I can work from another country for a month",
+      "label": 1,
+      "features": {
+        "logit": 2.0563,
+        "logit_top3_mean": -6.6773,
+        "n_support": 0.2,
+        "coverage": 1.0,
+        "cos": 0.555,
+        "rerank_max": 2.0563
+      },
+      "missing": [],
+      "p_logo": 0.7877
+    },
+    {
+      "group": "compound_visitors#0",
+      "source": "dev",
+      "text": "customers visiting next week how do I register them",
+      "label": 1,
+      "features": {
+        "logit": 2.8136,
+        "logit_top3_mean": -1.2811,
+        "n_support": 0.2,
+        "coverage": 0.5718,
+        "cos": 0.6944,
+        "rerank_max": 2.8136
+      },
+      "missing": [
+        "next",
+        "week"
+      ],
+      "p_logo": 0.8563
+    },
+    {
+      "group": "compound_visitors#0",
+      "source": "dev",
+      "text": "sign an NDA",
+      "label": 1,
+      "features": {
+        "logit": -10.2473,
+        "logit_top3_mean": -10.8919,
+        "n_support": 0.0,
+        "coverage": 0.5,
+        "cos": 0.3946,
+        "rerank_max": -10.2473
+      },
+      "missing": [
+        "nda"
+      ],
+      "p_logo": 0.0093
+    },
+    {
+      "group": "compound_whitefield_budget#0",
+      "source": "dev",
+      "text": "book the Whitefield suite for a launch",
+      "label": 1,
+      "features": {
+        "logit": 4.2563,
+        "logit_top3_mean": -2.4762,
+        "n_support": 0.2,
+        "coverage": 1.0,
+        "cos": 0.4926,
+        "rerank_max": 4.2955
+      },
+      "missing": [],
+      "p_logo": 0.8197
+    },
+    {
+      "group": "compound_whitefield_budget#0",
+      "source": "dev",
+      "text": "lead time",
+      "label": 1,
+      "features": {
+        "logit": 4.9986,
+        "logit_top3_mean": 4.0902,
+        "n_support": 1.0,
+        "coverage": 1.0,
+        "cos": 0.5297,
+        "rerank_max": 3.0074
+      },
+      "missing": [],
+      "p_logo": 0.8769
+    },
+    {
+      "group": "compound_whitefield_budget#0",
+      "source": "dev",
+      "text": "much is the catering budget per person",
+      "label": 1,
+      "features": {
+        "logit": 6.1338,
+        "logit_top3_mean": 0.1064,
+        "n_support": 0.4,
+        "coverage": 0.7314,
+        "cos": 0.6984,
+        "rerank_max": 3.9662
+      },
+      "missing": [
+        "person"
+      ],
+      "p_logo": 0.9496
+    },
+    {
+      "group": "compound_three_intents#0",
+      "source": "dev",
+      "text": "cancellation refund if we cancel a week out",
+      "label": 1,
+      "features": {
+        "logit": 1.3246,
+        "logit_top3_mean": 1.1465,
+        "n_support": 1.0,
+        "coverage": 0.6914,
+        "cos": 0.7015,
+        "rerank_max": 1.6638
+      },
+      "missing": [
+        "week"
+      ],
+      "p_logo": 0.8104
+    },
+    {
+      "group": "compound_three_intents#0",
+      "source": "dev",
+      "text": "reschedule instead",
+      "label": 1,
+      "features": {
+        "logit": 2.2393,
+        "logit_top3_mean": -5.2663,
+        "n_support": 0.2,
+        "coverage": 0.5,
+        "cos": 0.6237,
+        "rerank_max": 2.2393
+      },
+      "missing": [
+        "instead"
+      ],
+      "p_logo": 0.7128
+    },
+    {
+      "group": "compound_three_intents#0",
+      "source": "dev",
+      "text": "approves a workshop budget of ten lakh",
+      "label": 1,
+      "features": {
+        "logit": 2.1913,
+        "logit_top3_mean": -2.7297,
+        "n_support": 0.2,
+        "coverage": 0.556,
+        "cos": 0.6784,
+        "rerank_max": 1.8267
+      },
+      "missing": [
+        "ten",
+        "lakh"
+      ],
+      "p_logo": 0.7894
+    },
+    {
+      "group": "compound_partially_unanswerable#0",
+      "source": "dev",
+      "text": "Pune venue has a projector",
+      "label": 1,
+      "features": {
+        "logit": 7.313,
+        "logit_top3_mean": 3.7435,
+        "n_support": 1.0,
+        "coverage": 1.0,
+        "cos": 0.5666,
+        "rerank_max": 6.6966
+      },
+      "missing": [],
+      "p_logo": 0.948
+    },
+    {
+      "group": "compound_partially_unanswerable#0",
+      "source": "dev",
+      "text": "wifi password there",
+      "label": 0,
+      "features": {
+        "logit": -11.3751,
+        "logit_top3_mean": -11.3827,
+        "n_support": 0.0,
+        "coverage": 0.0,
+        "cos": 0.1058,
+        "rerank_max": -7.4359
+      },
+      "missing": [
+        "wifi",
+        "password"
+      ],
+      "p_logo": 0.0008
+    },
+    {
+      "group": "compound_card_payment#0",
+      "source": "dev",
+      "text": "reconcile my corporate card",
+      "label": 1,
+      "features": {
+        "logit": 7.379,
+        "logit_top3_mean": 3.9234,
+        "n_support": 0.4,
+        "coverage": 1.0,
+        "cos": 0.5859,
+        "rerank_max": 7.5305
+      },
+      "missing": [],
+      "p_logo": 0.9553
+    },
+    {
+      "group": "compound_card_payment#0",
+      "source": "dev",
+      "text": "approved claims get paid",
+      "label": 1,
+      "features": {
+        "logit": 7.4688,
+        "logit_top3_mean": 3.807,
+        "n_support": 0.8,
+        "coverage": 1.0,
+        "cos": 0.7666,
+        "rerank_max": 7.6043
+      },
+      "missing": [],
+      "p_logo": 0.9858
+    },
+    {
+      "group": "compound_security#0",
+      "source": "dev",
+      "text": "security incident reporting deadline",
+      "label": 1,
+      "features": {
+        "logit": 6.1664,
+        "logit_top3_mean": -4.5807,
+        "n_support": 0.2,
+        "coverage": 0.7325,
+        "cos": 0.6491,
+        "rerank_max": 6.1664
+      },
+      "missing": [
+        "deadline"
+      ],
+      "p_logo": 0.9345
+    },
+    {
+      "group": "compound_security#0",
+      "source": "dev",
+      "text": "customer personal data classified",
+      "label": 1,
+      "features": {
+        "logit": 8.8244,
+        "logit_top3_mean": 4.2036,
+        "n_support": 0.8,
+        "coverage": 1.0,
+        "cos": 0.7554,
+        "rerank_max": 8.1741
+      },
+      "missing": [],
+      "p_logo": 0.9896
+    },
+    {
+      "group": "refine_guide_travel#0",
+      "source": "dev",
+      "text": "Summarize the travel reimbursement rule for an employee trip",
+      "label": 1,
+      "features": {
+        "logit": 3.7755,
+        "logit_top3_mean": 3.4815,
+        "n_support": 1.0,
+        "coverage": 0.749,
+        "cos": 0.7375,
+        "rerank_max": 5.1735
+      },
+      "missing": [
+        "summarize"
+      ],
+      "p_logo": 0.9278
+    },
+    {
+      "group": "refine_venue_hot_lunch#0",
+      "source": "dev",
+      "text": "Pune venue works for a 40 person workshop",
+      "label": 1,
+      "features": {
+        "logit": 3.8614,
+        "logit_top3_mean": 2.8284,
+        "n_support": 0.6,
+        "coverage": 0.314,
+        "cos": 0.5203,
+        "rerank_max": 4.1026
+      },
+      "missing": [
+        "works",
+        "person",
+        "workshop"
+      ],
+      "p_logo": 0.5819
+    },
+    {
+      "group": "refine_leave_carry_over#0",
+      "source": "dev",
+      "text": "much annual leave do I get",
+      "label": 1,
+      "features": {
+        "logit": 4.5654,
+        "logit_top3_mean": 2.0075,
+        "n_support": 0.6,
+        "coverage": 1.0,
+        "cos": 0.6706,
+        "rerank_max": 4.9962
+      },
+      "missing": [],
+      "p_logo": 0.9421
+    },
+    {
+      "group": "refine_cancel_lockdown#0",
+      "source": "dev",
+      "text": "refund if we cancel the venue",
+      "label": 1,
+      "features": {
+        "logit": 8.0136,
+        "logit_top3_mean": 7.5525,
+        "n_support": 1.0,
+        "coverage": 1.0,
+        "cos": 0.6512,
+        "rerank_max": 8.0136
+      },
+      "missing": [],
+      "p_logo": 0.975
+    },
+    {
+      "group": "refine_claim_amount#0",
+      "source": "dev",
+      "text": "submit an expense claim",
+      "label": 1,
+      "features": {
+        "logit": 9.3516,
+        "logit_top3_mean": 8.4078,
+        "n_support": 1.0,
+        "coverage": 1.0,
+        "cos": 0.6943,
+        "rerank_max": 9.7191
+      },
+      "missing": [],
+      "p_logo": 0.987
+    },
+    {
+      "group": "refine_laptop_engineer#0",
+      "source": "dev",
+      "text": "new laptop",
+      "label": 1,
+      "features": {
+        "logit": -0.38,
+        "logit_top3_mean": -2.889,
+        "n_support": 0.0,
+        "coverage": 1.0,
+        "cos": 0.5074,
+        "rerank_max": -0.38
+      },
+      "missing": [],
+      "p_logo": 0.5599
+    },
+    {
+      "group": "suppress_two_bullets#0",
+      "source": "dev",
+      "text": "cancellation tiers for venues",
+      "label": 1,
+      "features": {
+        "logit": 7.155,
+        "logit_top3_mean": 7.0452,
+        "n_support": 1.0,
+        "coverage": 1.0,
+        "cos": 0.6067,
+        "rerank_max": 7.1369
+      },
+      "missing": [],
+      "p_logo": 0.958
+    },
+    {
+      "group": "suppress_trim#0",
+      "source": "dev",
+      "text": "catering options exist in Pune",
+      "label": 1,
+      "features": {
+        "logit": 8.2555,
+        "logit_top3_mean": 5.7123,
+        "n_support": 0.6,
+        "coverage": 0.6394,
+        "cos": 0.7427,
+        "rerank_max": 7.7432
+      },
+      "missing": [
+        "exist"
+      ],
+      "p_logo": 0.9757
+    },
+    {
+      "group": "suppress_single_sentence#0",
+      "source": "dev",
+      "text": "many sick days do we get",
+      "label": 1,
+      "features": {
+        "logit": 2.0619,
+        "logit_top3_mean": -3.7652,
+        "n_support": 0.2,
+        "coverage": 1.0,
+        "cos": 0.6444,
+        "rerank_max": 2.5037
+      },
+      "missing": [],
+      "p_logo": 0.8683
+    },
+    {
+      "group": "suppress_plain_words#0",
+      "source": "dev",
+      "text": "late booking rule",
+      "label": 1,
+      "features": {
+        "logit": 6.4245,
+        "logit_top3_mean": 5.6233,
+        "n_support": 1.0,
+        "coverage": 1.0,
+        "cos": 0.8234,
+        "rerank_max": 5.7116
+      },
+      "missing": [],
+      "p_logo": 0.9868
+    },
+    {
+      "group": "switch_parental_leave#0",
+      "source": "dev",
+      "text": "per diem abroad",
+      "label": 1,
+      "features": {
+        "logit": 5.0349,
+        "logit_top3_mean": 0.9644,
+        "n_support": 0.4,
+        "coverage": 0.5796,
+        "cos": 0.6779,
+        "rerank_max": 4.802
+      },
+      "missing": [
+        "abroad"
+      ],
+      "p_logo": 0.9037
+    },
+    {
+      "group": "switch_parental_leave#1",
+      "source": "dev",
+      "text": "many parental leave weeks do secondary caregivers get",
+      "label": 1,
+      "features": {
+        "logit": 8.9464,
+        "logit_top3_mean": 2.4225,
+        "n_support": 0.4,
+        "coverage": 1.0,
+        "cos": 0.9143,
+        "rerank_max": 9.3028
+      },
+      "missing": [],
+      "p_logo": 0.9964
+    },
+    {
+      "group": "switch_lost_device#0",
+      "source": "dev",
+      "text": "caterers can we hire",
+      "label": 1,
+      "features": {
+        "logit": 2.1106,
+        "logit_top3_mean": 1.2119,
+        "n_support": 0.4,
+        "coverage": 0.4016,
+        "cos": 0.5399,
+        "rerank_max": 2.3258
+      },
+      "missing": [
+        "hire"
+      ],
+      "p_logo": 0.5397
+    },
+    {
+      "group": "switch_lost_device#1",
+      "source": "dev",
+      "text": "early must lost devices be reported",
+      "label": 1,
+      "features": {
+        "logit": 6.6739,
+        "logit_top3_mean": -1.4104,
+        "n_support": 0.2,
+        "coverage": 1.0,
+        "cos": 0.7415,
+        "rerank_max": 5.7775
+      },
+      "missing": [],
+      "p_logo": 0.9793
+    },
+    {
+      "group": "insufficient_parking#0",
+      "source": "dev",
+      "text": "parking fee at the Pune venues",
+      "label": 0,
+      "features": {
+        "logit": 0.4893,
+        "logit_top3_mean": -0.1532,
+        "n_support": 0.2,
+        "coverage": 0.3241,
+        "cos": 0.5852,
+        "rerank_max": 0.2126
+      },
+      "missing": [
+        "parking",
+        "fee"
+      ],
+      "p_logo": 0.5236
+    },
+    {
+      "group": "insufficient_stock#0",
+      "source": "dev",
+      "text": "company's stock price today",
+      "label": 0,
+      "features": {
+        "logit": -10.8516,
+        "logit_top3_mean": -10.9782,
+        "n_support": 0.0,
+        "coverage": 0.1256,
+        "cos": 0.1336,
+        "rerank_max": -10.5462
+      },
+      "missing": [
+        "stock",
+        "price",
+        "today"
+      ],
+      "p_logo": 0.0013
+    },
+    {
+      "group": "insufficient_gym#0",
+      "source": "dev",
+      "text": "company offer a gym membership",
+      "label": 0,
+      "features": {
+        "logit": -11.1225,
+        "logit_top3_mean": -11.1458,
+        "n_support": 0.0,
+        "coverage": 0.417,
+        "cos": 0.2303,
+        "rerank_max": -10.9312
+      },
+      "missing": [
+        "gym",
+        "membership"
+      ],
+      "p_logo": 0.0037
+    },
+    {
+      "group": "insufficient_ceo#0",
+      "source": "dev",
+      "text": "CEO of Veltrix",
+      "label": 0,
+      "features": {
+        "logit": -0.1699,
+        "logit_top3_mean": -0.7711,
+        "n_support": 0.0,
+        "coverage": 0.4246,
+        "cos": 0.4183,
+        "rerank_max": 0.3615
+      },
+      "missing": [
+        "ceo"
+      ],
+      "p_logo": 0.2564
     }
   ]
 }

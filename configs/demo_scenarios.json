@@ -4,11 +4,27 @@
     "title": "Demo 1 - Retrieval starts while the user is still speaking",
     "narration": "The controller WAITs on the vague opening, RETRIEVEs as soon as the request is specific, and refines the search as more words arrive. The final answer is ready almost immediately after the user stops.",
     "turns": [
-      {"chunks": [{"t": 0.0, "text": "So I'm heading to Singapore next month"},
-                  {"t": 2.8, "text": "to visit a customer, and before I book anything"},
-                  {"t": 6.0, "text": "I'd like to know the daily meal allowance"},
-                  {"t": 8.8, "text": "for international travel."}],
-       "end_t": 10.3}
+      {
+        "chunks": [
+          {
+            "t": 0.0,
+            "text": "So I'm heading to Singapore next month"
+          },
+          {
+            "t": 2.8,
+            "text": "to visit a customer, and before I book anything"
+          },
+          {
+            "t": 6.0,
+            "text": "I'd like to know the daily meal allowance"
+          },
+          {
+            "t": 8.8,
+            "text": "for international travel."
+          }
+        ],
+        "end_t": 10.3
+      }
     ]
   },
   "multi_intent": {
@@ -16,21 +32,56 @@
     "title": "Demo 2 - One sentence, three searches, one grounded answer",
     "narration": "The Theme 4 guide's own example. One utterance becomes three sub-queries; the city is carried into each; they are retrieved in parallel, fused (a duplicate FAQ chunk is dropped) and answered with citations.",
     "turns": [
-      {"chunks": [{"t": 0.0, "text": "I need to plan a customer"},
-                  {"t": 0.8, "text": "workshop in Pune for 30 people,"},
-                  {"t": 1.6, "text": "and I need the cancellation policy and the catering options."}],
-       "end_t": 2.1}
+      {
+        "chunks": [
+          {
+            "t": 0.0,
+            "text": "I need to plan a customer"
+          },
+          {
+            "t": 0.8,
+            "text": "workshop in Pune for 30 people,"
+          },
+          {
+            "t": 1.6,
+            "text": "and I need the cancellation policy and the catering options."
+          }
+        ],
+        "end_t": 2.1
+      }
     ]
   },
-  "late_constraint": {
+  "refinement": {
     "label": "Late-arriving detail",
     "title": "Demo 3 - A late detail refines the answer (v1 -> v2) instead of restarting",
     "narration": "Turn 2 is classified as a refinement. Only the delta is searched; v1's claims and citations are kept; the late-booking and international rules are added as v2.",
     "turns": [
-      {"chunks": [{"t": 0.0, "text": "Summarize the travel"}, {"t": 0.7, "text": "reimbursement rule for an employee trip."}],
-       "end_t": 1.2},
-      {"chunks": [{"t": 0.0, "text": "The trip was international"}, {"t": 0.8, "text": "and the booking was made after travel."}],
-       "end_t": 1.3}
+      {
+        "chunks": [
+          {
+            "t": 0.0,
+            "text": "Summarize the travel"
+          },
+          {
+            "t": 0.7,
+            "text": "reimbursement rule for an employee trip."
+          }
+        ],
+        "end_t": 1.2
+      },
+      {
+        "chunks": [
+          {
+            "t": 0.0,
+            "text": "The trip was international"
+          },
+          {
+            "t": 0.8,
+            "text": "and the booking was made after travel."
+          }
+        ],
+        "end_t": 1.3
+      }
     ]
   },
   "suppression": {
@@ -38,26 +89,72 @@
     "title": "Demo 4 - Presentation-only request: retrieval SUPPRESSED",
     "narration": "The second turn only asks to reshape the previous answer. The controller suppresses retrieval; the answer is rebuilt from session memory with the same citations.",
     "turns": [
-      {"chunks": [{"t": 0.0, "text": "What are the cancellation"}, {"t": 0.7, "text": "terms for an external venue?"}],
-       "end_t": 1.2},
-      {"chunks": [{"t": 0.0, "text": "Make your previous"}, {"t": 0.6, "text": "answer shorter."}], "end_t": 1.0}
+      {
+        "chunks": [
+          {
+            "t": 0.0,
+            "text": "What are the cancellation"
+          },
+          {
+            "t": 0.7,
+            "text": "terms for an external venue?"
+          }
+        ],
+        "end_t": 1.2
+      },
+      {
+        "chunks": [
+          {
+            "t": 0.0,
+            "text": "Make your previous"
+          },
+          {
+            "t": 0.6,
+            "text": "answer shorter."
+          }
+        ],
+        "end_t": 1.0
+      }
     ]
   },
-  "abstention": {
+  "insufficient_evidence": {
     "label": "Insufficient evidence",
     "title": "Demo 5 - Answer what the corpus supports, abstain on the rest",
     "narration": "The projector part is answered from the venue section; the wifi password is not in the corpus, so it is explicitly flagged instead of guessed.",
     "turns": [
-      {"chunks": [{"t": 0.0, "text": "Which Pune venue has a projector,"}, {"t": 1.0, "text": "and what is the wifi password there?"}],
-       "end_t": 2.3}
+      {
+        "chunks": [
+          {
+            "t": 0.0,
+            "text": "Which Pune venue has a projector,"
+          },
+          {
+            "t": 1.0,
+            "text": "and what is the wifi password there?"
+          }
+        ],
+        "end_t": 2.3
+      }
     ]
   },
-  "abstention_full": {
+  "insufficient_evidence_full": {
     "label": "Nothing in corpus",
     "title": "Demo 5b - Nothing relevant in the corpus: explicit abstention",
     "narration": "No claim is made; the uncertainty field names the terms the evidence does not contain.",
     "turns": [
-      {"chunks": [{"t": 0.0, "text": "Does the company offer"}, {"t": 0.8, "text": "a gym membership?"}], "end_t": 1.8}
+      {
+        "chunks": [
+          {
+            "t": 0.0,
+            "text": "Does the company offer"
+          },
+          {
+            "t": 0.8,
+            "text": "a gym membership?"
+          }
+        ],
+        "end_t": 1.8
+      }
     ]
   }
 }

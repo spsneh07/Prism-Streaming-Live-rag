@@ -5,7 +5,8 @@
     python scripts/demo_stream.py --list                       # scenario names
     python scripts/demo_stream.py --scenario suppression --speed 4
 
-Scenarios: early_retrieval, multi_intent, late_constraint, suppression, abstention (+ abstention_full).
+Scenarios: early_retrieval, multi_intent, refinement, suppression, insufficient_evidence
+(+ insufficient_evidence_full). Old names late_constraint / abstention still work.
 """
 import argparse
 import asyncio
@@ -15,6 +16,8 @@ import _bootstrap  # noqa: F401
 from app.config import get_settings
 from app.runtime import Runtime
 
+ALIASES = {"late_constraint": "refinement", "abstention": "insufficient_evidence",
+           "abstention_full": "insufficient_evidence_full"}
 SHOW = {"SYNTHESIS_PREPARED", "TRANSCRIPT_CHUNK", "RETRIEVAL_DECISION", "QUERY_CREATED", "RETRIEVAL_STARTED", "RETRIEVAL_REUSED",
         "UTTERANCE_END", "EVIDENCE_FUSED", "CITATION_VALIDATED", "ANSWER_VERSION_UPDATED", "RETRIEVAL_SUPPRESSED",
         "FINAL_RESPONSE"}
@@ -56,6 +59,7 @@ def show(ev: dict) -> None:
 
 async def main(names: list[str], speed: float) -> None:
     scen = json.loads((get_settings().configs_dir / "demo_scenarios.json").read_text(encoding="utf-8"))
+    names = [ALIASES.get(n, n) for n in names]
     unknown = [n for n in names if n not in scen]
     if unknown:
         raise SystemExit(f"unknown scenario(s) {unknown}; choose from {list(scen)}")

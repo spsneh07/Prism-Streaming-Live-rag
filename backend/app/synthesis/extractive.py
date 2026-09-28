@@ -48,21 +48,45 @@ class ExtractiveSynthesizer:
         self.min_dense_sim = min_dense_sim
         self.coverage = coverage
         # Evidence-sufficiency gate, calibrated per corpus by scripts/calibrate_sufficiency.py:
-        # logistic regression over (best sentence logit, answer-coverage, best sentence cosine).
-        # Uncalibrated fallback: logit threshold only.
+        # logistic regression over named evidence features (see ``features``). Three outcomes:
+        #   p >= threshold                  -> answer
+        #   hedge_threshold <= p < threshold -> answer, flagged as weakly supported
+        #   p <  hedge_threshold            -> abstain
+        # Uncalibrated fallback: best-sentence logit threshold only.
         self.gate = gate or {"type": "threshold", "t_low": min_rerank_logit}
 
-    def p_sufficient(self, best_logit: float, cov: float, cos: float) -> float | None:
+    @staticmethod
+    def features(logits: list[float], cos_max: float, coverage: float, rerank_max: float | None) -> dict:
+        """Evidence features for one sub-query. Aggregates over the top evidence, not only
+        the single best sentence, so several consistent moderately-scored sentences count."""
+        top = sorted(logits, reverse=True)[:3]
+        best = top[0]
+        return {
+            "logit": best,                                        # best sentence (legacy name)
+            "logit_top3_mean": sum(top) / len(top),
+            "n_support": min(sum(1 for x in logits if x >= 0.0), 5) / 5.0,
+            "coverage": coverage,
+            "cos": cos_max,
+            "rerank_max": best if rerank_max is None else rerank_max,
+        }
+
+    def p_sufficient(self, feats: dict) -> float | None:
         g = self.gate
         if g.get("type") != "logreg":
             return None
-        z = g["intercept"] + sum(c * (x - m) / s for c, x, m, s in
-                                 zip(g["coef"], (best_logit, cov, cos), g["mean"], g["scale"]))
+        names = g.get("features", ["logit", "coverage", "cos"])
+        z = g["intercept"] + sum(c * (feats[n] - m) / sd for c, n, m, sd in zip(g["coef"], names, g["mean"], g["scale"]))
         return 1.0 / (1.0 + math.exp(-z))
 
-    def decide(self, best_logit: float, cov: float, cos: float) -> bool:
-        p = self.p_sufficient(best_logit, cov, cos)
-        return best_logit >= self.gate["t_low"] if p is None else p >= self.gate.get("threshold", 0.5)
+    def support_level(self, feats: dict) -> tuple[str, float | None]:
+        p = self.p_sufficient(feats)
+        if p is None:
+            return ("strong" if feats["logit"] >= self.gate["t_low"] else "none"), None
+        if p >= self.gate.get("threshold", 0.5):
+            return "strong", p
+        if p >= self.gate.get("hedge_threshold", 1.1):
+            return "weak", p
+        return "none", p
 
     def candidates(self, sq: SubQuery, evidence: list[ScoredChunk]) -> tuple[list[tuple], dict]:
         """Score every sentence of the sub-query's evidence and decide sufficiency.
@@ -92,11 +116,12 @@ class ExtractiveSynthesizer:
                 focus, [f"{self.index.by_id[c[3]].source_title} - {self.index.by_id[c[3]].section_title}. {c[2]}"
                         for c in cands])
             cands = [(lg, cos, t, cid, emb) for lg, (_, cos, t, cid, emb) in zip(logits, cands)]
-            best = max(c[0] for c in cands)
-            best_cos = max(c[1] for c in cands)
-            p = self.p_sufficient(best, cov, best_cos)
-            suff = {"sufficient": self.decide(best, cov, best_cos), "signal": "sentence_ce_logit+coverage",
-                    "best": round(best, 3), "coverage": round(cov, 3), "best_cos": round(best_cos, 3),
+            rr = [e.signals["rerank"] for e in evidence if "rerank" in e.signals]
+            feats = self.features([c[0] for c in cands], max(c[1] for c in cands), cov, max(rr) if rr else None)
+            level, p = self.support_level(feats)
+            suff = {"sufficient": level != "none", "support": level, "signal": "sentence_ce_logit+coverage",
+                    "best": round(feats["logit"], 3), "coverage": round(cov, 3), "best_cos": round(feats["cos"], 3),
+                    "features": {k: round(v, 4) for k, v in feats.items()},
                     "p_sufficient": None if p is None else round(p, 3), "missing_terms": missing}
         else:
             best = max(self.index.dense_sim(sq.text, e.chunk_id) for e in evidence)
@@ -133,7 +158,10 @@ class ExtractiveSynthesizer:
                 uncertainty.append(f"The provided corpus does not contain enough information to verify: "
                                    f"\"{sq.source_span or sq.text}\"{miss}.")
                 continue
-            ce = suff["signal"].startswith("sentence_ce_logit")
+            if suff.get("support") == "weak":
+                miss = f"; not found in the evidence: {', '.join(suff['missing_terms'])}" if suff.get("missing_terms") else ""
+                uncertainty.append(f"Weak evidence for \"{sq.source_span or sq.text}\": the cited sections only partly "
+                                   f"address it (P(sufficient)={suff['p_sufficient']}{miss}). Verify against the sources.")
             picked: list[tuple[str, str, np.ndarray]] = []
             for score, cos, text, cid, emb in cands:
                 if len(picked) >= self.n:
