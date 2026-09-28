@@ -1,6 +1,6 @@
 # Presentation facts (auto-generated; measured or implemented facts only)
 
-_Source: `results/benchmark.json` (2026-09-28 18:38:33); held-out set `data/benchmark/heldout_streams.jsonl` (63 cases / 77 turns); same CPU machine for every system. Regenerate with `python scripts/report.py`._
+_Source: `results/benchmark.json` (2026-09-28 23:46:37); held-out set `data/benchmark/heldout_streams.jsonl` (63 cases / 77 turns); same CPU machine for every system. Regenerate with `python scripts/report.py`._
 
 > **Label for every slide that shows a number: "Development benchmark on 16-document synthetic corpus."**
 >
@@ -45,7 +45,7 @@ Development benchmark on 16-document synthetic corpus. Benchmark for every row: 
 
 | Metric | Conventional | Streaming Live RAG | Benchmark | Corpus |
 |---|---|---|---|---|
-| Retrieval starts before the user finishes | 0% | **90%** (mean lead 4.422 s) | held-out split | synthetic, 16 docs |
+| Retrieval starts before the user finishes | 0% | **90%** (mean lead 4.418 s) | held-out split | synthetic, 16 docs |
 | Compound requests correctly split | 0% | **78%** | held-out split | synthetic, 16 docs |
 | Answer cites a correct section | 73% | 73% | held-out split | synthetic, 16 docs |
 | Retrieval recall@3 | 95% | 96% | held-out split | synthetic, 16 docs |
@@ -53,13 +53,13 @@ Development benchmark on 16-document synthetic corpus. Benchmark for every row: 
 | Searches on turns that need none | 8 | **1** | held-out split | synthetic, 16 docs |
 | Correct abstention on unanswerable turns | 33% | 83% | held-out split | synthetic, 16 docs |
 | Citation support / fabricated ids | 100% / 0 | 100% / 0 | held-out split | synthetic, 16 docs |
-| Time to first answer token after speech ends (mean) | 17 ms | 32 ms | held-out split | synthetic, 16 docs |
+| Time to first answer token after speech ends (mean) | 17 ms | 47 ms | held-out split | synthetic, 16 docs |
 | LLM cost per turn | $0 | $0 | held-out split | synthetic, 16 docs |
 
 ## Ablations
 Development benchmark on 16-document synthetic corpus. Unless stated otherwise: held-out split (63 cases / 77 turns). Ablations other than early retrieval ran at 5× pacing, so only their quality metrics are comparable.
 
-- **Early retrieval on vs off** (same pipeline, real time): TTFT 206 ms → 32 ms.
+- **Early retrieval on vs off** (same pipeline, real time): TTFT 247 ms → 47 ms.
 - **Model-based vs rule-based controller:**
   - intent accuracy 99% vs 81%;
   - refinement continuity 100% vs 0%;
