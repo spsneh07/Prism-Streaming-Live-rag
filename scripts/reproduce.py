@@ -69,6 +69,33 @@ def pins_check():
     return bad
 
 
+def docker_verify(log, env):
+    """Build the image, start it with one command, check it serves, run the tests inside it."""
+    denv = {k: v for k, v in env.items() if k not in ("HF_HOME", "HF_HUB_OFFLINE", "TRANSFORMERS_OFFLINE")}
+    if not run("docker compose build", ["docker", "compose", "build", "--no-cache"], ROOT, log, denv):
+        return "FAIL"
+    ok = run("docker compose up -d", ["docker", "compose", "up", "-d", "app"], ROOT, log, denv)
+    try:
+        t0, served = time.perf_counter(), False
+        while ok and time.perf_counter() - t0 < 180:
+            try:
+                health = json.loads(urllib.request.urlopen("http://localhost:8000/api/health", timeout=5).read())
+                page = urllib.request.urlopen("http://localhost:8000/", timeout=5).read()
+                served = bool(health) and b"Streaming Live RAG" in page
+                break
+            except Exception:
+                time.sleep(3)
+        log.append({"step": "container serves /api/health and /", "cmd": "GET http://localhost:8000/api/health, /",
+                    "exit_code": 0 if served else 1, "seconds": round(time.perf_counter() - t0, 1), "tail": []})
+        print(f"[{'ok' if served else 'FAIL'}] container serves /api/health and /", flush=True)
+        ok = ok and served
+        ok = run("tests inside the container", ["docker", "compose", "--profile", "eval", "run", "--rm", "tests"],
+                 ROOT, log, denv) and ok
+    finally:
+        run("docker compose down", ["docker", "compose", "down"], ROOT, log, denv)
+    return "PASS" if ok else "FAIL"
+
+
 def docker_static():
     checks = {}
     df = (ROOT / "Dockerfile").read_text()
@@ -139,15 +166,18 @@ def main() -> None:
                            capture_output=True, text=True)
         report["pip_dry_run"] = "PASS" if p.returncode == 0 else f"FAIL: {(p.stderr or p.stdout).strip()[-300:]}"
     if shutil.which("docker"):
-        d_ok = run("docker compose build", ["docker", "compose", "build"], ROOT, log, env)
-        report["docker"] = "PASS" if d_ok else "FAIL"
+        report["docker"] = docker_verify(log, env)
+        report["docker_note"] = ("docker compose build (fresh model download inside the image), docker compose up, "
+                                 "/api/health and / served from the container, pytest inside the container")
     else:
         checks = docker_static()
         report["docker"] = "NOT VERIFIED"
         report["docker_note"] = "docker CLI not installed on this machine; static checks only"
         report["docker_static_checks"] = checks
     (ROOT / "results").mkdir(exist_ok=True)
-    (ROOT / "results" / "reproducibility.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+    # Home-directory paths are written as "~" so the committed report carries no local user name.
+    text = json.dumps(report, indent=2).replace(json.dumps(str(Path.home()))[1:-1], "~")
+    (ROOT / "results" / "reproducibility.json").write_text(text, encoding="utf-8")
     shutil.rmtree(tmp, ignore_errors=True)
     print(json.dumps({k: report[k] for k in ("local_replay", "docker", "pins_mismatch")}, indent=2))
 

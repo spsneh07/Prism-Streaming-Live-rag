@@ -18,6 +18,7 @@ import time
 from pathlib import Path
 
 import _bootstrap  # noqa: F401
+from _gates import g1_gate
 from app.config import get_settings
 from app.models.schemas import SubQuery
 from app.reranking.rerankers import NoopReranker
@@ -264,20 +265,7 @@ def gates(S, repro) -> list[dict]:
         return {"gate": gid, "name": name, "metric": metric, "measured": value, "target": target,
                 "status": "PASS" if passed is True else ("FAIL" if passed is False else passed), "method": method}
 
-    if repro is None:
-        g1 = g("G1", "Reproducibility", "clean-copy replay + container launch", "not run",
-               "container launches with one command on a clean machine; replay completes unattended",
-               "NOT RUN", "scripts/reproduce.py")
-    else:
-        local_ok = repro.get("local_replay") == "PASS"
-        docker_ok = repro.get("docker") == "PASS"
-        status = True if (local_ok and docker_ok) else ("NOT VERIFIED" if local_ok else False)
-        g1 = g("G1", "Reproducibility", "clean-copy replay (local) / container build",
-               f"local replay: {repro.get('local_replay')}; docker: {repro.get('docker')}",
-               "container launches with one command on a clean machine; replay completes unattended", status,
-               "scripts/reproduce.py copies the repo without derived files into an empty directory and runs "
-               "ingest -> index -> calibration -> tests -> quick benchmark; Docker checked statically when the "
-               "docker CLI is unavailable")
+    g1 = g1_gate(repro)
     return [
         g1,
         g("G2", "Early retrieval", "share of eligible turns whose first retrieval starts before utterance end",

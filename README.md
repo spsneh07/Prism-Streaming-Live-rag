@@ -102,7 +102,7 @@ python scripts/reproduce.py
 - **Tests:** 61 (60 pass; 1 is a strict expected failure documenting a known limitation: an audience phrase such as "for a new joiner" pulls a presentation request toward refinement).
 - **`benchmark.py`:** runs the held-out set at real-time pacing (about 25 minutes) and writes `results/`. Use `--set dev` for the development set and `--quick` for 5× pacing.
 - **`report.py`:** regenerates `docs/evaluation.md`, `docs/presentation_facts.md` and `docs/final_demo_script.md` from `results/`.
-- **`reproduce.py`:** the G1 replay. It copies the repository without derived files into an empty directory and, with an empty Hugging Face cache in offline mode, runs index → calibration → tests → quick dev benchmark → all five demos → a backend smoke test. `--pip-dry-run` also resolves the pinned requirements. Model weights are copied from the local `data/models/`, so the download step itself is not exercised by the replay.
+- **`reproduce.py`:** the G1 replay. It copies the repository without derived files into an empty directory and, with an empty Hugging Face cache in offline mode, runs index → calibration → tests → quick dev benchmark → all five demos → a backend smoke test. `--pip-dry-run` also resolves the pinned requirements. Model weights are copied from the local `data/models/` for the local replay; the Docker step then builds the image from scratch (downloading the models) and starts it, runs the tests inside it and removes it.
 
 ### Docker
 
@@ -116,13 +116,15 @@ Tests and the benchmark in containers:
 docker compose --profile eval run --rm tests
 ```
 
-> Docker was **not available** in the development environment, so the image has **not** been built. `scripts/reproduce.py` validates it statically instead:
-> - every COPY source exists;
-> - the CMD target exists;
-> - `.dockerignore` is present;
-> - a CPU torch 2.6.0 wheel is published for cp313 / linux x86_64.
+The first `docker compose up --build` downloads CPU torch and the model weights and builds the index inside the image, which takes a few minutes. The dashboard is then at http://localhost:8000.
+
+> **Docker verification (G1).** Verified on the development machine (Windows 11, Docker Desktop 29.8.1, Linux engine) by `python scripts/reproduce.py`:
+> - `docker compose build --no-cache`: the image built, downloading the models inside the image;
+> - `docker compose up -d app`: the container started and served `/api/health` and the dashboard;
+> - `docker compose --profile eval run --rm tests`: 60 passed, 1 expected failure, inside the container;
+> - `docker compose down`.
 >
-> G1 is therefore reported as **NOT VERIFIED**, not PASS.
+> The build and start were run as two commands (equivalent to `docker compose up --build`). Only one machine was used. Verify again on the judging machine before relying on it; see `results/reproducibility.json` and `docs/evaluation.md` (G1).
 
 ## 4. Evaluation
 
@@ -182,7 +184,8 @@ configs/            controller_train.jsonl, calibration_queries.jsonl, demo_scen
 scripts/            build_index, calibrate_sufficiency, demo_stream, benchmark, report, reproduce,
                     make_heldout, make_dev_set, download_models
 docs/               architecture, evaluation, design_decisions, limitations, presentation_facts,
-                    final_demo_script, ai_usage_log, release_checklist
+                    final_demo_script, ai_usage_log, release_checklist, FINAL_RUNBOOK,
+                    submission_checklist
 results/            benchmark.json/csv, latency.json, calibration.json, reproducibility.json, plots/, dev/
 ```
 
@@ -194,13 +197,14 @@ See [docs/limitations.md](docs/limitations.md). In short:
 - a decomposer that relies on surface cues;
 - extractive (not fluent) answers;
 - simulated speech;
-- Docker not built here (G1 is NOT VERIFIED; the local clean-copy replay passes).
+- Docker verified on one development machine only (G1 PASS there); verify on a second Docker-enabled machine before submission.
 
 ## 10. Submission checklist
 
+The full list, with verified status, is in [docs/submission_checklist.md](docs/submission_checklist.md); exact commands are in [docs/FINAL_RUNBOOK.md](docs/FINAL_RUNBOOK.md). Still open for the team:
+
 - [ ] Public GitHub repository with this README (the official reference PDFs are git-ignored; the Theme 4 guide carries a personal watermark)
-- [ ] `python scripts/benchmark.py && python scripts/report.py` re-run on the final commit
-- [ ] Demo video (≤ 5 min), following `docs/final_demo_script.md`
+- [ ] Demo video (≤ 5 min), following `docs/final_demo_script.md`; add its link here
 - [ ] Deck `CollegeName_TeamName.pptx` from the provided template, using `docs/presentation_facts.md`
 - [ ] AI Usage Disclosure Form completed from `docs/ai_usage_log.md` (team fields filled in by the team)
 - [ ] Release tag **`PRISM_GENAI_HACKATHON_Y2026`** on the final commit, created only once everything above is in that commit

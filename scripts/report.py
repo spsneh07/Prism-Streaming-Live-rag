@@ -11,6 +11,8 @@ import json
 import subprocess
 from pathlib import Path
 
+from _gates import g1_gate
+
 ROOT = Path(__file__).resolve().parents[1]
 R = ROOT / "results"
 
@@ -124,6 +126,8 @@ def main():
     cal = load(R / "calibration.json")
     repro = load(R / "reproducibility.json")
     meta, S, G, RE = b["meta"], b["summary"], b["gates"], b["retrieval_eval"]
+    # G1 follows the latest reproduce.py run, not the one available at benchmark time.
+    G = [g1_gate(repro) if g["gate"] == "G1" else g for g in G]
     rows = list(csv.DictReader((R / "benchmark.csv").open(encoding="utf-8")))
     p, bl, ne = S["proposed"], S["baseline"], S["ablation_no_early_retrieval"]
     abl = ["proposed"] + [k for k in S if k.startswith("ablation")]
@@ -328,15 +332,22 @@ Known dev-set failures are tracked as strict expected-failure tests in `backend/
 {repro_block}"""
     (ROOT / "docs" / "evaluation.md").write_text(ev, encoding="utf-8")
 
-    gate_rows = "".join(f"| {g['gate']} {g['name']} | {fmt(g['measured'])} | {g['target']} | {g['status']} |\n" for g in G)
+    HB = f"Held-out split ({meta['num_cases']} cases / {meta['num_turns']} turns), development benchmark"
+    CP = "16-document synthetic corpus"
+    gate_rows = "".join(
+        f"| {g['gate']} {g['name']} | {fmt(g['measured'])} | {g['target']} | {g['status']} | "
+        f"{'Clean-copy replay + Docker build/run on the development machine' if g['gate'] == 'G1' else 'held-out split'} "
+        f"| synthetic, 16 docs |\n" for g in G)
     rc, pr = S["ablation_rule_controller"], S["proposed"]
     pf = f"""# Presentation facts (auto-generated; measured or implemented facts only)
 
 _Source: `results/benchmark.json` ({meta['generated_at']}); held-out set `{meta['set_file']}` ({meta['num_cases']} cases / {meta['num_turns']} turns); same CPU machine for every system. Regenerate with `python scripts/report.py`._
 
-> **What these numbers are:** a *development benchmark on a 16-document synthetic corpus*, built by the team for development.
+> **Label for every slide that shows a number: "Development benchmark on 16-document synthetic corpus."**
 >
-> **What they are not:** an official Samsung / hackathon evaluation. No official Theme 4 corpus or official benchmark was available or run. Use this wording on slides.
+> **What these numbers are:** measurements from a development benchmark that was written, together with the corpus, for developing this prototype. The held-out split was frozen before the final fixes, but it was written by the same author as the system.
+>
+> **What they are not:** official Samsung benchmark scores, official hackathon evaluation results, production measurements, or user-study results. No official Theme 4 corpus or official benchmark was available or run. Latencies come from one Windows laptop CPU with simulated speech.
 
 > {corpus_warn}
 
@@ -358,25 +369,31 @@ Theme 4, Streaming Live RAG: retrieve the right context mid-conversation from on
 - **Grounding:** extractive claims plus a validator (the id exists, was retrieved, and text and numbers match), plus a calibrated abstention gate that names the missing terms.
 - **Telemetry:** one monotonic clock for every event. It is shown live in the dashboard and exported as JSONL.
 
-## Evaluation gates (held-out)
-| Gate | Measured | Target | Status |
-|---|---|---|---|
-{gate_rows}
-## Headline results: development benchmark on a 16-document synthetic corpus (held-out split): conventional RAG vs Streaming Live RAG
-| Metric | Conventional | Streaming Live RAG |
-|---|---|---|
-| Retrieval starts before the user finishes | {pct(bl['early_retrieval_rate'])} | **{pct(p['early_retrieval_rate'])}** (mean lead {fmt(p['mean_retrieval_lead_s'])} s) |
-| Compound requests correctly split | {pct(bl['multi_intent_identification'])} | **{pct(p['multi_intent_identification'])}** |
-| Answer cites a correct section | {pct(bl['citation_hit_rate'])} | {f"**{pct(p['citation_hit_rate'])}**" if d_hit > 0.005 else pct(p['citation_hit_rate'])} |
-| Retrieval recall@3 | {pct(bl['retrieval_recall@3'])} | {pct(p['retrieval_recall@3'])} |
-| Late details handled without restart | {pct(bl['refinement_state_continuity'])} | **{pct(p['refinement_state_continuity'])}** |
-| Searches on turns that need none | {bl['unnecessary_retrieval_calls']} | **{p['unnecessary_retrieval_calls']}** |
-| Correct abstention on unanswerable turns | {pct(bl['abstention_accuracy'])} | {pct(p['abstention_accuracy'])} |
-| Citation support / fabricated ids | {pct(bl['citation_support_rate'])} / {bl['fabricated_citations']} | {pct(p['citation_support_rate'])} / {p['fabricated_citations']} |
-| Time to first answer token after speech ends (mean) | {ms(bl['ttft_s_mean'])} | {ms(p['ttft_s_mean'])} |
-| LLM cost per turn | $0 | $0 |
+## Evaluation gates
+Development benchmark on 16-document synthetic corpus.
 
-## Ablations (held-out)
+| Gate | Measured | Target | Status | Benchmark | Corpus |
+|---|---|---|---|---|---|
+{gate_rows}
+## Headline results: conventional RAG vs Streaming Live RAG
+Development benchmark on 16-document synthetic corpus. Benchmark for every row: {HB}; both systems on the same CPU machine.
+
+| Metric | Conventional | Streaming Live RAG | Benchmark | Corpus |
+|---|---|---|---|---|
+| Retrieval starts before the user finishes | {pct(bl['early_retrieval_rate'])} | **{pct(p['early_retrieval_rate'])}** (mean lead {fmt(p['mean_retrieval_lead_s'])} s) | held-out split | synthetic, 16 docs |
+| Compound requests correctly split | {pct(bl['multi_intent_identification'])} | **{pct(p['multi_intent_identification'])}** | held-out split | synthetic, 16 docs |
+| Answer cites a correct section | {pct(bl['citation_hit_rate'])} | {f"**{pct(p['citation_hit_rate'])}**" if d_hit > 0.005 else pct(p['citation_hit_rate'])} | held-out split | synthetic, 16 docs |
+| Retrieval recall@3 | {pct(bl['retrieval_recall@3'])} | {pct(p['retrieval_recall@3'])} | held-out split | synthetic, 16 docs |
+| Late details handled without restart | {pct(bl['refinement_state_continuity'])} | **{pct(p['refinement_state_continuity'])}** | held-out split | synthetic, 16 docs |
+| Searches on turns that need none | {bl['unnecessary_retrieval_calls']} | **{p['unnecessary_retrieval_calls']}** | held-out split | synthetic, 16 docs |
+| Correct abstention on unanswerable turns | {pct(bl['abstention_accuracy'])} | {pct(p['abstention_accuracy'])} | held-out split | synthetic, 16 docs |
+| Citation support / fabricated ids | {pct(bl['citation_support_rate'])} / {bl['fabricated_citations']} | {pct(p['citation_support_rate'])} / {p['fabricated_citations']} | held-out split | synthetic, 16 docs |
+| Time to first answer token after speech ends (mean) | {ms(bl['ttft_s_mean'])} | {ms(p['ttft_s_mean'])} | held-out split | synthetic, 16 docs |
+| LLM cost per turn | $0 | $0 | held-out split | synthetic, 16 docs |
+
+## Ablations
+Development benchmark on 16-document synthetic corpus. Unless stated otherwise: held-out split ({meta['num_cases']} cases / {meta['num_turns']} turns). Ablations other than early retrieval ran at 5× pacing, so only their quality metrics are comparable.
+
 - **Early retrieval on vs off** (same pipeline, real time): TTFT {ms(ne['ttft_s_mean'])} → {ms(p['ttft_s_mean'])}.
 - **Model-based vs rule-based controller:**
   - intent accuracy {pct(pr['intent_accuracy'])} vs {pct(rc['intent_accuracy'])};
@@ -384,7 +401,7 @@ Theme 4, Streaming Live RAG: retrieve the right context mid-conversation from on
   - early retrieval {pct(pr['early_retrieval_rate'])} vs {pct(rc['early_retrieval_rate'])};
   - premature retrieval {pct(pr['premature_retrieval_rate'])} vs {pct(rc['premature_retrieval_rate'])}.
 - **Hybrid vs dense-only** (end-to-end citation hit): hybrid + rerank {pct(p['citation_hit_rate'])}, hybrid without rerank {pct(S['ablation_hybrid_no_rerank']['citation_hit_rate'])}, dense-only {pct(S['ablation_dense_only']['citation_hit_rate'])}.
-- **Retrieval-only eval, recall@1:** {', '.join(f"{k} {v['recall@1']}" for k, v in RE.items())}.
+- **Retrieval-only eval, recall@1** (separate retrieval set `data/eval/retrieval_eval.jsonl`, {next(iter(RE.values()))['queries']} queries, same synthetic corpus): {', '.join(f"{k} {v['recall@1']}" for k, v in RE.items())}.
 - **Decomposition on vs off:** multi-intent {pct(p['multi_intent_identification'])} vs {pct(S['ablation_no_decomposition']['multi_intent_identification'])}; citation hit {pct(p['citation_hit_rate'])} vs {pct(S['ablation_no_decomposition']['citation_hit_rate'])}.
 
 ## Innovation highlights (implemented and demonstrated)
@@ -405,7 +422,7 @@ Theme 4, Streaming Live RAG: retrieve the right context mid-conversation from on
   - Correct abstention is {pct(p['abstention_accuracy'])}, against {pct(bl['abstention_accuracy'])} for the baseline.
 - The proposed pipeline costs more compute per turn than bare RAG; early retrieval hides most of it.
 - Answers are extractive (grounded, not fluent). Speech is simulated from transcripts.
-- G1: Docker is {repro['docker'] if repro else 'not run'} in the development environment.
+- G1: Docker verification {repro['docker'] if repro else 'not run'} on the development machine only; not checked on a second machine.
 
 ## Tech stack
 Python 3.13 · FastAPI + Server-Sent Events · asyncio · PyTorch (CPU) + Hugging Face transformers (all-MiniLM-L6-v2 embeddings, ms-marco-MiniLM-L6-v2 cross-encoder) · scikit-learn · numpy · in-house BM25 / RRF · vanilla JS dashboard · pytest · matplotlib · Docker.
@@ -430,18 +447,21 @@ No external API is called.
 2. Leave System on **Streaming Live RAG**, Pace **real time**.
 3. The note under the scenario buttons states that this is the development corpus. Say so out loud once.
 
+**Central message (say it at 0:00 and again at 4:50):** "Retrieval begins before utterance completion, natural requests are decomposed into multiple searches, evidence is fused, and late details refine the answer without restarting the session."
+
 | Time | Screen | What to say |
 |---|---|---|
-| 0:00–0:25 | Header, proof banner | "Voice users speak one natural sentence, not a search query. Conventional RAG waits for silence, searches once, restarts on every follow-up and searches even when nothing needs searching. We built retrieval that runs *while the user is speaking*." |
-| 0:25–1:15 | **Demo 1, Early retrieval** | Point at the timeline: the first chunk is **WAIT** (amber), then **RETRIEVE** (green) as soon as the request is specific. Hatched bars are provisional retrievals, refined as more words arrive. The red dashed line is utterance end. The banner states retrieval began *N seconds before the user finished*. "Across the held-out set this happens on {pct(p['early_retrieval_rate'])} of eligible turns, with a mean lead of {fmt(p['mean_retrieval_lead_s'])} s." |
-| 1:15–2:05 | **Demo 2, Multi-intent** (the guide's own example) | Sub-queries card: one sentence became three searches, and "Pune" was carried into each. Evidence card: parallel retrieval, then fusion; the duplicate catering FAQ was dropped. Answer card: every sentence has a clickable citation, so click one to show the source lines. "Compound requests correctly split: {pct(p['multi_intent_identification'])} vs {pct(bl['multi_intent_identification'])} for conventional RAG." |
-| 2:05–2:55 | **Demo 3, Late-arriving detail** | Turn 2, "the trip was international and the booking was made after travel", is classified as a **refinement**. The sub-queries card shows *delta* queries only. The answer goes v1 → v2: grey claims are kept, green claims are new, and the version history shows the change log. "No restart: prior sub-queries re-searched = 0. State continuity {pct(p['refinement_state_continuity'])} on held-out refinements vs {pct(bl['refinement_state_continuity'])} for the baseline." |
-| 2:55–3:30 | **Demo 4, Suppression** | "Make your previous answer shorter" gives a purple **SUPPRESS** and the banner says *no corpus search*. The answer is reshaped from session memory with the same citations. "Searches on turns that need none: {p['unnecessary_retrieval_calls']} vs {bl['unnecessary_retrieval_calls']}." |
-| 3:30–4:05 | **Demo 5, Insufficient evidence** | The projector part is answered with a citation. The wifi password is flagged, naming the missing terms. "We would rather abstain than guess: 0 fabricated citations, citation support {pct(p['citation_support_rate'])}." |
-| 4:05–4:40 | Switch System to **Baseline**, re-run Demo 2 | The banner says it waited for the utterance end, then searched once with the whole sentence. Compare the answer and the timeline. |
-| 4:40–5:00 | `docs/evaluation.md` gates table | Read the gates: {', '.join(f"{g['gate']} {g['status']}" for g in G)}. "The limitations are listed in the repo, starting with the synthetic development corpus." |
+| 0:00–0:30 | **Problem**: header, empty dashboard | "Voice users speak one natural sentence, not a search query. Conventional RAG waits for silence, sends the whole sentence as one query, restarts on every follow-up, and searches even when nothing needs searching." Then the central message. Say once: "All numbers today are from a development benchmark on a 16-document synthetic corpus." |
+| 0:30–1:15 | **Live partial transcript**: click **Demo 1**, watch the Live stream card | Transcript chunks arrive one at a time, as from speech recognition. After each chunk the controller decides: the first is **WAIT** (amber, not specific yet); once the request is specific it switches to **RETRIEVE** (green) and a provisional query appears. |
+| 1:15–2:00 | **Early retrieval**: timeline and proof banner | The hatched bars are provisional retrievals, made while the user is still talking; the red dashed line is the utterance end. Read the banner: retrieval began *N seconds before the user finished*. "On the held-out split this happens on {pct(p['early_retrieval_rate'])} of eligible turns, with a mean lead of {fmt(p['mean_retrieval_lead_s'])} s; conventional RAG: {pct(bl['early_retrieval_rate'])}." |
+| 2:00–2:45 | **Multi-intent decomposition**: **Demo 2** (the guide's own example) | Sub-queries card: one sentence became three searches, and "Pune" was carried into each. Evidence card: retrieved in parallel, then fused, with the duplicate catering FAQ dropped. Click one citation to show its source lines. "Compound requests split correctly: {pct(p['multi_intent_identification'])} vs {pct(bl['multi_intent_identification'])} for conventional RAG." |
+| 2:45–3:30 | **Late-arriving detail**: **Demo 3** | Turn 2 ("the trip was international and the booking was made after travel") is classified as a **refinement**. Only *delta* queries are searched. The answer goes v1 → v2: grey claims are kept, green claims are new, and the version history shows the change log. "No restart: prior sub-queries re-searched = 0. State continuity {pct(p['refinement_state_continuity'])} vs {pct(bl['refinement_state_continuity'])} for the baseline." |
+| 3:30–4:00 | **Suppression**: **Demo 4** | "Make your previous answer shorter" gives a purple **SUPPRESS**, and the banner says *no corpus search*. The answer is reshaped from session memory. "Searches on turns that need none: {p['unnecessary_retrieval_calls']} vs {bl['unnecessary_retrieval_calls']}." |
+| 4:00–4:30 | **Grounding / abstention**: **Demo 5** | The projector question is answered with a citation; the wifi password is flagged, naming the missing terms. "Every claim is checked against its cited text: support {pct(p['citation_support_rate'])}, {p['fabricated_citations']} fabricated citations. We would rather abstain than guess." |
+| 4:30–4:50 | **Metrics / telemetry**: Telemetry card (session events as JSONL), then the gates table in `docs/evaluation.md` | "Every event is on one clock and exported." Read the gates: {', '.join(f"{g['gate']} {g['status']}" for g in G)}. Say the trade-off: "Abstention is conservative. Correct abstention {pct(p['abstention_accuracy'])} vs {pct(bl['abstention_accuracy'])}, but citation hit rate {pct(p['citation_hit_rate'])} vs {pct(bl['citation_hit_rate'])} for the baseline." |
+| 4:50–5:00 | **Conclusion** | Repeat the central message. "Limitations, starting with the synthetic corpus, are listed in the repository." |
 
-**Do not claim:** results on the official corpus, user studies, production latency, or LLM-quality answers. The answers are extractive.
+**Do not claim:** results on the official corpus, official Samsung benchmark scores, user studies, production latency, or LLM-quality answers. The answers are extractive: Demo 5 also shows a second, on-topic sentence about a different room; do not present it as part of the answer. No code is shown in the video.
 """
     (ROOT / "docs" / "final_demo_script.md").write_text(demo, encoding="utf-8")
     print("wrote docs/evaluation.md, docs/presentation_facts.md, docs/final_demo_script.md")

@@ -2,7 +2,7 @@
 
 This log feeds the *LangAI 3.0 AI Usage Disclosure Form* (`LangAI3.0_AI_Disclosure.docx`, section 4). For each feature it records: feature name; Self-Generated / AI-Generated / Both; and a description covering the AI tool/platform, prompt used, output summary and modifications.
 
-> **Status:** every file in this repository was produced by an AI coding agent from three team-written prompts. No human edits have been recorded yet.
+> **Status:** every file in this repository was produced by an AI coding agent from four team-written prompts. No human edits have been recorded yet.
 > - **Human modifications:** the team must fill in that column whenever it reviews, changes or rewrites something.
 > - **Classification:** switch it to *Both* only where the team actually contributed.
 > - **Self-Generated:** never mark anything *Self-Generated* unless the team wrote it.
@@ -13,13 +13,16 @@ This log feeds the *LangAI 3.0 AI Usage Disclosure Form* (`LangAI3.0_AI_Disclosu
 | 1 | 2026-09-27 | Claude Code (Anthropic), model Claude Opus 5.5, desktop app | Team "master prompt": act as lead engineer; read the four reference files; build, test, benchmark and document a working Theme 4 prototype | Initial system, synthetic corpus, first benchmark, docs |
 | 2 | 2026-09-28 | same | Team "hackathon-ready" prompt: official corpus first; remove synthetic-corpus assumptions; separate evaluation sets; six gates; ablations; fix failure modes generically; streaming demo polish; reproducibility; GitHub preparation; AI disclosure; presentation support | Everything marked "(s2)" below |
 | 3 | 2026-09-28 | same | Team "final release / QA" prompt: freeze held-out; improve abstention using development data only; verify gates; Docker / clean-clone checks; line-ending and hash integrity; regression tests; demo verification; timing methodology; document consistency; release checklist; no tag | Everything marked "(s3)" below |
+| 4 | 2026-09-28 | same | Team "final submission packaging" prompt: stop feature development; repository audit; document consistency; demo verification; Docker verification once Docker Desktop was installed; runbook, submission checklist, 5-minute demo script, judge-safe presentation facts | Docker build/run verification (G1), packaging documents; no change to system behaviour or the held-out set |
 
 ## Team-specific fields: TO BE FILLED BY THE TEAM
 - **Team name:** `____`
 - **Project name:** `____`
 - **Institution:** `____`
-- **Submission date:** `____`
-- **Representative, role, signature:** `____`
+- **Team members (names, roles, contact):** `____`
+- **Representative:** `____`
+- **Signature:** `____`
+- **Date:** `____`
 - **Purpose of AI usage (form section 3):**
   - Code generation: yes, see the table below.
   - Idea generation, UI/UX, content creation, data analysis, testing/debugging: the team must confirm each one.
@@ -49,6 +52,8 @@ This log feeds the *LangAI 3.0 AI Usage Disclosure Form* (`LangAI3.0_AI_Disclosu
 | 20 | TTFT definition fix, utterance-end lag check, held-out run history (s3) | AI-Generated | `streaming/engine.py`, `streaming/baseline.py`, `scripts/benchmark.py`, `scripts/report.py` | _team to fill_ |
 | 21 | Hardened clean-copy replay (offline, empty model cache, all demos, server smoke test) (s3) | AI-Generated | `scripts/reproduce.py`, `scripts/_smoke_server.py` | _team to fill_ |
 | 22 | Release checklist, regression tests, `.gitattributes` (s3) | AI-Generated | `docs/release_checklist.md`, `backend/tests/test_regressions.py`, `.gitattributes` | _team to fill_ |
+| 23 | Docker verification in the clean-copy replay; shared G1 gate rule; home-directory redaction in the replay report (s4) | AI-Generated | `scripts/reproduce.py`, `scripts/_gates.py`, `scripts/benchmark.py`, `scripts/report.py` | _team to fill_ |
+| 24 | Final packaging documents: runbook, submission checklist, 5-minute demo script, judge-safe presentation facts (s4) | AI-Generated | `docs/FINAL_RUNBOOK.md`, `docs/submission_checklist.md`, `scripts/report.py` (generates `final_demo_script.md`, `presentation_facts.md`) | _team to fill_ |
 
 ## Disclosure notes for the jury
 - **Evaluation independence:** the corpus, all evaluation sets and their gold labels were written by the same AI agent that built the system. The held-out set was frozen before the failure fixes, but it is not independent.

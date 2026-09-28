@@ -36,12 +36,13 @@ Measured failure cases for the held-out set are listed per turn in `docs/evaluat
 - **Extractive synthesis:**
   - Answers are verbatim corpus sentences: grounded and $0, but not fluent, and each sub-query gets at most 2 sentences, so long sections can be answered partially.
   - Some answers are relevant but not the best sentence. In the guide's workshop example, sub-query 1 cites the planning guide rather than a 30-seat venue.
+  - A supporting (second) sentence only needs topical similarity once the first sentence has passed the gate, so it can be on-topic but off-target. In Demo 5 ("which Pune venue has a projector"), the correct sentence (cross-encoder logit 7.7) is followed by a sentence about a different room's capacity (logit 2.7). Both sentences are supported by their citations, so grounding is not violated, but the second one does not answer the question. No corpus-independent fix was found: the off-target sentence still has a positive logit, so a "positive relevance" rule would not remove it, and a relative-margin rule would need a new threshold tuned on examples like this one. It was left unchanged rather than tuned to the demo.
 - **Grounding validator:** it checks term containment and numbers, not entailment. The extractive path is safe by construction; the optional LLM path would additionally need an NLI check.
 - **Conflicts:** they are resolved only through explicit `supersedes` / `superseded_by` metadata. Other numeric disagreements are flagged, not resolved.
 - **Facet filter:** it only activates for document families whose titles differ by a proper noun.
 - **Latency:** the full pipeline (cross-encoder reranking plus sentence scoring) costs more CPU per turn than bare dense RAG. Early retrieval and speculative synthesis prep hide much of it, but when a user stops shortly after the last informative word, the remaining work is still on the critical path (see the TTFT p95 in `docs/evaluation.md`).
 - **Session store:** in-process only. A multi-worker deployment needs sticky sessions or an external ephemeral store with the same TTL.
-- **Docker:** the Dockerfile and compose file are statically validated but were **not built or run**, because Docker was unavailable in the development environment. G1 is reported as NOT VERIFIED.
+- **Docker:** the image was built and run (health check, dashboard, tests inside the container) on one development machine only (Windows 11, Docker Desktop 29.8.1). It has not been checked on a second machine or on Linux/macOS hosts.
 
 ## Future work
 1. Run on the official corpus and held-out replay; re-author gold labels, calibration queries and demo scenarios for it.
