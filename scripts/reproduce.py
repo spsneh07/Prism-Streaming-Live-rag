@@ -4,8 +4,10 @@
 
 1. Copy the repository into an empty temp directory WITHOUT derived artefacts
    (data/processed, results, caches) - exactly what a fresh `git clone` contains.
-2. In that copy run: build_index -> calibrate_sufficiency -> pytest ->
-   benchmark --quick (dev set) -> demo_stream (one scenario). Each step must exit 0.
+2. In that copy, with an empty HF_HOME and HF_HUB_OFFLINE=1, run: build_index ->
+   calibrate_sufficiency -> pytest -> benchmark --quick (dev set) -> all five
+   demo_stream scenarios -> backend smoke test (_smoke_server.py). Each step must exit 0.
+   `--pip-dry-run` additionally resolves backend/requirements.txt with pip.
 3. Check installed package versions against backend/requirements.txt pins.
 4. Docker: if the docker CLI exists, `docker compose build` + container health check;
    otherwise static checks only (every COPY source exists, CMD target exists,

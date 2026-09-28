@@ -1,8 +1,12 @@
 # Presentation facts (auto-generated; measured or implemented facts only)
 
-_Source: `results/benchmark.json` (2026-09-28 02:09:21); held-out set `data/benchmark/heldout_streams.jsonl` (63 cases / 77 turns); same CPU machine for every system. Regenerate with `python scripts/report.py`._
+_Source: `results/benchmark.json` (2026-09-28 18:38:33); held-out set `data/benchmark/heldout_streams.jsonl` (63 cases / 77 turns); same CPU machine for every system. Regenerate with `python scripts/report.py`._
 
-> Corpus: supplied corpus.
+> **What these numbers are:** a *development benchmark on a 16-document synthetic corpus*, built by the team for development.
+>
+> **What they are not:** an official Samsung / hackathon evaluation. No official Theme 4 corpus or official benchmark was available or run. Use this wording on slides.
+
+> **DEVELOPMENT / DEMONSTRATION corpus.** Synthetic, written by the system's author, not the official Theme 4 corpus, which was not available. All numbers below describe this corpus only.
 
 ## Theme
 Theme 4, Streaming Live RAG: retrieve the right context mid-conversation from one natural command.
@@ -32,22 +36,22 @@ Theme 4, Streaming Live RAG: retrieve the right context mid-conversation from on
 | G5 Session refinement | 1.000 | 1.00 (every late constraint updates, never restarts) | PASS |
 | G6 Telemetry & observability | 1.000 | 1.00 | PASS |
 
-## Headline results: conventional RAG vs Streaming Live RAG (held-out)
+## Headline results: development benchmark on a 16-document synthetic corpus (held-out split): conventional RAG vs Streaming Live RAG
 | Metric | Conventional | Streaming Live RAG |
 |---|---|---|
-| Retrieval starts before the user finishes | 0% | **90%** (mean lead 4.387 s) |
+| Retrieval starts before the user finishes | 0% | **90%** (mean lead 4.422 s) |
 | Compound requests correctly split | 0% | **78%** |
-| Answer cites a correct section | 73% | **73%** |
+| Answer cites a correct section | 73% | 73% |
 | Retrieval recall@3 | 95% | 96% |
 | Late details handled without restart | 0% | **100%** |
 | Searches on turns that need none | 8 | **1** |
 | Correct abstention on unanswerable turns | 33% | 83% |
 | Citation support / fabricated ids | 100% / 0 | 100% / 0 |
-| Time to first answer token after speech ends (mean) | 27 ms | 151 ms |
+| Time to first answer token after speech ends (mean) | 17 ms | 32 ms |
 | LLM cost per turn | $0 | $0 |
 
 ## Ablations (held-out)
-- **Early retrieval on vs off** (same pipeline, real time): TTFT 480 ms → 151 ms.
+- **Early retrieval on vs off** (same pipeline, real time): TTFT 206 ms → 32 ms.
 - **Model-based vs rule-based controller:**
   - intent accuracy 99% vs 81%;
   - refinement continuity 100% vs 0%;
@@ -55,7 +59,7 @@ Theme 4, Streaming Live RAG: retrieve the right context mid-conversation from on
   - premature retrieval 8% vs 2%.
 - **Hybrid vs dense-only** (end-to-end citation hit): hybrid + rerank 73%, hybrid without rerank 84%, dense-only 88%.
 - **Retrieval-only eval, recall@1:** dense 1.0, bm25 0.9737, hybrid 1.0, hybrid+facet+rerank 0.9737.
-- **Decomposition on vs off:** multi-intent 78% vs 0%; citation hit 73% vs 68%.
+- **Decomposition on vs off:** multi-intent 78% vs 0%; citation hit 73% vs 66%.
 
 ## Innovation highlights (implemented and demonstrated)
 - Retrieval timing is a learned per-chunk decision, and each decision is logged with its reason and feature vector.
@@ -69,7 +73,10 @@ Theme 4, Streaming Live RAG: retrieve the right context mid-conversation from on
 ## Limitations (say them on the slide)
 - The corpus is a synthetic development corpus; the official Theme 4 corpus and held-out replay were not available. All sets were written by the same author as the system.
 - Failing held-out turns: 26 of 77. See `docs/evaluation.md` §8.
-- The abstention gate is too conservative on held-out data. It refused 12 of 63 answerable turns, so the end-to-end citation hit rate (73%) does not beat the conventional baseline (73%), and it is below the same pipeline without the gate (84%). In exchange, correct abstention rose from 33% to 83%.
+- **Abstention trade-off.**
+  - The gate refused 12 of 63 answerable held-out turns.
+  - Citation hit rate is 73%: the conventional baseline scores 73%, and the same pipeline without the gate 84%.
+  - Correct abstention is 83%, against 33% for the baseline.
 - The proposed pipeline costs more compute per turn than bare RAG; early retrieval hides most of it.
 - Answers are extractive (grounded, not fluent). Speech is simulated from transcripts.
 - G1: Docker is NOT VERIFIED in the development environment.

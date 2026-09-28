@@ -32,43 +32,41 @@ Conventional RAG handles this poorly:
 
 Architecture: [docs/architecture.md](docs/architecture.md) · decisions: [docs/design_decisions.md](docs/design_decisions.md).
 
-## 3. Quick start (exact commands, verified on Windows 11 / Python 3.13)
+## 3. Quick start from a clean clone (exact commands, verified on Windows 11 / Python 3.13, CPU only)
 
-Install:
+Run these in order, from the repository root:
+
+1. Install the pinned dependencies:
 
 ```bash
 pip install -r backend/requirements.txt
 ```
 
-Optional configuration (defaults work; see `.env.example`):
-
-```bash
-cp .env.example .env
-```
-
-Model weights (~180 MB, into `data/models/`):
+2. Download the model weights (~180 MB, into `data/models/`, which is git-ignored):
 
 ```bash
 python scripts/download_models.py
 ```
 
-Ingest the corpus and build the index:
+3. Ingest the corpus and build the index (into `data/processed/`):
 
 ```bash
 python scripts/build_index.py
 ```
 
-Calibrate the per-corpus abstention gate:
+4. Calibrate the per-corpus abstention gate (writes `results/calibration.json`, bound to the corpus hash):
 
 ```bash
 python scripts/calibrate_sufficiency.py
 ```
 
-Start the backend. It also serves the dashboard at http://localhost:8000, so there is no separate frontend process:
+5. Start the backend. It also serves the dashboard at http://localhost:8000, so there is no separate frontend process:
 
 ```bash
 python -m uvicorn app.main:app --app-dir backend --port 8000
 ```
+
+Optional configuration: copy `.env.example` to `.env`. The defaults work and no secrets are needed.
 
 ### Demos (one command each)
 
@@ -76,12 +74,12 @@ python -m uvicorn app.main:app --app-dir backend --port 8000
 |---|---|
 | 1 Early retrieval | `python scripts/demo_stream.py --scenario early_retrieval` |
 | 2 Multi-intent | `python scripts/demo_stream.py --scenario multi_intent` |
-| 3 Late-arriving constraint | `python scripts/demo_stream.py --scenario late_constraint` |
+| 3 Refinement (late-arriving detail, v1 → v2) | `python scripts/demo_stream.py --scenario refinement` |
 | 4 Retrieval suppression | `python scripts/demo_stream.py --scenario suppression` |
-| 5 Insufficient evidence | `python scripts/demo_stream.py --scenario abstention` (and `abstention_full`) |
+| 5 Insufficient evidence | `python scripts/demo_stream.py --scenario insufficient_evidence` (and `insufficient_evidence_full`) |
 | All | `python scripts/demo_stream.py` |
 
-The same scenarios are the numbered buttons in the dashboard. Each run prints a `PROOF retrieval_start … < utterance_end …` line.
+The same scenarios are the numbered buttons in the dashboard. Each run prints a `PROOF retrieval_start … < utterance_end …` line. The old names `late_constraint`, `abstention` and `abstention_full` still work as aliases.
 
 ### Tests, benchmark, reproducibility
 
@@ -101,10 +99,10 @@ python scripts/report.py
 python scripts/reproduce.py
 ```
 
-- **Tests:** 58, of which 2 are strict expected failures documenting known limitations.
+- **Tests:** 61 (60 pass; 1 is a strict expected failure documenting a known limitation: an audience phrase such as "for a new joiner" pulls a presentation request toward refinement).
 - **`benchmark.py`:** runs the held-out set at real-time pacing (about 25 minutes) and writes `results/`. Use `--set dev` for the development set and `--quick` for 5× pacing.
 - **`report.py`:** regenerates `docs/evaluation.md`, `docs/presentation_facts.md` and `docs/final_demo_script.md` from `results/`.
-- **`reproduce.py`:** the G1 replay. It clones into an empty directory and runs index → calibration → tests → benchmark → demo.
+- **`reproduce.py`:** the G1 replay. It copies the repository without derived files into an empty directory and, with an empty Hugging Face cache in offline mode, runs index → calibration → tests → quick dev benchmark → all five demos → a backend smoke test. `--pip-dry-run` also resolves the pinned requirements. Model weights are copied from the local `data/models/`, so the download step itself is not exercised by the replay.
 
 ### Docker
 
@@ -184,7 +182,7 @@ configs/            controller_train.jsonl, calibration_queries.jsonl, demo_scen
 scripts/            build_index, calibrate_sufficiency, demo_stream, benchmark, report, reproduce,
                     make_heldout, make_dev_set, download_models
 docs/               architecture, evaluation, design_decisions, limitations, presentation_facts,
-                    final_demo_script, ai_usage_log
+                    final_demo_script, ai_usage_log, release_checklist
 results/            benchmark.json/csv, latency.json, calibration.json, reproducibility.json, plots/, dev/
 ```
 
@@ -192,11 +190,11 @@ results/            benchmark.json/csv, latency.json, calibration.json, reproduc
 
 See [docs/limitations.md](docs/limitations.md). In short:
 - a synthetic, same-author corpus and benchmark;
-- residual abstention-gate errors in both directions;
+- an abstention trade-off: on the held-out set the gate raises correct abstention (83% vs 33% for the baseline) but over-abstains on answerable questions, so the citation hit rate only matches the baseline (73%) and is below the same pipeline without the gate (84%). Refitting the gate on development data changed 0 of 77 held-out turns;
 - a decomposer that relies on surface cues;
 - extractive (not fluent) answers;
 - simulated speech;
-- Docker not built here.
+- Docker not built here (G1 is NOT VERIFIED; the local clean-copy replay passes).
 
 ## 10. Submission checklist
 

@@ -138,7 +138,8 @@ def main():
     worse = [r for r in ans_turns if int(r["cite_hits"]) < int(by[("ablation_hybrid_no_rerank", r["case"], r["turn"])]["cite_hits"])]
     worse_abst = [r for r in worse if not r["citations"]]
     d_hit = (p["citation_hit_rate"] or 0) - (bl["citation_hit_rate"] or 0)
-    vs_base = ("beats" if d_hit > 0.005 else "does not beat" if d_hit > -0.005 else "is below")
+    vs_base = ("beats the baseline" if d_hit > 0.005 else "matches the baseline" if d_hit > -0.005
+               else "is below the baseline")
     tradeoff = (f"**Key finding: abstention trade-off.** On held-out answerable turns the proposed system abstained entirely "
                 f"on {len(over_abstained)} of {len(ans_turns)}. Against the same pipeline without the reranker-based gate "
                 f"(`hybrid_no_rerank`), it cites fewer gold sections on {len(worse)} turns, {len(worse_abst)} of them "
@@ -157,8 +158,32 @@ def main():
                     + " | ".join(fmt(pb['summary']['proposed'].get(k)) for k in hist_keys) + " |\n")
     history += (f"| {meta['generated_at']} (this report) | gate refitted on development + calibration data | "
                 + " | ".join(fmt(p.get(k)) for k in hist_keys) + " |\n")
+    changed_note = ""
+    if prev:
+        rev = prev[-1][0]
+        try:
+            raw = subprocess.run(["git", "show", f"{rev}:results/benchmark.csv"], cwd=ROOT, capture_output=True,
+                                 check=True).stdout.decode("utf-8")
+            old = {(r["case"], r["turn"]): r for r in csv.DictReader(raw.splitlines()) if r["system"] == "proposed"}
+            cur = [r for r in rows if r["system"] == "proposed"]
+            n_changed = sum(1 for r in cur if (k := old.get((r["case"], r["turn"]))) is None
+                            or (k["citations"], k["abstained"]) != (r["citations"], r["abstained"]))
+            changed_note = (f"Compared with commit `{rev}`, the proposed system's citations or abstention decision "
+                            f"changed on {n_changed} of {len(cur)} held-out turns. The refitted gate differs from the "
+                            f"earlier one on only a few development examples, so it did not reduce held-out "
+                            f"over-abstention.\n\n" if n_changed == 0 else
+                            f"Compared with commit `{rev}`, the proposed system's citations or abstention decision "
+                            f"changed on {n_changed} of {len(cur)} held-out turns.\n\n")
+        except Exception:
+            pass
     corpus = meta["corpus"]
     synthetic = corpus.get("synthetic")
+    if synthetic is None:   # manifest written before the loader recorded the flag: read it from the chunks
+        chunks_file = ROOT / "data" / "processed" / "chunks.jsonl"
+        if chunks_file.exists():
+            chunks = [json.loads(l) for l in chunks_file.read_text(encoding="utf-8").splitlines() if l.strip()]
+            synthetic = any(c.get("metadata", {}).get("synthetic") == "true" for c in chunks)
+            corpus.setdefault("formats", sorted({Path(c["source_file"]).suffix.lower() for c in chunks}))
     corpus_line = (f"{corpus['num_documents']} documents → {corpus['num_chunks']} section chunks "
                    f"(sha256 `{corpus['corpus_sha256'][:12]}`), formats {', '.join(corpus.get('formats', []))}")
     corpus_warn = ("**DEVELOPMENT / DEMONSTRATION corpus.** Synthetic, written by the system's author, not the "
@@ -182,7 +207,8 @@ def main():
         cal_line = (f"- **Evidence-sufficiency gate:** class-balanced logistic regression over ({feats}), fitted on "
                     f"{cs['n']} development examples ({src.get('calibration', '?')} calibration queries + "
                     f"{src.get('dev', '?')} dev-set sub-queries; never the held-out set). Model chosen by "
-                    f"leave-one-group-out balanced accuracy: {cs.get('model', 'n/a')} "
+                    f"leave-one-group-out balanced accuracy: "
+                    f"{ {'legacy': '3-feature', 'full': '6-feature'}.get(cs.get('model'), cs.get('model', 'n/a'))} "
                     f"({cs.get('legacy_loo_balanced_accuracy', 'n/a')} for 3 features vs "
                     f"{cs.get('full_loo_balanced_accuracy', 'n/a')} for 6 aggregate features; ties go to the simpler "
                     f"model). Selected model: {cs['loo_balanced_accuracy']} (TPR {cs['loo_tpr']}, TNR {cs['loo_tnr']}). "
@@ -270,10 +296,10 @@ All three use the same synthesizer and validator and run at real-time pacing.
 {tradeoff}
 
 ### Held-out run history
-The held-out set has been run exactly the number of times listed here. Between runs, only development-data calibration and measurement fixes changed; these are listed in `docs/design_decisions.md` (D23–D25).
+Every completed held-out run is listed here. One further run of the same configuration was interrupted (its process was killed when the development session ended) before it wrote any results; it was restarted unchanged and is the row marked \"this report\". Between runs, only development-data calibration and measurement fixes changed; these are listed in `docs/design_decisions.md` (D23–D25).
 
 {history}
-The time-to-first-token definition changed between runs: it now counts the abstention message as the first output, so turns that abstain are no longer excluded. Earlier TTFT values are therefore not directly comparable.
+{changed_note}The time-to-first-token definition changed between runs: it now counts the abstention message as the first output, so turns that abstain are no longer excluded. Earlier TTFT values are therefore not directly comparable.
 
 ## 6. Ablations (held-out)
 {table(S, abl, ['retrieval_recall@3', 'citation_hit_rate', 'multi_intent_identification', 'single_intent_not_fragmented', 'early_retrieval_rate', 'premature_retrieval_rate', 'intent_accuracy', 'refinement_state_continuity', 'abstention_accuracy', 'unnecessary_retrieval_calls'])}
@@ -341,7 +367,7 @@ Theme 4, Streaming Live RAG: retrieve the right context mid-conversation from on
 |---|---|---|
 | Retrieval starts before the user finishes | {pct(bl['early_retrieval_rate'])} | **{pct(p['early_retrieval_rate'])}** (mean lead {fmt(p['mean_retrieval_lead_s'])} s) |
 | Compound requests correctly split | {pct(bl['multi_intent_identification'])} | **{pct(p['multi_intent_identification'])}** |
-| Answer cites a correct section | {pct(bl['citation_hit_rate'])} | **{pct(p['citation_hit_rate'])}** |
+| Answer cites a correct section | {pct(bl['citation_hit_rate'])} | {f"**{pct(p['citation_hit_rate'])}**" if d_hit > 0.005 else pct(p['citation_hit_rate'])} |
 | Retrieval recall@3 | {pct(bl['retrieval_recall@3'])} | {pct(p['retrieval_recall@3'])} |
 | Late details handled without restart | {pct(bl['refinement_state_continuity'])} | **{pct(p['refinement_state_continuity'])}** |
 | Searches on turns that need none | {bl['unnecessary_retrieval_calls']} | **{p['unnecessary_retrieval_calls']}** |

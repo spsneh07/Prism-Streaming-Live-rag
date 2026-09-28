@@ -19,10 +19,12 @@ Measured failure cases for the held-out set are listed per turn in `docs/evaluat
 
 ## Component limitations
 - **Abstention gate:**
-  - It is a 3-feature logistic regression (cross-encoder logit, term coverage, cosine) fitted on 56 queries. Its leave-one-out balanced accuracy is about 0.88, so it errs in both directions.
+  - It is a 3-feature logistic regression (cross-encoder logit, term coverage, cosine) fitted on 116 development examples (56 calibration queries plus 60 development-set sub-queries; none from the held-out set). Its leave-one-group-out balanced accuracy is 0.864 (answer rate on answerable 0.88, abstention on unanswerable 0.85), so it errs in both directions.
+  - A weak-evidence ("hedge") band is implemented but **inactive**: no band met the pre-set criteria (precision ≥ 0.75, unanswerable share ≤ 0.10).
   - It can **over-abstain** on paraphrases whose key words are not in the evidence ("daily allowance under the travel policy" vs "per diem").
-  - **On the held-out set it is too conservative.** It refused answerable questions often enough that the full system's citation hit rate does not beat the conventional baseline, and it is below the same pipeline without the gate. It does raise correct abstention sharply. The exact counts are computed in `docs/evaluation.md` §5 ("Key finding"). This was not tuned away on the held-out set. The fix is a larger, independently written calibration set, or an answerability model trained on realistic sub-query fragments.
-  - It can **answer topical questions about absent attributes** ("parking fee at the Pune venues" passes because the evidence is strongly on-topic). This is tracked as a strict expected-failure test.
+  - **On the held-out set it is too conservative.** It refused answerable questions often enough that the full system's citation hit rate only matches the conventional baseline, and it is below the same pipeline without the gate. It does raise correct abstention sharply. The exact counts are computed in `docs/evaluation.md` §5 ("Key finding").
+  - **The refit on development data did not fix this.** The refitted gate changes only 3 of 116 development decisions compared with the first gate, and on the held-out set it changed 0 of 77 turns (see the run history in `docs/evaluation.md` §5). This was not tuned away on the held-out set. The fix is a larger, independently written calibration set, or an answerability model trained on realistic sub-query fragments.
+  - It can **answer topical questions about absent attributes** when the evidence is strongly on-topic. The known example ("parking fee at the Pune venues") is now abstained on, but that example is part of the gate's fitting data, so the passing regression test is not independent evidence that the failure mode is gone.
 - **Intent classifier:**
   - It was trained on about 120 utterances.
   - Presentation requests with an audience phrase ("put that in plain words *for a new joiner*") sit near the refinement boundary (0.51 vs 0.44). This is tracked as a strict expected-failure test.

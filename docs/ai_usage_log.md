@@ -43,7 +43,7 @@ This log feeds the *LangAI 3.0 AI Usage Disclosure Form* (`LangAI3.0_AI_Disclosu
 | 14 | Evaluation sets: held-out, dev, retrieval-eval (s2) | AI-Generated | `scripts/make_heldout.py`, `scripts/make_dev_set.py`, `data/eval/retrieval_eval.jsonl`, `data/benchmark/FROZEN.md` | _team to fill_ |
 | 15 | Baseline, benchmark harness, gates, plots, reports (s2) | AI-Generated | `streaming/baseline.py`, `scripts/benchmark.py`, `scripts/report.py` | _team to fill_ |
 | 16 | Reproducibility replay (s2) | AI-Generated | `scripts/reproduce.py` | _team to fill_ |
-| 17 | Tests (58, incl. regression, corpus-agnostic, eval-set hygiene) | AI-Generated | `backend/tests/` | _team to fill_ |
+| 17 | Tests (61, incl. regression, corpus-agnostic, eval-set hygiene) | AI-Generated | `backend/tests/` | _team to fill_ |
 | 18 | Packaging and documentation | AI-Generated | Dockerfile, compose, `.dockerignore`, README, `docs/*` | _team to fill_ |
 | 19 | Abstention gate refit on development data, weak-evidence band (inactive) (s3) | AI-Generated | `scripts/calibrate_sufficiency.py`, `synthesis/extractive.py` | _team to fill_ |
 | 20 | TTFT definition fix, utterance-end lag check, held-out run history (s3) | AI-Generated | `streaming/engine.py`, `streaming/baseline.py`, `scripts/benchmark.py`, `scripts/report.py` | _team to fill_ |

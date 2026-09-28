@@ -68,10 +68,10 @@ class Settings:
     sentences_per_subquery: int = 2
     # Minimum cosine(sub-query, evidence sentence) for a sentence to be used.
     min_sentence_sim: float = 0.30
-    # Evidence-sufficiency gate: best sentence-level cross-encoder logit below this =>
-    # "corpus does not contain enough information". Calibrated with
-    # scripts/calibrate_sufficiency.py on configs/calibration_queries.jsonl (32 queries,
-    # disjoint from the benchmark): balanced accuracy 1.00 at -1.1 (results/calibration.json).
+    # Fallback evidence-sufficiency gate, used only when data/processed/calibration.json is
+    # absent: best sentence-level cross-encoder logit below this => "corpus does not contain
+    # enough information". Normally scripts/calibrate_sufficiency.py fits the logistic-regression
+    # gate that replaces it (see results/calibration.json).
     min_rerank_logit: float = -1.1
     # Fallback gate when the reranker is disabled: dense cosine of best chunk.
     min_dense_sim: float = 0.40
