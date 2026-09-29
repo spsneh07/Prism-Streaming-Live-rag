@@ -22,6 +22,7 @@ Conventional RAG handles this poorly:
 
 | Capability | How | Evidence |
 |---|---|---|
+| **Modern AI Product UI** | A completely redesigned, responsive dark-first dashboard visualizing live timelines, trust metrics, controller states, and answer versions via SSE. Pure HTML/JS, no build step. | `frontend/`, `docs/frontend_guide.md` |
 | **Retrieves while the user is speaking** | A per-chunk controller (two small logistic regressions plus guardrails) decides WAIT / RETRIEVE / SUPPRESS. Provisional retrieval, and even answer-sentence scoring, run during speech. | G2 in `docs/evaluation.md`; timeline in the dashboard |
 | **One utterance → several searches** | Segmentation, constraint re-attachment, leading-context merge, corpus-arbitrated merge of near-duplicate intents, entity carry-over | G3 |
 | **Hybrid retrieval and fusion** | MiniLM dense + BM25 → RRF → facet filter (families discovered from titles) → cross-encoder rerank → cross-sub-query fusion (coverage quota, dedup, superseded versions dropped) | Retrieval ablation |
@@ -60,7 +61,7 @@ python scripts/build_index.py
 python scripts/calibrate_sufficiency.py
 ```
 
-5. Start the backend. It also serves the dashboard at http://localhost:8000, so there is no separate frontend process:
+5. Start the backend. It also serves the modern AI product dashboard at http://localhost:8000 (pure HTML/CSS/JS, no build step required):
 
 ```bash
 python -m uvicorn app.main:app --app-dir backend --port 8000
@@ -177,7 +178,7 @@ Every field in `backend/app/config.py` can be overridden as `SLRAG_<FIELD>`; see
 backend/app/        controller/ decomposition/ retrieval/ reranking/ synthesis/ grounding/
                     sessions/ streaming/ telemetry/ api/ ingestion/ models/ config.py runtime.py main.py
 backend/tests/      unit, integration, API, end-to-end demo, regression, corpus-agnostic, eval-set hygiene
-frontend/           dashboard (index.html, app.js, style.css): served by the backend
+frontend/           modern AI product dashboard (index.html, app.js, style.css): pure HTML/JS, served by the backend
 data/raw/           development corpus        data/benchmark/  held-out set + FROZEN.md
 data/eval/          dev streams, retrieval eval set
 configs/            controller_train.jsonl, calibration_queries.jsonl, demo_scenarios.json
@@ -185,7 +186,7 @@ scripts/            build_index, calibrate_sufficiency, demo_stream, benchmark, 
                     make_heldout, make_dev_set, download_models
 docs/               architecture, evaluation, design_decisions, limitations, presentation_facts,
                     final_demo_script, ai_usage_log, release_checklist, FINAL_RUNBOOK,
-                    submission_checklist
+                    submission_checklist, frontend_guide, frontend_customization
 results/            benchmark.json/csv, latency.json, calibration.json, reproducibility.json, plots/, dev/
 ```
 

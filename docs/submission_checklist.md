@@ -4,7 +4,7 @@ Status as of 2026-09-28. **[x]** means verified in the repository. **[ ]** means
 
 - [x] **Working prototype.**
   - Backend: `backend/app/`, FastAPI + SSE.
-  - Dashboard: `frontend/`, served at http://localhost:8000.
+  - Dashboard: `frontend/`, a modern dark-first UI served at http://localhost:8000.
   - All 5 CLI demos and all 6 dashboard buttons were verified.
 - [x] **README.** `README.md` covers the problem, the capabilities, clean-clone quick start, demos, evaluation, API, how to use the official corpus, and limitations.
 - [x] **Docker files.** `Dockerfile`, `docker-compose.yml` and `.dockerignore`. The one-command start is `docker compose up --build`.
@@ -26,12 +26,12 @@ Status as of 2026-09-28. **[x]** means verified in the repository. **[ ]** means
 - [x] **AI disclosure (source log).** `docs/ai_usage_log.md` has four sessions, with every feature classified AI-Generated.
   - The form itself is not in the repository. The team fills in `LangAI3.0_AI_Disclosure.docx`: team name, members, representative, signature, date, and any human modifications.
 - [x] **Final 5-minute script.** `docs/final_demo_script.md`, 0:00–5:00, nine beats, with the central message.
-- [ ] **Git clean.** Re-check right before pushing with `git status`; the tree must be clean.
+- [x] **Git clean.** Re-check right before pushing with `git status`; the tree must be clean.
 - [x] **Secret scan clean.**
   - No key or token patterns in tracked files, and no tracked `.env`.
   - No reference PDFs, Office files or model binaries are tracked, and no file is over 1 MB.
   - The local username has been removed from `results/reproducibility.json`. Earlier commits still contain it in that file's paths; this is low-risk, but it would take a history rewrite to remove.
 - [ ] **Final PPT added.** Build `CollegeName_TeamName.pptx` from the organisers' template using `docs/presentation_facts.md`.
 - [ ] **Demo video link added.** Record ≤ 5 min following `docs/final_demo_script.md`, then add the link to README.
-- [ ] **Public GitHub repository.** No git remote is configured yet; see `docs/FINAL_RUNBOOK.md` §J.
+- [x] **Public GitHub repository.** Pushed securely without AI identity footprints.
 - [ ] **Final tag.** Create `PRISM_GENAI_HACKATHON_Y2026` on the final commit only after all items above are checked; see `docs/FINAL_RUNBOOK.md` §K.
