@@ -7,6 +7,7 @@ from dataclasses import dataclass, field
 
 from app.models.schemas import ScoredChunk, SubQuery
 from app.reranking.rerankers import Reranker
+from app.retrieval.constraints import promote, quantity_constraints
 from app.retrieval.index import CorpusIndex
 
 
@@ -22,6 +23,7 @@ class RetrievalResult:
     reranker: str
     top_scores: list[float] = field(default_factory=list)
     facet_dropped: list[str] = field(default_factory=list)
+    constraint_promoted: list[str] = field(default_factory=list)
 
     def summary(self) -> dict:
         return {
@@ -35,12 +37,15 @@ class RetrievalResult:
             "top_chunks": [c.chunk_id for c in self.candidates[:3]],
             "top_scores": [round(s, 3) for s in self.top_scores[:3]],
             "facet_dropped": self.facet_dropped,
+            "constraint_promoted": self.constraint_promoted,
         }
 
 
 class RetrievalService:
-    def __init__(self, index: CorpusIndex, reranker: Reranker, top_k: int = 8, facet_filter=None):
+    def __init__(self, index: CorpusIndex, reranker: Reranker, top_k: int = 8, facet_filter=None,
+                 quantity_constraints: bool = False):
         self.index = index
+        self.quantity_constraints = quantity_constraints
         self.reranker = reranker
         self.top_k = top_k
         self.facet_filter = facet_filter
@@ -65,11 +70,15 @@ class RetrievalService:
         if rerank and self.reranker.name != "none":
             cands = self.reranker.rerank(sq.text, cands, self._texts)
             rr_name = self.reranker.name
+        promoted: list[str] = []
+        if self.quantity_constraints:
+            cons = sorted(set(quantity_constraints(f"{sq.source_span} {sq.text}")))
+            cands, promoted = promote(cands, cons, self._texts)
         t2 = time.perf_counter()
         for c in cands:
             c.sub_query_ids = [sq.id]
         return RetrievalResult(sq, cands, t0, t2, (t1 - t0) * 1e3, (t2 - t1) * 1e3, mode, rr_name,
-                               [c.score for c in cands], dropped)
+                               [c.score for c in cands], dropped, promoted)
 
     async def retrieve_many(self, sqs: list[SubQuery], mode: str = "hybrid", rerank: bool = True,
                             precomputed: dict[str, list[ScoredChunk]] | None = None) -> list[RetrievalResult]:

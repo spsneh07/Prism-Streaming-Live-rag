@@ -399,6 +399,8 @@ async def main(set_name: str, quick: bool) -> None:
         ("ablation_hybrid_no_rerank", rt.engine(EngineOptions(rerank=False, final_evidence_k=k)), abl_speed),
         ("ablation_no_decomposition", rt.engine(EngineOptions(decompose=False, final_evidence_k=k)), abl_speed),
         ("ablation_rule_controller", rt.engine(EngineOptions(final_evidence_k=k), controller_mode="rule"), abl_speed),
+        ("ablation_no_quantity_constraints", rt.engine(EngineOptions(quantity_constraints=False, final_evidence_k=k)),
+         abl_speed),
     ]
     warm = [json.loads(l) for l in SETS["dev"].read_text(encoding="utf-8").splitlines()[:3]]
     for _, eng, _ in systems[:3]:     # untimed warm-up on dev cases (torch first-call overhead)

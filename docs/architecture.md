@@ -105,6 +105,11 @@ The probe results are reused as the sub-query's retrieval candidates, so decompo
 - **Hybrid:** exact dense cosine (normalised MiniLM, title and heading prepended) plus Okapi BM25 over stemmed content words, combined with RRF (k = 60). A chunk that BM25 did not match gets no sparse vote.
 - **Facet filter:** document families are detected automatically as titles identical up to a proper noun ("Approved Event Venues – Pune / – Bengaluru"). If the query names a family's facet value, siblings with a different value are dropped.
 - **Reranker:** the `cross-encoder/ms-marco-MiniLM-L6-v2` cross-encoder scores (query, "title – heading. text"). It sits behind a `Reranker` protocol; `NoopReranker` disables it for ablations.
+- **Quantity constraints:** neither ranker compares numbers, so a request that says "for 30 people" is checked explicitly (`retrieval/constraints.py`).
+  - The phrase is read as a minimum.
+  - If none of the sub-query's top 3 chunks states at least 30 people, up to 2 chunks that do are moved in behind the top result.
+  - Synthesis then selects sentences that satisfy the constraint first.
+  - The baseline does not use this; it is measured by `ablation_no_quantity_constraints`.
 - **Fusion across sub-queries:**
   1. A coverage quota admits the top 2 of every sub-query first, so a strong intent cannot crowd out a weak one.
   2. Cross-list RRF fills the remaining slots.
@@ -167,7 +172,11 @@ Every event has `{t, type, session_id, request_id, …}`, where `t` is seconds s
 - retrieval calls (provisional vs reused);
 - planning, retrieval and rerank milliseconds;
 - the grounding report and version;
-- LLM token usage (0 in extractive mode).
+- LLM token usage (0 in extractive mode);
+- `output_record`: the turn in the guide's structured output shape (§4):
+  - `retrieval_events` with `timestamp_s`, `query` and `trigger` (`provisional`, `multi_intent`, `refinement_delta` or `final`);
+  - `sub_queries`, `answer`, `citations` as `DOC §S`, and `uncertainty`;
+  - for suppressed turns, `retrieval_required: false` and a `reason`, e.g. `presentation_restructure`.
 
 ## 11. Failure-mode mitigations
 

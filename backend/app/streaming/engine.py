@@ -41,6 +41,7 @@ class EngineOptions:
     decompose: bool = True
     early_retrieval: bool = True
     facet_filter: bool = True
+    quantity_constraints: bool = True   # "for 30 people": evidence stating >= 30 people reaches the answer
     final_evidence_k: int = 8
     endpoint_delay_s: float = 0.5       # VAD hang-over when a scenario gives no explicit end time
 
@@ -398,4 +399,42 @@ class StreamingEngine:
             "added_citations": out.get("added_citations"),
             "llm_usage": out.get("usage") or {},
             "controller_decisions": counters["decisions"],
+            "output_record": output_record(ev, final, d),
         }
+
+
+def _cite_label(c) -> str:
+    """``DOC_05:S4:c1`` -> ``DOC_05 §S4`` (the guide's ``[Doc_ID §Section]`` marker)."""
+    cid = c["chunk_id"] if isinstance(c, dict) else c
+    doc, sec = cid.split(":")[:2]
+    return f"{doc} §{sec}"
+
+
+def output_record(events: list[dict], final: dict, decision) -> dict:
+    """One turn in the structured output shape of the Theme 4 guide (§4, Example 1 and 3).
+
+    Built from the event log, so it always agrees with the telemetry. ``trigger`` is
+    ``provisional`` (single-intent search during speech), ``multi_intent`` (the utterance
+    had been decomposed into several sub-queries), ``refinement_delta`` (late-detail turn)
+    or ``final`` (issued at utterance end)."""
+    retrieval_events, n_sub = [], 1
+    for e in events:
+        if e["type"] == "DECOMPOSITION":
+            n_sub = len(e.get("sub_queries", [])) or 1
+        elif e["type"] == "QUERY_CREATED":
+            trig = ("refinement_delta" if decision.intent == "refinement" else
+                    "multi_intent" if n_sub > 1 else "provisional" if e.get("provisional") else "final")
+            retrieval_events.append({"timestamp_s": round(e["t"], 3), "query": e["query"], "trigger": trig})
+    labels = list(dict.fromkeys(_cite_label(c) for c in final.get("citations", [])))
+    record = {
+        "retrieval_required": decision.action != "SUPPRESS",
+        "retrieval_events": retrieval_events,
+        "sub_queries": [q["text"] for q in final.get("sub_queries", [])],
+        "answer": final.get("answer", ""),
+        "citations": labels,
+        "uncertainty": " ".join(final.get("uncertainty") or []) or None,
+        "answer_version": final.get("answer_version"),
+    }
+    if decision.action == "SUPPRESS":
+        record["reason"] = decision.reason.split(":")[0]
+    return record

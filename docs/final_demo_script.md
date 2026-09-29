@@ -1,6 +1,6 @@
 # Final demo script (≤ 5 minutes)
 
-_Numbers quoted here are read from `results/` by `scripts/report.py` (2026-09-28 23:46:37). Rehearse with the dashboard at real-time pace._
+_Numbers quoted here are read from `results/` by `scripts/report.py` (2026-09-29 22:05:20). Rehearse with the dashboard at real-time pace._
 
 **Terminal alternative (deterministic, no browser):**
 - `python scripts/demo_stream.py --scenario early_retrieval`
@@ -22,7 +22,7 @@ No external API is called.
 |---|---|---|
 | 0:00–0:30 | **Problem**: header, empty dashboard | "Voice users speak one natural sentence, not a search query. Conventional RAG waits for silence, sends the whole sentence as one query, restarts on every follow-up, and searches even when nothing needs searching." Then the central message. Say once: "All numbers today are from a development benchmark on a 16-document synthetic corpus." |
 | 0:30–1:15 | **Live partial transcript**: click **Demo 1**, watch the Live stream card | Transcript chunks arrive one at a time, as from speech recognition. After each chunk the controller decides: the first is **WAIT** (amber, not specific yet); once the request is specific it switches to **RETRIEVE** (green) and a provisional query appears. |
-| 1:15–2:00 | **Early retrieval**: timeline and proof banner | The hatched bars are provisional retrievals, made while the user is still talking; the red dashed line is the utterance end. Read the banner: retrieval began *N seconds before the user finished*. "On the held-out split this happens on 90% of eligible turns, with a mean lead of 4.418 s; conventional RAG: 0%." |
+| 1:15–2:00 | **Early retrieval**: timeline and proof banner | The hatched bars are provisional retrievals, made while the user is still talking; the red dashed line is the utterance end. Read the banner: retrieval began *N seconds before the user finished*. "On the held-out split this happens on 90% of eligible turns, with a mean lead of 4.431 s; conventional RAG: 0%." |
 | 2:00–2:45 | **Multi-intent decomposition**: **Demo 2** (the guide's own example) | Sub-queries card: one sentence became three searches, and "Pune" was carried into each. Evidence card: retrieved in parallel, then fused, with the duplicate catering FAQ dropped. Click one citation to show its source lines. "Compound requests split correctly: 78% vs 0% for conventional RAG." |
 | 2:45–3:30 | **Late-arriving detail**: **Demo 3** | Turn 2 ("the trip was international and the booking was made after travel") is classified as a **refinement**. Only *delta* queries are searched. The answer goes v1 → v2: grey claims are kept, green claims are new, and the version history shows the change log. "No restart: prior sub-queries re-searched = 0. State continuity 100% vs 0% for the baseline." |
 | 3:30–4:00 | **Suppression**: **Demo 4** | "Make your previous answer shorter" gives a purple **SUPPRESS**, and the banner says *no corpus search*. The answer is reshaped from session memory. "Searches on turns that need none: 1 vs 8." |

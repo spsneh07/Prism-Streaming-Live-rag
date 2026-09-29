@@ -35,7 +35,12 @@ Measured failure cases for the held-out set are listed per turn in `docs/evaluat
   - It detects entities only as words the corpus capitalises mid-sentence, so a name that appears only at sentence start or in headings (e.g. "Whitefield") is not carried to sibling sub-queries.
 - **Extractive synthesis:**
   - Answers are verbatim corpus sentences: grounded and $0, but not fluent, and each sub-query gets at most 2 sentences, so long sections can be answered partially.
-  - Some answers are relevant but not the best sentence. In the guide's workshop example, sub-query 1 cites the planning guide rather than a 30-seat venue.
+  - Some answers are relevant but not the best sentence.
+  - *Fixed:* in the guide's workshop example, sub-query 1 used to cite the planning guide rather than a venue for 30 people. The quantity-constraint check (design decision D26) now brings a fitting Pune venue into the answer.
+- **Quantity constraints:**
+  - Only the phrase "for [about] N ⟨noun⟩" is recognised, and it is always read as a minimum ("at least N").
+  - Other phrasings ("with 50 people", "a 30-person room") and spoken numbers ("thirty") are not handled.
+  - A number is linked to the noun if it appears up to 8 words before it. This can match a number that belongs to something else in a long sentence.
   - A supporting (second) sentence only needs topical similarity once the first sentence has passed the gate, so it can be on-topic but off-target. In Demo 5 ("which Pune venue has a projector"), the correct sentence (cross-encoder logit 7.7) is followed by a sentence about a different room's capacity (logit 2.7). Both sentences are supported by their citations, so grounding is not violated, but the second one does not answer the question. No corpus-independent fix was found: the off-target sentence still has a positive logit, so a "positive relevance" rule would not remove it, and a relative-margin rule would need a new threshold tuned on examples like this one. It was left unchanged rather than tuned to the demo.
 - **Grounding validator:** it checks term containment and numbers, not entailment. The extractive path is safe by construction; the optional LLM path would additionally need an NLI check.
 - **Conflicts:** they are resolved only through explicit `supersedes` / `superseded_by` metadata. Other numeric disagreements are flagged, not resolved.

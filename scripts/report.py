@@ -106,7 +106,11 @@ def failures(rows):
 PREVIOUS_HELDOUT_RUNS = [
     ("4b4a0ba", "gate fitted on calibration queries only"),
     ("c7cb52d", "gate refitted on development + calibration data"),
+    ("b9bf5d1", "gate refitted on development + calibration data (repeat run)"),
 ]
+# Extra sentence per earlier run for the comparison notes.
+RUN_NOTES = {"4b4a0ba": "The refitted gate differs from the earlier one on only a few development examples, so it did "
+                        "not reduce held-out over-abstention."}
 
 
 def previous_runs():
@@ -158,7 +162,7 @@ def main():
                 f"{cal['summary']['loo_balanced_accuracy'] if cal else 'n/a'}. Nothing was tuned against the held-out set; "
                 f"see limitations.")
     prev = previous_runs()
-    CURRENT_LABEL = "gate refitted on development + calibration data"
+    CURRENT_LABEL = "refitted gate + quantity constraints (D26)"
     hist_keys = ["citation_hit_rate", "abstention_accuracy", "early_retrieval_rate", "multi_intent_identification",
                  "refinement_state_continuity", "citation_support_rate", "ttft_s_mean", "ttft_s_p50"]
     history = "| Run | Code / gate | " + " | ".join(LABELS.get(k, k) for k in hist_keys) + " |\n|---|---|" + "---|" * len(hist_keys) + "\n"
@@ -178,16 +182,9 @@ def main():
         old = {(r["case"], r["turn"]): r for r in csv.DictReader(raw.splitlines()) if r["system"] == "proposed"}
         n_changed = sum(1 for r in cur if (k := old.get((r["case"], r["turn"]))) is None
                         or (k["citations"], k["abstained"]) != (r["citations"], r["abstained"]))
-        if label == CURRENT_LABEL:
-            changed_note += (f"- **Same configuration as commit `{rev}` (repeat run):** citations or abstention decisions "
-                             f"differ on {n_changed} of {len(cur)} held-out turns. Quality results are deterministic; the "
-                             f"latency differences between the two runs are run-to-run timing variation on the same "
-                             f"machine.\n")
-        else:
-            changed_note += (f"- **Against commit `{rev}` ({label}):** citations or abstention decisions differ on "
-                             f"{n_changed} of {len(cur)} held-out turns"
-                             + (". The refitted gate differs from the earlier one on only a few development examples, "
-                                "so it did not reduce held-out over-abstention.\n" if n_changed == 0 else ".\n"))
+        note = RUN_NOTES.get(rev, "") if n_changed == 0 else ""
+        changed_note += (f"- **Against commit `{rev}` ({label}):** citations or abstention decisions differ on "
+                         f"{n_changed} of {len(cur)} held-out turns." + (f" {note}" if note else "") + "\n")
     if changed_note:
         changed_note += "\n"
     corpus = meta["corpus"]
@@ -310,7 +307,7 @@ All three use the same synthesizer and validator and run at real-time pacing.
 {tradeoff}
 
 ### Held-out run history
-Every completed held-out run is listed here. One further run of the refitted configuration was interrupted (its process was killed when the development session ended) before it wrote any results; its restart is the `c7cb52d` row. The row marked \"this report\" is a later repeat of that same configuration. Between runs, only development-data calibration and measurement fixes changed; these are listed in `docs/design_decisions.md` (D23–D25).
+Every completed held-out run is listed here. One further run of the refitted configuration was interrupted (its process was killed when the development session ended) before it wrote any results; its restart is the `c7cb52d` row, and `b9bf5d1` repeats that configuration. The row marked \"this report\" adds the quantity-constraint check (D26), designed on the Theme 4 guide's example and the development set before this run. Between runs, only development-data calibration, measurement fixes and D26 changed; these are listed in `docs/design_decisions.md` (D23–D26). Quality results are deterministic; latency differences between runs are run-to-run timing variation on the same machine.
 
 {history}
 {changed_note}The time-to-first-token definition changed between runs: it now counts the abstention message as the first output, so turns that abstain are no longer excluded. Earlier TTFT values are therefore not directly comparable.

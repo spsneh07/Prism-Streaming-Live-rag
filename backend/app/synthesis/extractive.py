@@ -20,6 +20,7 @@ from dataclasses import dataclass
 import numpy as np
 
 from app.models.schemas import Claim, ScoredChunk, SubQuery
+from app.retrieval.constraints import quantity_constraints, satisfies
 
 REDUNDANT_SIM = 0.85   # two sentences above this cosine say the same thing
 _PRONOUNS = {"it", "this", "they", "these", "those", "each", "its", "their", "that"}
@@ -37,8 +38,10 @@ class ExtractiveSynthesizer:
 
     def __init__(self, index, reranker_enabled: bool, sentences_per_subquery: int = 2,
                  min_sentence_sim: float = 0.30, min_rerank_logit: float = -2.0, min_dense_sim: float = 0.40,
-                 sentence_scorer=None, coverage=None, gate: dict | None = None):
+                 sentence_scorer=None, coverage=None, gate: dict | None = None, quantity_constraints: bool = False):
         self.index = index
+        # Prefer sentences that satisfy a stated quantity ("for 30 people"): see retrieval/constraints.py.
+        self.quantity_constraints = quantity_constraints
         self.reranker_enabled = reranker_enabled
         # Optional cross-encoder used to rank candidate sentences (``.score(query, texts)``).
         self.sentence_scorer = sentence_scorer
@@ -162,6 +165,10 @@ class ExtractiveSynthesizer:
                 miss = f"; not found in the evidence: {', '.join(suff['missing_terms'])}" if suff.get("missing_terms") else ""
                 uncertainty.append(f"Weak evidence for \"{sq.source_span or sq.text}\": the cited sections only partly "
                                    f"address it (P(sufficient)={suff['p_sufficient']}{miss}). Verify against the sources.")
+            cons = quantity_constraints(f"{sq.source_span} {sq.text}") if self.quantity_constraints else []
+            if cons:
+                # stable: constraint-satisfying sentences first, each group still in score order
+                cands = sorted(cands, key=lambda c: not satisfies(c[2], cons))
             picked: list[tuple[str, str, np.ndarray]] = []
             for score, cos, text, cid, emb in cands:
                 if len(picked) >= self.n:

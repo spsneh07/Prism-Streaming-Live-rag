@@ -76,7 +76,7 @@ class Runtime:
                 mode, s.retrieve_threshold, s.suppress_threshold, s.rule_min_content_tokens)
         return self._controllers[mode]
 
-    def synthesizer(self, reranker_enabled: bool):
+    def synthesizer(self, reranker_enabled: bool, quantity_constraints: bool = False):
         s = self.settings
         if s.llm_provider == "anthropic" and os.environ.get("ANTHROPIC_API_KEY"):
             from app.synthesis.llm import AnthropicProvider, LLMSynthesizer
@@ -84,15 +84,16 @@ class Runtime:
         return ExtractiveSynthesizer(self.index, reranker_enabled, s.sentences_per_subquery, s.min_sentence_sim,
                                      s.min_rerank_logit, s.min_dense_sim,
                                      self.reranker if reranker_enabled and self.reranker.name != "none" else None,
-                                     self.coverage, self.gate)
+                                     self.coverage, self.gate, quantity_constraints)
 
     def engine(self, options: EngineOptions | None = None, controller_mode: str | None = None) -> StreamingEngine:
         opt = options or EngineOptions(final_evidence_k=self.settings.final_evidence_k)
         rr = self.reranker if opt.rerank else NoopReranker()
         opt.rerank = opt.rerank and rr.name != "none"
-        svc = RetrievalService(self.index, rr, self.settings.top_k, self.facets if opt.facet_filter else None)
+        svc = RetrievalService(self.index, rr, self.settings.top_k, self.facets if opt.facet_filter else None,
+                               opt.quantity_constraints)
         return StreamingEngine(self.index, self.controller(controller_mode), self.decomposer, svc,
-                               self.synthesizer(opt.rerank), self.validator, opt)
+                               self.synthesizer(opt.rerank, opt.quantity_constraints), self.validator, opt)
 
     def baseline(self, mode: str = "dense") -> BaselineEngine:
         svc = RetrievalService(self.index, NoopReranker(), self.settings.top_k)
