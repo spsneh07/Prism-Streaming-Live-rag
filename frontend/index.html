@@ -5,84 +5,184 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Streaming Live RAG</title>
 <link rel="stylesheet" href="/static/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-<header>
-  <div class="brand">
-    <h1>Streaming Live RAG</h1>
-    <span class="sub">retrieves while you speak · splits compound requests · refines instead of restarting · cites or abstains</span>
+<header class="app-header">
+  <div class="header-left">
+    <div class="brand">
+      <h1>Streaming Live RAG</h1>
+      <span class="sub">Theme 4 · Samsung PRISM</span>
+    </div>
+    <div class="status-indicator" id="systemStatus">
+      <span class="status-dot"></span> <span id="statusText">READY</span>
+    </div>
   </div>
-  <div class="controls">
-    <label>System
-      <select id="system">
+  <div class="header-right">
+    <div class="session-info">
+      <span class="session-label">Session ID</span>
+      <span class="session-id" id="sessionIdDisplay">—</span>
+    </div>
+    <div class="controls-group">
+      <select id="system" class="dropdown" title="System">
         <option value="proposed">Streaming Live RAG</option>
         <option value="baseline">Baseline: turn-based RAG</option>
       </select>
-    </label>
-    <label>Pace
-      <select id="speed">
-        <option value="1">real time</option>
-        <option value="0.5">0.5× (narrate)</option>
-        <option value="2">2×</option>
+      <select id="speed" class="dropdown" title="Simulation Speed">
+        <option value="1">1x (Real time)</option>
+        <option value="0.5">0.5x (Narrate)</option>
+        <option value="2">2x</option>
       </select>
-    </label>
-    <button id="newSession" class="ghost">New session</button>
+    </div>
   </div>
 </header>
 
-<section class="scenarios">
-  <div id="scenarioButtons"></div>
-  <form id="customForm">
-    <input id="customText" placeholder="Speak your own: split transcript chunks with |   e.g.  I need a venue in Pune | for 30 people | and the catering options" autocomplete="off">
-    <button type="submit">Speak</button>
-  </form>
-  <div id="corpusNote" class="small"></div>
-</section>
+<nav class="demo-controls">
+  <div class="demo-controls-inner">
+    <span class="demo-label">Demo Scenarios:</span>
+    <div id="scenarioButtons" class="scenario-buttons"></div>
+    <div class="custom-input-group">
+      <form id="customForm">
+        <input id="customText" placeholder="Custom: e.g. I need a venue in Pune | for 30 people" autocomplete="off">
+        <button type="submit" class="btn-primary">Speak</button>
+      </form>
+    </div>
+    <button id="newSession" class="btn-ghost">Clear Session</button>
+  </div>
+</nav>
 
-<section id="proof" class="proof idle">Run a demo. This banner states what the streaming pipeline did differently from turn-based RAG.</section>
+<main class="dashboard">
+  
+  <div class="dashboard-grid">
+    <!-- Hero / Transcript -->
+    <section class="panel hero-panel">
+      <div class="panel-header">
+        <h2>Live Session</h2>
+        <div class="live-badge" id="liveIndicator">● WAITING</div>
+      </div>
+      <div class="panel-content">
+        <div id="transcript" class="transcript-box">
+          <span class="placeholder-text">Click a demo scenario above to begin streaming...</span>
+        </div>
+      </div>
+    </section>
 
-<main>
-  <article class="card wide">
-    <h2><span class="n">2</span> Retrieval timeline <span class="legend"><i class="dot WAIT"></i>WAIT <i class="dot RETRIEVE"></i>RETRIEVE <i class="dot SUPPRESS"></i>SUPPRESS</span></h2>
-    <div id="timeline" class="timeline"><span class="hint">Speech, controller decisions, retrieval and the first answer token on one clock.</span></div>
-  </article>
+    <!-- Controller Status -->
+    <section class="panel controller-panel">
+      <div class="panel-header">
+        <h2>Controller State</h2>
+      </div>
+      <div class="panel-content">
+        <div id="controllerCards" class="controller-cards">
+           <!-- Cards injected here -->
+           <div class="empty-state">Awaiting speech chunks...</div>
+        </div>
+      </div>
+    </section>
 
-  <article class="card">
-    <h2><span class="n">1</span> Live stream</h2>
-    <ol id="events" class="events"></ol>
-  </article>
+    <!-- Trust / Grounding -->
+    <section class="panel trust-panel">
+      <div class="panel-header">
+        <h2>Trust & Grounding</h2>
+      </div>
+      <div class="panel-content">
+        <div class="trust-metrics">
+          <div class="trust-metric">
+            <span class="metric-value" id="metricClaims">-</span>
+            <span class="metric-label">Claims Grounded</span>
+          </div>
+          <div class="trust-metric">
+            <span class="metric-value" id="metricFabricated">-</span>
+            <span class="metric-label">Fabricated Citations</span>
+          </div>
+          <div class="trust-metric">
+            <span class="metric-value" id="metricAbstain">N/A</span>
+            <span class="metric-label">Abstention State</span>
+          </div>
+        </div>
+        <div id="unsupportedList" class="unsupported-list"></div>
+      </div>
+    </section>
 
-  <article class="card">
-    <h2><span class="n">3</span> Sub-queries</h2>
-    <div id="subqueries" class="list muted">—</div>
-    <h2 class="sub2"><span class="n">4</span> Evidence (fused)</h2>
-    <div id="evidence" class="list muted">—</div>
-  </article>
+    <!-- Timeline -->
+    <section class="panel timeline-panel full-width">
+      <div class="panel-header">
+        <h2>Retrieval Timeline</h2>
+        <span class="timeline-highlight">CRITICAL: RETRIEVAL START &lt; UTTERANCE END</span>
+      </div>
+      <div class="panel-content">
+        <div id="timeline" class="timeline-container">
+           <div class="empty-state">Timeline will appear once the turn starts.</div>
+        </div>
+      </div>
+    </section>
 
-  <article class="card">
-    <h2><span class="n">5</span> Answer <span id="versionBadge" class="tag"></span></h2>
-    <div id="answer" class="answer muted">—</div>
-    <div id="uncertainty"></div>
-    <div id="grounding" class="small"></div>
-    <h3>Version history</h3>
-    <div id="versions" class="list muted">—</div>
-  </article>
+    <!-- Multi-Intent Decomposition -->
+    <section class="panel query-panel">
+      <div class="panel-header">
+        <h2>Multi-Intent Decomposition</h2>
+      </div>
+      <div class="panel-content">
+        <div id="subqueries" class="subqueries-box">
+          <div class="empty-state">No queries generated yet.</div>
+        </div>
+      </div>
+    </section>
 
-  <article class="card">
-    <h2><span class="n">6</span> Telemetry</h2>
-    <div id="metrics" class="metrics muted">—</div>
-    <p class="small"><a id="telemetryLink" href="#" target="_blank">session events as JSONL</a> · <a href="/api/health" target="_blank">system health</a></p>
-  </article>
+    <!-- Evidence -->
+    <section class="panel evidence-panel">
+      <div class="panel-header">
+        <h2>Retrieved Evidence</h2>
+      </div>
+      <div class="panel-content">
+        <div id="evidence" class="evidence-box">
+          <div class="empty-state">No evidence retrieved yet.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Answer Versioning -->
+    <section class="panel answer-panel">
+      <div class="panel-header">
+        <h2>Answer Versioning</h2>
+        <span class="version-badge" id="versionBadge" style="display:none">v1</span>
+      </div>
+      <div class="panel-content">
+        <div id="suppression" class="suppression-banner" style="display:none">
+          <strong>RETRIEVAL SUPPRESSED:</strong> No corpus search occurred for this turn.
+        </div>
+        <div id="answer" class="current-answer">
+          <div class="empty-state">Waiting for answer generation...</div>
+        </div>
+        <div class="version-history-header">History</div>
+        <div id="versions" class="versions-box"></div>
+      </div>
+    </section>
+
+    <!-- Telemetry -->
+    <section class="panel telemetry-panel full-width">
+      <details>
+        <summary>Technical Telemetry & Events</summary>
+        <div class="telemetry-content">
+          <ol id="events" class="events-list"></ol>
+        </div>
+      </details>
+    </section>
+
+  </div>
 </main>
 
-<dialog id="chunkDialog">
+<dialog id="chunkDialog" class="modern-dialog">
   <form method="dialog">
     <h3 id="chunkTitle"></h3>
-    <p id="chunkMeta" class="small"></p>
-    <p id="chunkText"></p>
-    <button>Close</button>
+    <p id="chunkMeta" class="meta"></p>
+    <div id="chunkText" class="chunk-text"></div>
+    <div class="dialog-actions">
+      <button class="btn-primary">Close</button>
+    </div>
   </form>
 </dialog>
+
 <script src="/static/app.js"></script>
 </body>
 </html>
