@@ -14,13 +14,13 @@ This log feeds the *LangAI 3.0 AI Usage Disclosure Form* (`LangAI3.0_AI_Disclosu
 | 5 | 2026-09-29 – 2026-09-30 | same | Team prompts: build the final submission PPT from the Samsung template; check the system against the Theme 4 guide and fix the gaps; fill the AI disclosure form | Items marked "(s5)" below; one held-out re-run, published unchanged |
 
 ## Team-specific fields: TO BE FILLED BY THE TEAM
-- **Team name:** Team Fantastic 4
-- **Project name:** Streaming Live RAG
+- **Team:** Fantastic 4
+- **Project:** Streaming Live RAG
 - **Institution:** SRM University / SRM Institute of Science & Technology
-- **Team members (names, roles, contact):** Sneh Prasad (sp0701@srmist.edu.in), Purva Jain (pj8602@srmist.edu.in), Agadh Khanolkar (ak1920@srmist.edu.in), Srushti More (sm1436@srmist.edu.in)
+- **Members:** Sneh Prasad (sp0701@srmist.edu.in), Purva Jain (pj8602@srmist.edu.in), Agadh Khanolkar (ak1920@srmist.edu.in), Srushti More (sm1436@srmist.edu.in)
 - **Representative:** Sneh Prasad, Team Lead
-- **Signature:** see signed disclosure form
 - **Date:** 30 September 2026
+- **Signature:** see the signed disclosure form
 - **Purpose of AI usage (form section 3):**
   - Code generation: yes, see the table below.
   - Idea generation, UI/UX, content creation, data analysis, testing/debugging: the team must confirm each one.

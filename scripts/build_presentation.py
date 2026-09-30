@@ -31,6 +31,7 @@ SHOTS = ROOT / "docs" / "screenshots"
 
 GITHUB = "https://github.com/spsneh07/Prism-Streaming-Live-rag"
 GITHUB_SHORT = "github.com/spsneh07/Prism-Streaming-Live-rag"
+VIDEO = "https://drive.google.com/file/d/1qTrza9E9xEB6LtJP4BIdPNYOMkvRrxV3/view?usp=sharing"
 TEAM = "Fantastic 4"
 COLLEGE = "SRM Univ"
 MEMBERS = [("Sneh Prasad", "sp0701@srmist.edu.in"), ("Purva Jain", "pj8602@srmist.edu.in"),
@@ -943,8 +944,8 @@ chk = [("Working prototype code — public GitHub repo", "Y", GREEN, GREENT,
        ("Docker", "Y", GREEN, GREENT,
         [("image built and run, health check and tests inside the container; verified on the development machine only",
           {})]),
-       ("Demo video, max 5 minutes (YouTube or Drive link)", "PENDING", AMBER, AMBERT,
-        [("[ DEMO VIDEO LINK — TO BE ADDED BY THE TEAM ]", {"bold": True, "color": AMBER})]),
+       ("Demo video, max 5 minutes (YouTube or Drive link)", "Y", GREEN, GREENT,
+        [(VIDEO, {"link": VIDEO, "color": VIOLET, "bold": True})]),
        ("Presentation file (PPT or PDF)", "Y", GREEN, GREENT, [("SRM_Univ_Fantastic_4_Submission.pptx", {})])]
 for i, (item, st, c, f, det) in enumerate(chk):
     y = 2.0 + i * 0.88
@@ -953,8 +954,7 @@ for i, (item, st, c, f, det) in enumerate(chk):
     tb(s_check, L + 1.6, y + 0.07, W - 1.8, 0.62, [[(item, {"bold": True, "size": 15, "color": NAVY})], det], size=11.5,
        color=SLATE, ls=0.95)
 tb(s_check, L, 6.45, W, 0.3, [("Status as of the final build of this deck.", {"italic": True})], size=10, color=SLATE)
-notes(s_check, "Demo video is not recorded yet: replace the placeholder with the YouTube or Drive link before "
-      "submitting. Docker was verified on one development machine only.")
+notes(s_check, "All items complete. Demo video: " + VIDEO + ". Docker was verified on one development machine only.")
 
 # ---------------------------------------------------------------- 15. thank you
 thanks = next(sh for sh in s_thanks.shapes if sh.shape_id == 162)

@@ -205,7 +205,7 @@ See [docs/limitations.md](docs/limitations.md). In short:
 The full list, with verified status, is in [docs/submission_checklist.md](docs/submission_checklist.md); exact commands are in [docs/FINAL_RUNBOOK.md](docs/FINAL_RUNBOOK.md). Still open for the team:
 
 - [ ] Public GitHub repository with this README (the official reference PDFs are git-ignored; the Theme 4 guide carries a personal watermark)
-- [ ] Demo video (≤ 5 min), following `docs/final_demo_script.md`; add its link here
+- [x] Demo video (≤ 5 min): https://drive.google.com/file/d/1qTrza9E9xEB6LtJP4BIdPNYOMkvRrxV3/view?usp=sharing
 - [ ] Deck `CollegeName_TeamName.pptx` from the provided template, using `docs/presentation_facts.md`
 - [ ] AI Usage Disclosure Form completed from `docs/ai_usage_log.md` (team fields filled in by the team)
 - [ ] Release tag **`PRISM_GENAI_HACKATHON_Y2026`** on the final commit, created only once everything above is in that commit

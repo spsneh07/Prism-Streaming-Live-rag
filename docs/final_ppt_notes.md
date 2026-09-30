@@ -32,7 +32,7 @@ python scripts/build_presentation.py
 | 11 | Innovation Highlights & Limitations | `presentation_facts.md` "Innovation highlights"; limitations from `docs/limitations.md` |
 | 12 | What's Next | `docs/limitations.md` "Future work". Marked as planned, not implemented |
 | 13 | Why Streaming Live RAG? | Conceptual sequence, not a time-to-answer claim (see the note below the metrics table) |
-| 14 | Checklist | Real status. The demo video is **PENDING** |
+| 14 | Checklist | Real status. All items Y, including the demo video link |
 | 15 | Thank you | Template closing slide, plus team, GitHub link and contact |
 
 ## Metrics used (all from `results/benchmark.json`, run 2026-09-29 22:05:20)
@@ -57,7 +57,7 @@ python scripts/build_presentation.py
 Slide 13 does not claim a faster answer. It shows *where* the work happens: during speech.
 
 ## Placeholders remaining
-- **Demo video link** (slide 14): `[ DEMO VIDEO LINK — TO BE ADDED BY THE TEAM ]`. Replace it with the YouTube or Drive URL and change the status from PENDING to Y.
+- None. The demo video link (https://drive.google.com/file/d/1qTrza9E9xEB6LtJP4BIdPNYOMkvRrxV3/view?usp=sharing) is on slide 14.
 
 ## Visual QA
 - **Rendering:** every slide was rendered through PowerPoint (COM export, 1600 px) and inspected.

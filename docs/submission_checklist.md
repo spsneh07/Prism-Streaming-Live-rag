@@ -32,6 +32,6 @@ Status as of 2026-09-28. **[x]** means verified in the repository. **[ ]** means
   - No reference PDFs, Office files or model binaries are tracked, and no file is over 1 MB.
   - The local username has been removed from `results/reproducibility.json`. Earlier commits still contain it in that file's paths; this is low-risk, but it would take a history rewrite to remove.
 - [ ] **Final PPT added.** Build `CollegeName_TeamName.pptx` from the organisers' template using `docs/presentation_facts.md`.
-- [ ] **Demo video link added.** Record ≤ 5 min following `docs/final_demo_script.md`, then add the link to README.
+- [x] **Demo video link added:** https://drive.google.com/file/d/1qTrza9E9xEB6LtJP4BIdPNYOMkvRrxV3/view?usp=sharing (also in README and on slide 14 of the deck).
 - [x] **Public GitHub repository.** Pushed securely without AI identity footprints.
 - [ ] **Final tag.** Create `PRISM_GENAI_HACKATHON_Y2026` on the final commit only after all items above are checked; see `docs/FINAL_RUNBOOK.md` §K.
