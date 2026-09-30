@@ -185,7 +185,7 @@ configs/            controller_train.jsonl, calibration_queries.jsonl, demo_scen
 scripts/            build_index, calibrate_sufficiency, demo_stream, benchmark, report, reproduce,
                     make_heldout, make_dev_set, download_models
 docs/               architecture, evaluation, design_decisions, limitations, presentation_facts,
-                    final_demo_script, ai_usage_log, release_checklist, FINAL_RUNBOOK,
+                    final_demo_script, ai_usage_log, FINAL_RUNBOOK,
                     submission_checklist, frontend_guide, frontend_customization
 results/            benchmark.json/csv, latency.json, calibration.json, reproducibility.json, plots/, dev/
 ```
