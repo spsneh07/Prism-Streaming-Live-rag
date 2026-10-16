@@ -78,7 +78,7 @@ class AnswerVersion:
     def text(self) -> str:
         parts = []
         for c in self.claims:
-            if not c.supported:
+            if not c.supported or c.status == "removed":
                 continue
             cites = " ".join(f"[{cid.rsplit(':', 1)[0].replace(':', ' §')}]" for cid in dict.fromkeys(c.citations))
             parts.append(f"{c.text} {cites}".strip())

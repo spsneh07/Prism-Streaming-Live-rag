@@ -149,3 +149,41 @@ def test_suppressed_turn_preserves_version_and_refinement_builds_on_it(rt):
     assert r3.summary["answer_version"] == 2 and r3.summary["intent"] == "refinement"
     v2 = {c for cl in s.versions[1].claims if cl.supported and cl.status != "removed" for c in cl.citations}
     assert v1 <= v2
+
+
+# --- final-demo audit (2026-10-16) ---------------------------------------------------------
+def test_removed_claim_is_not_rendered_in_answer_text():
+    from app.models.schemas import AnswerVersion, Claim
+    v = AnswerVersion(2, [Claim("Kept claim.", ["DOC_01:S2:c1"], "q1", True, 1.0, "retained"),
+                          Claim("Superseded claim.", ["DOC_02:S2:c1"], "q1", True, 1.0, "removed")], [], [], [])
+    assert "Kept claim." in v.text and "Superseded claim." not in v.text
+
+
+def test_refinement_drops_superseded_claim_from_answer_and_citations(rt):
+    """v1 cites the superseded policy (DOC_02); the refinement retrieves its replacement
+    (DOC_01), so the old claim is removed from the rendered answer, not only from the deltas."""
+    from app.models.schemas import AnswerVersion, Claim
+    old = "Expense claims must be submitted within 45 days of the trip end date."
+    s = rt.sessions.create()
+    s.start_topic("Summarize the travel reimbursement rule for an employee trip.")
+    sq = SubQuery("q1", "travel reimbursement rule", "", "travel reimbursement rule")
+    s.results_by_sq = {"q1": [ScoredChunk("DOC_02:S2:c1", 1.0, {}, ["q1"])]}
+    s.versions.append(AnswerVersion(1, [Claim(old, ["DOC_02:S2:c1"], "q1")], [], [sq], ["DOC_02:S2:c1"]))
+    _, res = run_turn(rt, [(0, "The trip was international"), (0.8, "and the booking was made after travel.")],
+                      1.3, session=s)
+    f = final(res)
+    assert res.summary["intent"] == "refinement" and f["answer_version"] == 2
+    upd = next(e for e in res.log.events if e["type"] == "ANSWER_VERSION_UPDATED")
+    assert any(c["status"] == "removed" and c["text"] == old for c in upd["claims"])
+    assert old not in f["answer"]
+    assert all(not c["chunk_id"].startswith("DOC_02") for c in f["citations"])
+
+
+def test_session_liveness_check_does_not_refresh_ttl():
+    import time
+    from app.sessions.store import SessionStore
+    st = SessionStore(ttl_s=0.05)
+    s = st.create()
+    assert s.session_id in st
+    time.sleep(0.08)
+    assert s.session_id not in st

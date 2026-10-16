@@ -30,6 +30,8 @@ async function newSession() {
   $("metricFabricated").textContent = '-';
   $("metricAbstain").textContent = 'N/A';
   $("unsupportedList").innerHTML = '';
+  $("uncertainty").style.display = 'none';
+  $("uncertainty").innerHTML = '';
   $("versionBadge").style.display = 'none';
   $("suppression").style.display = 'none';
   
@@ -95,6 +97,8 @@ function render(ev) {
       $("liveIndicator").textContent = "● LISTENING";
       $("transcript").innerHTML = "";
       $("controllerCards").innerHTML = "";
+      $("uncertainty").style.display = "none";
+      $("suppression").style.display = "none";
       addTelemetry(t, ev.type, `turn started · v${ev.answer_version ?? 0}`);
       break;
       
@@ -162,12 +166,12 @@ function render(ev) {
       if ($("evidence").querySelector('.empty-state')) $("evidence").innerHTML = "";
       
       $("evidence").innerHTML = ev.evidence.map((e) => `
-        <div class="ev-card">
+        <div class="ev-card" data-chunk="${esc(e.chunk_id)}" title="Click to open the source section">
           <div class="ev-header">
             <span><strong>${esc(sec(e.chunk_id))}</strong></span>
             <span>Sub-queries: ${e.sub_query_ids.join(", ")} ${e.signals?.rerank !== undefined ? `(Rerank: ${e.signals.rerank})` : ""}</span>
           </div>
-          <div class="ev-text">"..." (Excerpt fetched on demand)</div>
+          <div class="ev-text">Click to open the source text</div>
         </div>
       `).join("");
       addTelemetry(t, ev.type, `evidence_items=${ev.evidence.length}`);
@@ -221,13 +225,26 @@ function render(ev) {
       if (ev.suppressed) {
         $("answer").innerHTML = ev.answer.split("\n").map(l => `<span class="claim">${esc(l)}</span>`).join("");
       }
-      if (ev.uncertainty?.length) {
-         $("metricAbstain").textContent = "ABSTAINED";
-         $("metricAbstain").style.color = "var(--wait)";
+      // ABSTAINED = no grounded claim at all; PARTIAL = some sub-intents answered, others flagged.
+      const unc = ev.uncertainty || [];
+      const nCites = (ev.citations || []).length;
+      if (ev.suppressed) {
+        $("metricAbstain").textContent = "N/A";
+        $("metricAbstain").style.color = "var(--text-muted)";
+      } else if (!nCites) {
+        $("metricAbstain").textContent = "ABSTAINED";
+        $("metricAbstain").style.color = "var(--wait)";
+      } else if (unc.length) {
+        $("metricAbstain").textContent = "PARTIAL";
+        $("metricAbstain").style.color = "var(--wait)";
       } else {
-         $("metricAbstain").textContent = "N/A";
-         $("metricAbstain").style.color = "var(--text-muted)";
+        $("metricAbstain").textContent = "ANSWERED";
+        $("metricAbstain").style.color = "var(--ret)";
       }
+      $("uncertainty").style.display = unc.length ? "block" : "none";
+      $("uncertainty").innerHTML = unc.length
+        ? `<strong>Uncertainty (not verified from the corpus)</strong>${unc.map((u) => `<div>${esc(u)}</div>`).join("")}`
+        : "";
       $("liveIndicator").textContent = "● COMPLETE";
       $("liveIndicator").style.color = "var(--text-muted)";
       $("liveIndicator").className = "live-badge";
@@ -311,7 +328,8 @@ $("customForm").onsubmit = (e) => {
 };
 
 document.addEventListener("click", async (e) => {
-  const id = e.target.dataset && e.target.dataset.chunk;
+  const el = e.target.closest && e.target.closest("[data-chunk]");
+  const id = el && el.dataset.chunk;
   if (!id) return;
   try {
     const c = await (await fetch(`/api/chunks/${encodeURIComponent(id)}`)).json();
@@ -325,6 +343,9 @@ document.addEventListener("click", async (e) => {
 });
 
 $("newSession").onclick = newSession;
+// Baseline and proposed must not share session memory (a proposed turn would otherwise
+// "refine" a baseline answer), so switching system starts a fresh session.
+$("system").onchange = () => { if (!busy) newSession(); };
 
 // Start
 loadScenarios();

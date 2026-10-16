@@ -20,6 +20,7 @@ async def lifespan(app: FastAPI):
     app.state.runtime = rt
     app.state.engines = {"proposed": rt.engine(), "baseline": rt.baseline("dense")}
     app.state.session_events = {}
+    app.state.active_turns = set()
     yield
 
 

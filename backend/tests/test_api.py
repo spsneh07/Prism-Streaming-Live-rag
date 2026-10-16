@@ -47,3 +47,18 @@ def test_baseline_selectable_and_validation(client):
     assert any(e["type"] == "FINAL_RESPONSE" for e in sse(r))
     assert client.post(f"/api/sessions/{sid}/turns", json={"chunks": []}).status_code == 422
     assert client.post("/api/sessions/nope/turns", json={"chunks": [{"t": 0, "text": "x"}]}).status_code == 404
+
+
+def test_one_turn_at_a_time_per_session_and_expired_event_logs_pruned(client):
+    state = client.app.state
+    sid = client.post("/api/sessions").json()["session_id"]
+    state.active_turns.add(sid)                       # simulate a turn still streaming
+    body = {"chunks": [{"t": 0, "text": "sick leave"}], "speed": 10}
+    assert client.post(f"/api/sessions/{sid}/turns", json=body).status_code == 409
+    state.active_turns.discard(sid)
+    r = client.post(f"/api/sessions/{sid}/turns", json=body)
+    assert any(e["type"] == "FINAL_RESPONSE" for e in sse(r))
+    assert sid not in state.active_turns              # released when the turn finished
+    state.runtime.sessions.end(sid)                   # session gone (e.g. expired) ...
+    client.post("/api/sessions")                      # ... its event log is dropped on the next create
+    assert sid not in state.session_events

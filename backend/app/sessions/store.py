@@ -55,6 +55,11 @@ class SessionStore:
     def end(self, session_id: str) -> bool:
         return self._sessions.pop(session_id, None) is not None
 
+    def __contains__(self, session_id: str) -> bool:
+        """Liveness check that, unlike ``get``, does not refresh the inactivity timer."""
+        self._gc()
+        return session_id in self._sessions
+
     def __len__(self) -> int:
         return len(self._sessions)
 

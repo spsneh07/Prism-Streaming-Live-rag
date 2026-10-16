@@ -100,7 +100,7 @@ python scripts/report.py
 python scripts/reproduce.py
 ```
 
-- **Tests:** 61 (60 pass; 1 is a strict expected failure documenting a known limitation: an audience phrase such as "for a new joiner" pulls a presentation request toward refinement).
+- **Tests:** 72 (71 pass; 1 is a strict expected failure documenting a known limitation: an audience phrase such as "for a new joiner" pulls a presentation request toward refinement).
 - **`benchmark.py`:** runs the held-out set at real-time pacing (about 25 minutes) and writes `results/`. Use `--set dev` for the development set and `--quick` for 5× pacing.
 - **`report.py`:** regenerates `docs/evaluation.md`, `docs/presentation_facts.md` and `docs/final_demo_script.md` from `results/`.
 - **`reproduce.py`:** the G1 replay. It copies the repository without derived files into an empty directory and, with an empty Hugging Face cache in offline mode, runs index → calibration → tests → quick dev benchmark → all five demos → a backend smoke test. `--pip-dry-run` also resolves the pinned requirements. Model weights are copied from the local `data/models/` for the local replay; the Docker step then builds the image from scratch (downloading the models) and starts it, runs the tests inside it and removes it.

@@ -290,6 +290,11 @@ body {
 .ev-header { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
 .ev-header strong { color: var(--ret); }
 .ev-text { font-size: 12px; color: var(--text-main); font-style: italic; }
+.ev-card[data-chunk] { cursor: pointer; }
+.ev-card[data-chunk]:hover { background: var(--bg-hover); }
+.uncertainty-box { margin: 8px 0 12px; padding: 8px 12px; background: var(--wait-bg); border-left: 2px solid var(--wait); border-radius: 4px; font-size: 12px; }
+.uncertainty-box strong { color: var(--wait); display: block; margin-bottom: 4px; }
+.uncertainty-box div { margin-top: 4px; }
 
 /* =========================================
    ANSWER VERSIONING

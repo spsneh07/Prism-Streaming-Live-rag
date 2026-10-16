@@ -45,8 +45,12 @@ def scenarios(request: Request):
 
 @router.post("/sessions")
 def create_session(request: Request):
-    s = _rt(request).sessions.create()
-    request.app.state.session_events[s.session_id] = []
+    rt = _rt(request)
+    s = rt.sessions.create()
+    events = request.app.state.session_events
+    for sid in [k for k in events if k not in rt.sessions]:   # expired sessions: drop their event logs too
+        del events[sid]
+    events[s.session_id] = []
     return {"session_id": s.session_id}
 
 
@@ -88,6 +92,11 @@ async def run_turn(sid: str, body: TurnIn, request: Request):
     session = rt.sessions.get(sid)
     if not session:
         raise HTTPException(404, "session not found or expired")
+    # One turn at a time per session: two interleaved turns would both read and append
+    # answer versions, so a refinement could build on the wrong version.
+    active: set = request.app.state.active_turns
+    if sid in active:
+        raise HTTPException(409, "a turn is already running in this session")
     engine = request.app.state.engines[body.system]
     queue: asyncio.Queue = asyncio.Queue()
     store = request.app.state.session_events.setdefault(sid, [])
@@ -98,6 +107,8 @@ async def run_turn(sid: str, body: TurnIn, request: Request):
 
     chunks = [c.model_dump() for c in body.chunks]
     task = asyncio.create_task(engine.run_turn(session, chunks, body.end_t, body.speed, sink))
+    active.add(sid)
+    task.add_done_callback(lambda _: active.discard(sid))
 
     async def stream():
         while True:
