@@ -269,11 +269,17 @@ async function runTurn(chunks, endT) {
   addTelemetry(0, "UI", "── new turn ──");
   
   try {
-    const res = await fetch(`/api/sessions/${sessionId}/turns`, {
+    const post = () => fetch(`/api/sessions/${sessionId}/turns`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chunks, end_t: endT, speed: parseFloat($("speed").value), system: $("system").value }),
     });
+    let res = await post();
+    // Sessions expire after 30 idle minutes; the server has already dropped that memory, so start fresh once.
+    if (res.status === 404) {
+      await newSession();
+      res = await post();
+    }
     if (!res.ok) throw new Error(await res.text());
     const reader = res.body.getReader();
     const dec = new TextDecoder();
