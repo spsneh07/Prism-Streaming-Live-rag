@@ -28,6 +28,8 @@ ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE = ROOT / "CollegeName_TeamName_Submission.pptx"
 OUT = ROOT / "SRM_Univ_Fantastic_4_Submission.pptx"
 SHOTS = ROOT / "docs" / "screenshots"
+if OUT.exists():   # the Round 1 submission deck is frozen; delete it by hand to rebuild on purpose
+    raise SystemExit(f"{OUT.name} already exists; refusing to overwrite it")
 
 GITHUB = "https://github.com/spsneh07/Prism-Streaming-Live-rag"
 GITHUB_SHORT = "github.com/spsneh07/Prism-Streaming-Live-rag"

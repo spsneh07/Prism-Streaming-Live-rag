@@ -14,14 +14,14 @@ router = APIRouter(prefix="/api")
 
 
 class ChunkIn(BaseModel):
-    t: float = Field(ge=0)
+    t: float = Field(ge=0, le=300)   # turns are paced in real time, so an unbounded t pins the session
     text: str = Field(min_length=1, max_length=2000)
 
 
 class TurnIn(BaseModel):
     chunks: list[ChunkIn] = Field(min_length=1, max_length=100)
-    end_t: float | None = None
-    speed: float = Field(default=1.0, gt=0, le=50)
+    end_t: float | None = Field(default=None, ge=0, le=300)
+    speed: float = Field(default=1.0, ge=0.1, le=50)
     system: str = Field(default="proposed", pattern="^(proposed|baseline)$")
 
 
